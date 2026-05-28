@@ -1,3 +1,13 @@
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const POKEMON_LIST_PATH = path.join(__dirname, "..", "data", "pokemon-list.json");
+
 const DEFAULT_CITIES = [
   { name: "Tokyo - Shibuya", country: "Japon", lat: 35.6595, lon: 139.7006 },
   { name: "New York - Central Park", country: "États-Unis", lat: 40.7851, lon: -73.9683 },
@@ -134,7 +144,7 @@ async function getPokemonData(rawName) {
 
   if (!match) throw new Error("Pokémon introuvable.");
 
-  const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${match.name}`);
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${match.id}`);
   if (!res.ok) throw new Error("Impossible de récupérer les types du Pokémon.");
   const data = await res.json();
 
@@ -154,29 +164,11 @@ async function getPokemonData(rawName) {
 
 async function getPokemonSpeciesList() {
   if (speciesListCache) return speciesListCache;
-  if (speciesListPromise) return speciesListPromise;
 
-  speciesListPromise = (async () => {
-    const res = await fetch("https://pokeapi.co/api/v2/pokemon-species?limit=1025");
-    if (!res.ok) throw new Error("Impossible de charger la liste Pokémon.");
-    const data = await res.json();
-    const chunks = chunkArray(data.results, 40);
-    const loaded = [];
-    for (const chunk of chunks) {
-      const part = await Promise.all(chunk.map(async (p) => {
-        const id = Number(p.url.split("/").filter(Boolean).pop());
-        const speciesRes = await fetch(p.url);
-        const speciesData = await speciesRes.json();
-        const frName = speciesData.names.find(n => n.language.name === "fr")?.name || p.name;
-        return { id, name: p.name, frName };
-      }));
-      loaded.push(...part);
-    }
-    speciesListCache = loaded.sort((a, b) => a.id - b.id);
-    return speciesListCache;
-  })();
+  const raw = fs.readFileSync(POKEMON_LIST_PATH, "utf-8");
+  speciesListCache = JSON.parse(raw);
 
-  return speciesListPromise;
+  return speciesListCache;
 }
 
 async function analyzeCity({ city, targetWeathers, preciseMode, previousDayMode }) {
