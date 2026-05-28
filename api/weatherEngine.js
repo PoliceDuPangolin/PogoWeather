@@ -182,7 +182,7 @@ async function analyzeCity({ city, targetWeathers, preciseMode, previousDayMode 
       zone: point.zone || "centre",
       lat: point.lat,
       lon: point.lon,
-      meteoPublic: sanitizeMeteo(meteoPack.primary),
+      meteoPublic: sanitizeMeteo(meteoPack.current),
       pogoWeather,
       pogoWeatherFr: WEATHER_FR[pogoWeather] || pogoWeather,
       isTarget: targetWeathers.includes(pogoWeather)
@@ -423,39 +423,53 @@ function estimateHybridPokemonWeather(pack) {
 
   if (!previousWeather) return currentWeather;
 
-  const previous = pack.previous;
   const current = pack.current;
 
   const currentClouds = Number(current.cloud_cover || 0);
-  const previousClouds = Number(previous.cloud_cover || 0);
   const currentWind = Number(current.wind_speed_10m || 0);
   const currentRain = Number(current.rain || current.precipitation || 0);
+  const currentSnow = Number(current.snowfall || 0);
   const currentCode = Number(current.weather_code);
+  const currentVisibility = Number(current.visibility || 99999);
 
-  const currentLooksClear =
-    currentClouds <= 20 &&
-    currentWind < 25 &&
-    currentRain < 0.4 &&
-    [0, 1].includes(currentCode);
+  const currentHasBadWeather =
+    currentRain >= 0.5 ||
+    currentSnow >= 0.2 ||
+    [61, 63, 65, 80, 81, 82, 95, 96, 99].includes(currentCode) ||
+    [45, 48].includes(currentCode) ||
+    currentVisibility < 1000 ||
+    currentWind >= 30;
 
-  const previousOnlyCloudy =
+  if (currentHasBadWeather) {
+    return currentWeather;
+  }
+
+  // Cas comme Shibuya : prévision d'hier nuageuse,
+  // mais météo actuelle clairement dégagée.
+  if (
     previousWeather === "Cloudy" &&
-    currentWeather === "Clear" &&
-    previousClouds >= 70 &&
-    currentClouds <= 20;
-
-  if (currentLooksClear && previousOnlyCloudy) {
+    currentClouds <= 35 &&
+    [0, 1, 2].includes(currentCode)
+  ) {
     return "Clear";
   }
 
-  const currentLooksPartlyCloudy =
-    currentClouds > 20 &&
+  if (
+    previousWeather === "Cloudy" &&
     currentClouds < 75 &&
-    currentRain < 0.4 &&
-    currentWind < 25;
-
-  if (previousWeather === "Cloudy" && currentLooksPartlyCloudy) {
+    currentRain < 0.5 &&
+    currentWind < 30
+  ) {
     return "Partly Cloudy";
+  }
+
+  // Si la météo actuelle est claire/partiellement nuageuse
+  // et qu'il n'y a pas de pluie/vent/neige, on lui donne plus de poids.
+  if (
+    ["Clear", "Partly Cloudy"].includes(currentWeather) &&
+    ["Cloudy", "Rainy", "Windy"].includes(previousWeather)
+  ) {
+    return currentWeather;
   }
 
   return previousWeather;
