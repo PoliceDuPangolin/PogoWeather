@@ -351,7 +351,7 @@ function estimatePokemonWeather(w) {
   if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return "Rainy";
   if (rain >= 0.4 || precip >= 0.4) return "Rainy";
   if ([45, 48].includes(code) || visibility < 1200) return "Fog";
-  if (wind >= 25) return "Windy";
+  if (wind >= 27) return "Windy";
   if (clouds >= 75 || code === 3) return "Cloudy";
   if (clouds >= 25 || code === 1 || code === 2) return "Partly Cloudy";
   return "Clear";
