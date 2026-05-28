@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://pogoweather.com/</loc><priority>1.0</priority></url>
+  <url><loc>https://pogoweather.com/guide</loc><priority>0.8</priority></url>
+  <url><loc>https://pogoweather.com/weather-boost</loc><priority>0.8</priority></url>
+  <url><loc>https://pogoweather.com/best-cities</loc><priority>0.8</priority></url>
+  <url><loc>https://pogoweather.com/windy-weather-rayquaza</loc><priority>0.8</priority></url>
+  <url><loc>https://pogoweather.com/fog-weather</loc><priority>0.8</priority></url>
+  <url><loc>https://pogoweather.com/raid-weather-boost</loc><priority>0.8</priority></url>
+  <url><loc>https://pogoweather.com/about</loc><priority>0.8</priority></url>
+  <url><loc>https://pogoweather.com/privacy</loc><priority>0.8</priority></url>
+  <url><loc>https://pogoweather.com/disclaimer</loc><priority>0.8</priority></url>
+</urlset>
