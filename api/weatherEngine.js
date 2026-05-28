@@ -176,13 +176,13 @@ async function analyzeCity({ city, targetWeathers, preciseMode, previousDayMode 
   const pointResults = [];
 
   for (const point of points) {
-    const meteo = await fetchWeather(point.lat, point.lon, previousDayMode);
-    const pogoWeather = estimatePokemonWeather(meteo);
+    const meteoPack = await fetchWeatherPack(point.lat, point.lon, previousDayMode);
+    const pogoWeather = estimateHybridPokemonWeather(meteoPack);
     pointResults.push({
       zone: point.zone || "centre",
       lat: point.lat,
       lon: point.lon,
-      meteoPublic: sanitizeMeteo(meteo),
+      meteoPublic: sanitizeMeteo(meteoPack.primary),
       pogoWeather,
       pogoWeatherFr: WEATHER_FR[pogoWeather] || pogoWeather,
       isTarget: targetWeathers.includes(pogoWeather)
@@ -388,9 +388,84 @@ function voteWeather(pointResults) {
 function normalizeText(str) {
   return String(str).toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "").trim();
 }
+
+async function fetchWeatherPack(lat, lon, previousDayMode) {
+  const current = await fetchCurrentForecast(lat, lon);
+
+  if (!previousDayMode) {
+    return {
+      primary: current,
+      previous: null,
+      current
+    };
+  }
+
+  try {
+    const previous = await fetchPreviousDayForecast(lat, lon);
+
+    return {
+      primary: previous,
+      previous,
+      current
+    };
+  } catch {
+    return {
+      primary: current,
+      previous: null,
+      current
+    };
+  }
+}
+
+function estimateHybridPokemonWeather(pack) {
+  const previousWeather = pack.previous ? estimatePokemonWeather(pack.previous) : null;
+  const currentWeather = estimatePokemonWeather(pack.current);
+
+  if (!previousWeather) return currentWeather;
+
+  const previous = pack.previous;
+  const current = pack.current;
+
+  const currentClouds = Number(current.cloud_cover || 0);
+  const previousClouds = Number(previous.cloud_cover || 0);
+  const currentWind = Number(current.wind_speed_10m || 0);
+  const currentRain = Number(current.rain || current.precipitation || 0);
+  const currentCode = Number(current.weather_code);
+
+  const currentLooksClear =
+    currentClouds <= 20 &&
+    currentWind < 25 &&
+    currentRain < 0.4 &&
+    [0, 1].includes(currentCode);
+
+  const previousOnlyCloudy =
+    previousWeather === "Cloudy" &&
+    currentWeather === "Clear" &&
+    previousClouds >= 70 &&
+    currentClouds <= 20;
+
+  if (currentLooksClear && previousOnlyCloudy) {
+    return "Clear";
+  }
+
+  const currentLooksPartlyCloudy =
+    currentClouds > 20 &&
+    currentClouds < 75 &&
+    currentRain < 0.4 &&
+    currentWind < 25;
+
+  if (previousWeather === "Cloudy" && currentLooksPartlyCloudy) {
+    return "Partly Cloudy";
+  }
+
+  return previousWeather;
+}
+
 function roundCoord(value) { return Number(value).toFixed(3); }
 function chunkArray(arr, size) {
   const out = [];
   for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
   return out;
 }
+
+
