@@ -12,25 +12,24 @@ const POKEMON_LIST_PATH = path.join(
   "pokemon-list.json"
 );
 
-const VISUAL_CROSSING_API_KEY = "2YBQHR3G4C62PS37PJM72SUQS"
-  process.env.VISUAL_CROSSING_API_KEY || "";
+const VISUAL_CROSSING_API_KEY = process.env.VISUAL_CROSSING_API_KEY || "";
 
 const DEFAULT_CITIES = [
-  { name: "Tokyo - Shibuya", country: "Japon", lat: 35.6595, lon: 139.7006 },
-  { name: "New York - Central Park", country: "États-Unis", lat: 40.7851, lon: -73.9683 },
-  { name: "San Francisco - Pier 39", country: "États-Unis", lat: 37.8086, lon: -122.4098 },
-  { name: "Honolulu - Ala Moana", country: "États-Unis", lat: 21.2910, lon: -157.8440 },
-  { name: "Sydney - Circular Quay", country: "Australie", lat: -33.8610, lon: 151.2128 },
+  { name: "Tokyo - Shibuya", country: "Japan", lat: 35.6595, lon: 139.7006 },
+  { name: "New York - Central Park", country: "United States", lat: 40.7851, lon: -73.9683 },
+  { name: "San Francisco - Pier 39", country: "United States", lat: 37.8086, lon: -122.4098 },
+  { name: "Honolulu - Ala Moana", country: "United States", lat: 21.2910, lon: -157.8440 },
+  { name: "Sydney - Circular Quay", country: "Australia", lat: -33.8610, lon: 151.2128 },
   { name: "Paris", country: "France", lat: 48.8566, lon: 2.3522 },
-  { name: "London", country: "Royaume-Uni", lat: 51.5072, lon: -0.1276 },
-  { name: "Zaragoza", country: "Espagne", lat: 41.6611, lon: -0.8938 },
-  { name: "Dubai Marina", country: "Émirats arabes unis", lat: 25.0763, lon: 55.1324 },
-  { name: "Taipei Main Station", country: "Taïwan", lat: 25.0478, lon: 121.5170 },
-  { name: "Singapore", country: "Singapour", lat: 1.3521, lon: 103.8198 },
-  { name: "Seoul", country: "Corée du Sud", lat: 37.5665, lon: 126.9780 },
-  { name: "Bangkok", country: "Thaïlande", lat: 13.7563, lon: 100.5018 },
-  { name: "São Paulo", country: "Brésil", lat: -23.5558, lon: -46.6396 },
-  { name: "Mexico City", country: "Mexique", lat: 19.4326, lon: -99.1332 }
+  { name: "London", country: "United Kingdom", lat: 51.5072, lon: -0.1276 },
+  { name: "Zaragoza", country: "Spain", lat: 41.6611, lon: -0.8938 },
+  { name: "Dubai Marina", country: "United Arab Emirates", lat: 25.0763, lon: 55.1324 },
+  { name: "Taipei Main Station", country: "Taiwan", lat: 25.0478, lon: 121.5170 },
+  { name: "Singapore", country: "Singapore", lat: 1.3521, lon: 103.8198 },
+  { name: "Seoul", country: "South Korea", lat: 37.5665, lon: 126.9780 },
+  { name: "Bangkok", country: "Thailand", lat: 13.7563, lon: 100.5018 },
+  { name: "São Paulo", country: "Brazil", lat: -23.5558, lon: -46.6396 },
+  { name: "Mexico City", country: "Mexico", lat: 19.4326, lon: -99.1332 }
 ];
 
 const TYPE_TO_WEATHER = {
@@ -56,33 +55,33 @@ const TYPE_TO_WEATHER = {
 
 const TYPE_FR = {
   normal: "Normal",
-  fire: "Feu",
-  water: "Eau",
-  electric: "Électrik",
-  grass: "Plante",
-  ice: "Glace",
-  fighting: "Combat",
+  fire: "Fire",
+  water: "Water",
+  electric: "Electric",
+  grass: "Grass",
+  ice: "Ice",
+  fighting: "Fighting",
   poison: "Poison",
-  ground: "Sol",
-  flying: "Vol",
-  psychic: "Psy",
-  bug: "Insecte",
-  rock: "Roche",
-  ghost: "Spectre",
+  ground: "Ground",
+  flying: "Flying",
+  psychic: "Psychic",
+  bug: "Bug",
+  rock: "Rock",
+  ghost: "Ghost",
   dragon: "Dragon",
-  dark: "Ténèbres",
-  steel: "Acier",
-  fairy: "Fée"
+  dark: "Dark",
+  steel: "Steel",
+  fairy: "Fairy"
 };
 
 const WEATHER_FR = {
-  Clear: "Ensoleillé / clair",
-  "Partly Cloudy": "Partiellement nuageux",
-  Cloudy: "Nuageux",
-  Rainy: "Pluvieux",
-  Snow: "Neige",
-  Windy: "Venteux",
-  Fog: "Brouillard"
+  Clear: "Clear",
+  "Partly Cloudy": "Partly Cloudy",
+  Cloudy: "Cloudy",
+  Rainy: "Rainy",
+  Snow: "Snow",
+  Windy: "Windy",
+  Fog: "Fog"
 };
 
 const weatherCache = new Map();
@@ -117,7 +116,7 @@ export function addCustomCityValidation(city) {
   if (!city || typeof city !== "object") return null;
 
   const name = String(city.name || "").trim().slice(0, 60);
-  const country = String(city.country || "Personnalisé")
+  const country = String(city.country || "Custom")
     .trim()
     .slice(0, 60);
 
@@ -263,7 +262,7 @@ async function getPokemonData(rawName) {
     );
 
   if (!match) {
-    throw new Error("Pokémon introuvable.");
+    throw new Error("Pokémon not found.");
   }
 
   const res = await fetch(
@@ -272,7 +271,7 @@ async function getPokemonData(rawName) {
 
   if (!res.ok) {
     throw new Error(
-      "Impossible de récupérer les types."
+      "Could not fetch Pokémon types."
     );
   }
 
@@ -514,7 +513,7 @@ async function fetchPreviousDayForecast(
 
   if (!res.ok) {
     throw new Error(
-      "Previous Runs indisponible."
+      "Previous forecast unavailable."
     );
   }
 
@@ -578,7 +577,7 @@ async function fetchCurrentForecast(
   );
 
   if (!res.ok) {
-    throw new Error("Erreur météo.");
+    throw new Error("Weather API error.");
   }
 
   const data = await res.json();
@@ -712,7 +711,7 @@ function pickPreviousDayHourlyData(hourly) {
   );
 
   return {
-    source: "Prévision d’hier",
+    source: "Previous forecast",
     time: hourly.time[index],
     weather_code:
       hourly.weather_code_previous_day1[
@@ -746,7 +745,7 @@ function pickCurrentHourlyData(hourly) {
   );
 
   return {
-    source: "Prévision actuelle",
+    source: "Current forecast",
     time: hourly.time[index],
     weather_code:
       hourly.weather_code[index],
