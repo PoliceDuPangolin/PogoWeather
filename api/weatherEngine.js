@@ -346,14 +346,43 @@ function estimatePokemonWeather(w) {
   const clouds = Number(w.cloud_cover || 0);
   const visibility = Number(w.visibility || 99999);
 
-  if (snow > 0 || [71, 73, 75, 77, 85, 86].includes(code)) return "Snow";
-  if ([95, 96, 99].includes(code)) return "Rainy";
-  if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return "Rainy";
-  if (rain >= 0.4 || precip >= 0.4) return "Rainy";
-  if ([45, 48].includes(code) || visibility < 1200) return "Fog";
-  if (wind >= 27) return "Windy";
-  if (clouds >= 75 || code === 3) return "Cloudy";
-  if (clouds >= 25 || code === 1 || code === 2) return "Partly Cloudy";
+  // Neige : assez fiable
+  if (snow >= 0.2 || [71, 73, 75, 77, 85, 86].includes(code)) {
+    return "Snow";
+  }
+
+  // Pluie : éviter les faux positifs avec micro-pluie / drizzle
+  const realRain =
+    rain >= 0.8 ||
+    precip >= 0.8 ||
+    ([61, 63, 65, 80, 81, 82].includes(code) && precip >= 0.5);
+
+  const realThunderstorm =
+    [95, 96, 99].includes(code) && precip >= 0.5;
+
+  if (realRain || realThunderstorm) {
+    return "Rainy";
+  }
+
+  // Brouillard
+  if ([45, 48].includes(code) || visibility < 1000) {
+    return "Fog";
+  }
+
+  // Vent : 25 était trop bas, on remonte
+  if (wind >= 30) {
+    return "Windy";
+  }
+
+  // Nuages
+  if (clouds >= 80 || code === 3) {
+    return "Cloudy";
+  }
+
+  if (clouds >= 25 || code === 1 || code === 2) {
+    return "Partly Cloudy";
+  }
+
   return "Clear";
 }
 
