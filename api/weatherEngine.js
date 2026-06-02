@@ -467,7 +467,7 @@ async function fetchPreviousDayForecast(lat, lon) {
   const params = new URLSearchParams({
     latitude: lat,
     longitude: lon,
-    timezone: "auto",
+    timezone: "GMT",
     forecast_days: "1",
     hourly: variables,
   });
@@ -513,7 +513,7 @@ async function fetchCurrentForecast(lat, lon) {
   const params = new URLSearchParams({
     latitude: lat,
     longitude: lon,
-    timezone: "auto",
+    timezone: "GMT",
     forecast_days: "1",
     hourly: variables,
   });
@@ -670,17 +670,23 @@ function pickCurrentHourlyData(hourly) {
 }
 
 function findCurrentHourIndex(times) {
-  const now = new Date();
+  const currentHourKey = new Date().toISOString().slice(0, 13);
 
-  const currentHour = new Date(now);
+  const exactIndex = times.findIndex((time) =>
+    String(time).slice(0, 13) === currentHourKey
+  );
 
-  currentHour.setMinutes(0, 0, 0);
+  if (exactIndex !== -1) {
+    return exactIndex;
+  }
 
   let bestIndex = 0;
   let bestDiff = Infinity;
 
   times.forEach((time, index) => {
-    const diff = Math.abs(new Date(time) - currentHour);
+    const diff = Math.abs(
+      new Date(`${time}:00Z`) - new Date(`${currentHourKey}:00Z`)
+    );
 
     if (diff < bestDiff) {
       bestDiff = diff;
