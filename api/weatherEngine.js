@@ -349,16 +349,11 @@ async function analyzeCity({
 
   const vote = voteWeather(pointResults);
 
- const targetVotes = pointResults.filter((p) => p.isTarget).length;
+  const targetVotes = pointResults.filter((p) => p.isTarget).length;
   const totalPoints = pointResults.length;
   const confidence = Math.round((targetVotes / totalPoints) * 100);
 
-const dominantWeatherRaw = voteWeather(pointResults.map((p) => p.pogoWeather));
-
-const dominantWeather =
-  typeof dominantWeatherRaw === "string"
-    ? dominantWeatherRaw
-    : dominantWeatherRaw.weather;
+  const dominantWeather = vote.weather;
 
   return {
     name: city.name,
