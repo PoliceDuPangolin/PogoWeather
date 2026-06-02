@@ -429,7 +429,7 @@ function createCityGrid(city) {
   ];
 }
 
-async async function fetchWeatherPack(lat, lon, previousDayMode) {
+async function fetchWeatherPack(lat, lon, previousDayMode) {
   const current = await fetchCurrentForecast(lat, lon);
 
   let previous = null;
