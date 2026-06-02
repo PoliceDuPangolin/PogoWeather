@@ -1,34 +1,62 @@
-# PogoWeather — English clean version
+# PogoWeather — Publish Ready
 
-This version removes the temporary JS translation system and uses English content directly.
+Version backend + publication.
 
-## What changed
+## Inclus
 
-- Site UI translated to English
-- Article pages translated to English
-- Removed `translations.js` and the language selector
-- Removed `node_modules` and `.git` from the ZIP
-- Fixed the Visual Crossing API key handling: use `VISUAL_CROSSING_API_KEY` as an environment variable
-- Kept your Google Search Console HTML verification file if present
+- Backend Node.js/Express
+- Logique météo côté serveur
+- Compression HTTP
+- Rate limiting anti-abus
+- Cache serveur TTL
+- Suggestions Pokémon via API backend
+- Pagination des résultats
+- Carte Leaflet
+- Logo PNG, favicon, Apple touch icon, manifest PWA
+- OG image
+- Pages SEO/articles
+- Privacy / Disclaimer
+- Emplacements Google Analytics et AdSense à compléter
 
-## Run locally
+## Lancer en local
 
 ```bash
 npm install
 npm run dev
 ```
 
-Then open:
+Ouvrir :
 
 ```text
 http://localhost:3000
 ```
 
-## Important
+## Google Analytics
 
-If you had accidentally put a Visual Crossing API key in code, rotate/delete that key and create a new one.
-On Render, store the new key in Environment Variables:
+Dans les fichiers HTML, cherche :
 
-```text
-VISUAL_CROSSING_API_KEY=your_key_here
+```html
+G-XXXXXXXXXX
 ```
+
+Remplace par ton ID Google Analytics.
+
+## Google Search Console
+
+Quand Google te donne une balise meta, colle-la dans le `<head>` des pages, ou vérifie par DNS si tu as un domaine.
+
+## AdSense
+
+N'ajoute le vrai script AdSense qu'après :
+- domaine connecté
+- HTTPS
+- pages indexables
+- privacy/disclaimer propres
+- contenu suffisant
+
+## Production
+
+Sur Render/Railway/Fly.io :
+- Build command : `npm install`
+- Start command : `npm run start`
+- Node version : 18+ ou 20+

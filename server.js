@@ -29,7 +29,7 @@ const apiLimiter = rateLimit({
   limit: 45,
   standardHeaders: "draft-7",
   legacyHeaders: false,
-  message: { error: "Too many requests. Try again in one minute." }
+  message: { error: "Trop de requêtes. Réessaie dans une minute." }
 });
 
 const searchLimiter = rateLimit({
@@ -37,7 +37,7 @@ const searchLimiter = rateLimit({
   limit: 12,
   standardHeaders: "draft-7",
   legacyHeaders: false,
-  message: { error: "Too many searches. Please wait before trying again." }
+  message: { error: "Trop de recherches. Attends un peu avant de relancer." }
 });
 
 app.use("/api", apiLimiter);
@@ -59,7 +59,7 @@ app.get("/api/pokemon-suggestions", async (req, res) => {
     res.json({ suggestions });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Pokémon suggestions error." });
+    res.status(500).json({ error: "Erreur suggestions Pokémon." });
   }
 });
 
@@ -68,7 +68,7 @@ app.post("/api/search", searchLimiter, async (req, res) => {
     const { pokemonName, customCities = [], preciseMode = false, previousDayMode = true } = req.body || {};
 
     if (!pokemonName || typeof pokemonName !== "string") {
-      return res.status(400).json({ error: "pokemonName is required." });
+      return res.status(400).json({ error: "pokemonName est obligatoire." });
     }
 
     const cleanCustomCities = [];
@@ -88,7 +88,7 @@ app.post("/api/search", searchLimiter, async (req, res) => {
     res.json(data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error.message || "Server error." });
+    res.status(500).json({ error: error.message || "Erreur serveur." });
   }
 });
 

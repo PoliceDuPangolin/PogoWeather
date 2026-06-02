@@ -12,24 +12,25 @@ const POKEMON_LIST_PATH = path.join(
   "pokemon-list.json"
 );
 
-const VISUAL_CROSSING_API_KEY = process.env.VISUAL_CROSSING_API_KEY || "";
+const VISUAL_CROSSING_API_KEY = "2YBQHR3G4C62PS37PJM72SUQS"
+  process.env.VISUAL_CROSSING_API_KEY || "";
 
 const DEFAULT_CITIES = [
-  { name: "Tokyo - Shibuya", country: "Japan", lat: 35.6595, lon: 139.7006 },
-  { name: "New York - Central Park", country: "United States", lat: 40.7851, lon: -73.9683 },
-  { name: "San Francisco - Pier 39", country: "United States", lat: 37.8086, lon: -122.4098 },
-  { name: "Honolulu - Ala Moana", country: "United States", lat: 21.2910, lon: -157.8440 },
-  { name: "Sydney - Circular Quay", country: "Australia", lat: -33.8610, lon: 151.2128 },
+  { name: "Tokyo - Shibuya", country: "Japon", lat: 35.6595, lon: 139.7006 },
+  { name: "New York - Central Park", country: "États-Unis", lat: 40.7851, lon: -73.9683 },
+  { name: "San Francisco - Pier 39", country: "États-Unis", lat: 37.8086, lon: -122.4098 },
+  { name: "Honolulu - Ala Moana", country: "États-Unis", lat: 21.2910, lon: -157.8440 },
+  { name: "Sydney - Circular Quay", country: "Australie", lat: -33.8610, lon: 151.2128 },
   { name: "Paris", country: "France", lat: 48.8566, lon: 2.3522 },
-  { name: "London", country: "United Kingdom", lat: 51.5072, lon: -0.1276 },
-  { name: "Zaragoza", country: "Spain", lat: 41.6611, lon: -0.8938 },
-  { name: "Dubai Marina", country: "United Arab Emirates", lat: 25.0763, lon: 55.1324 },
-  { name: "Taipei Main Station", country: "Taiwan", lat: 25.0478, lon: 121.5170 },
-  { name: "Singapore", country: "Singapore", lat: 1.3521, lon: 103.8198 },
-  { name: "Seoul", country: "South Korea", lat: 37.5665, lon: 126.9780 },
-  { name: "Bangkok", country: "Thailand", lat: 13.7563, lon: 100.5018 },
-  { name: "São Paulo", country: "Brazil", lat: -23.5558, lon: -46.6396 },
-  { name: "Mexico City", country: "Mexico", lat: 19.4326, lon: -99.1332 }
+  { name: "London", country: "Royaume-Uni", lat: 51.5072, lon: -0.1276 },
+  { name: "Zaragoza", country: "Espagne", lat: 41.6611, lon: -0.8938 },
+  { name: "Dubai Marina", country: "Émirats arabes unis", lat: 25.0763, lon: 55.1324 },
+  { name: "Taipei Main Station", country: "Taïwan", lat: 25.0478, lon: 121.5170 },
+  { name: "Singapore", country: "Singapour", lat: 1.3521, lon: 103.8198 },
+  { name: "Seoul", country: "Corée du Sud", lat: 37.5665, lon: 126.9780 },
+  { name: "Bangkok", country: "Thaïlande", lat: 13.7563, lon: 100.5018 },
+  { name: "São Paulo", country: "Brésil", lat: -23.5558, lon: -46.6396 },
+  { name: "Mexico City", country: "Mexique", lat: 19.4326, lon: -99.1332 }
 ];
 
 const TYPE_TO_WEATHER = {
@@ -55,33 +56,33 @@ const TYPE_TO_WEATHER = {
 
 const TYPE_FR = {
   normal: "Normal",
-  fire: "Fire",
-  water: "Water",
-  electric: "Electric",
-  grass: "Grass",
-  ice: "Ice",
-  fighting: "Fighting",
+  fire: "Feu",
+  water: "Eau",
+  electric: "Électrik",
+  grass: "Plante",
+  ice: "Glace",
+  fighting: "Combat",
   poison: "Poison",
-  ground: "Ground",
-  flying: "Flying",
-  psychic: "Psychic",
-  bug: "Bug",
-  rock: "Rock",
-  ghost: "Ghost",
+  ground: "Sol",
+  flying: "Vol",
+  psychic: "Psy",
+  bug: "Insecte",
+  rock: "Roche",
+  ghost: "Spectre",
   dragon: "Dragon",
-  dark: "Dark",
-  steel: "Steel",
-  fairy: "Fairy"
+  dark: "Ténèbres",
+  steel: "Acier",
+  fairy: "Fée"
 };
 
 const WEATHER_FR = {
-  Clear: "Clear",
-  "Partly Cloudy": "Partly Cloudy",
-  Cloudy: "Cloudy",
-  Rainy: "Rainy",
-  Snow: "Snow",
-  Windy: "Windy",
-  Fog: "Fog"
+  Clear: "Ensoleillé / clair",
+  "Partly Cloudy": "Partiellement nuageux",
+  Cloudy: "Nuageux",
+  Rainy: "Pluvieux",
+  Snow: "Neige",
+  Windy: "Venteux",
+  Fog: "Brouillard"
 };
 
 const weatherCache = new Map();
@@ -116,7 +117,7 @@ export function addCustomCityValidation(city) {
   if (!city || typeof city !== "object") return null;
 
   const name = String(city.name || "").trim().slice(0, 60);
-  const country = String(city.country || "Custom")
+  const country = String(city.country || "Personnalisé")
     .trim()
     .slice(0, 60);
 
@@ -262,7 +263,7 @@ async function getPokemonData(rawName) {
     );
 
   if (!match) {
-    throw new Error("Pokémon not found.");
+    throw new Error("Pokémon introuvable.");
   }
 
   const res = await fetch(
@@ -271,7 +272,7 @@ async function getPokemonData(rawName) {
 
   if (!res.ok) {
     throw new Error(
-      "Could not fetch Pokémon types."
+      "Impossible de récupérer les types."
     );
   }
 
@@ -375,23 +376,21 @@ async function analyzeCity({
 }
 
 function sanitizeMeteo(meteo) {
+  const window = meteo.window || {};
+
   return {
     source: meteo.source,
     time: meteo.time,
     weatherCode: meteo.weather_code,
-    windSpeed: Math.round(
-      Number(meteo.wind_speed_10m || 0)
-    ),
-    cloudCover: Math.round(
-      Number(meteo.cloud_cover || 0)
-    ),
-    precipitation: Number(
-      meteo.precipitation ||
-        meteo.rain ||
-        0
-    ).toFixed(1)
+    windSpeed: Math.round(Number(meteo.wind_speed_10m || 0)),
+    windWindowMax: Math.round(Number(window.windMax ?? meteo.wind_speed_10m ?? 0)),
+    cloudCover: Math.round(Number(meteo.cloud_cover || 0)),
+    cloudWindowAvg: Math.round(Number(window.cloudAvg ?? meteo.cloud_cover ?? 0)),
+    precipitation: Number(meteo.precipitation || meteo.rain || 0).toFixed(1),
+    rainWindowMax: Number(window.rainMax ?? meteo.precipitation ?? meteo.rain ?? 0).toFixed(1)
   };
 }
+
 
 function createCityGrid(city) {
   const km = 15;
@@ -430,44 +429,26 @@ function createCityGrid(city) {
   ];
 }
 
-async function fetchWeatherPack(
-  lat,
-  lon,
-  previousDayMode
-) {
-  const current = await fetchCurrentForecast(
-    lat,
-    lon
-  );
+async async function fetchWeatherPack(lat, lon, previousDayMode) {
+  const current = await fetchCurrentForecast(lat, lon);
 
-  if (!previousDayMode) {
-    return {
-      primary: current,
-      previous: null,
-      current
-    };
+  let previous = null;
+
+  if (previousDayMode) {
+    try {
+      previous = await fetchPreviousDayForecast(lat, lon);
+    } catch {
+      previous = null;
+    }
   }
 
-  try {
-    const previous =
-      await fetchPreviousDayForecast(
-        lat,
-        lon
-      );
-
-    return {
-      primary: previous,
-      previous,
-      current
-    };
-  } catch {
-    return {
-      primary: current,
-      previous: null,
-      current
-    };
-  }
+  return {
+    primary: previous || current,
+    previous,
+    current
+  };
 }
+
 
 async function fetchPreviousDayForecast(
   lat,
@@ -513,7 +494,7 @@ async function fetchPreviousDayForecast(
 
   if (!res.ok) {
     throw new Error(
-      "Previous forecast unavailable."
+      "Previous Runs indisponible."
     );
   }
 
@@ -577,7 +558,7 @@ async function fetchCurrentForecast(
   );
 
   if (!res.ok) {
-    throw new Error("Weather API error.");
+    throw new Error("Erreur météo.");
   }
 
   const data = await res.json();
@@ -706,62 +687,64 @@ async function fetchVisualCrossingWeather(
 }
 
 function pickPreviousDayHourlyData(hourly) {
-  const index = findCurrentHourIndex(
-    hourly.time
-  );
+  const index = findCurrentHourIndex(hourly.time);
+  const windowIndexes = getWindowIndexes(hourly.time, index);
 
   return {
-    source: "Previous forecast",
+    source: "Previous-day forecast",
     time: hourly.time[index],
-    weather_code:
-      hourly.weather_code_previous_day1[
-        index
-      ],
-    precipitation:
-      hourly.precipitation_previous_day1[
-        index
-      ],
-    rain:
-      hourly.rain_previous_day1[index],
-    snowfall:
-      hourly.snowfall_previous_day1[
-        index
-      ],
-    cloud_cover:
-      hourly.cloud_cover_previous_day1[
-        index
-      ],
-    wind_speed_10m:
-      hourly.wind_speed_10m_previous_day1[
-        index
-      ],
-    visibility: 99999
+    weather_code: hourly.weather_code_previous_day1[index],
+    precipitation: hourly.precipitation_previous_day1[index],
+    rain: hourly.rain_previous_day1[index],
+    snowfall: hourly.snowfall_previous_day1[index],
+    cloud_cover: hourly.cloud_cover_previous_day1[index],
+    wind_speed_10m: hourly.wind_speed_10m_previous_day1[index],
+    visibility: 99999,
+
+    window: buildWeatherWindow({
+      times: hourly.time,
+      indexes: windowIndexes,
+      weatherCode: hourly.weather_code_previous_day1,
+      precipitation: hourly.precipitation_previous_day1,
+      rain: hourly.rain_previous_day1,
+      snowfall: hourly.snowfall_previous_day1,
+      cloudCover: hourly.cloud_cover_previous_day1,
+      windSpeed: hourly.wind_speed_10m_previous_day1,
+      visibility: null
+    })
   };
 }
 
+
 function pickCurrentHourlyData(hourly) {
-  const index = findCurrentHourIndex(
-    hourly.time
-  );
+  const index = findCurrentHourIndex(hourly.time);
+  const windowIndexes = getWindowIndexes(hourly.time, index);
 
   return {
     source: "Current forecast",
     time: hourly.time[index],
-    weather_code:
-      hourly.weather_code[index],
-    precipitation:
-      hourly.precipitation[index],
+    weather_code: hourly.weather_code[index],
+    precipitation: hourly.precipitation[index],
     rain: hourly.rain[index],
     snowfall: hourly.snowfall[index],
-    cloud_cover:
-      hourly.cloud_cover[index],
-    wind_speed_10m:
-      hourly.wind_speed_10m[index],
-    visibility: hourly.visibility
-      ? hourly.visibility[index]
-      : 99999
+    cloud_cover: hourly.cloud_cover[index],
+    wind_speed_10m: hourly.wind_speed_10m[index],
+    visibility: hourly.visibility ? hourly.visibility[index] : 99999,
+
+    window: buildWeatherWindow({
+      times: hourly.time,
+      indexes: windowIndexes,
+      weatherCode: hourly.weather_code,
+      precipitation: hourly.precipitation,
+      rain: hourly.rain,
+      snowfall: hourly.snowfall,
+      cloudCover: hourly.cloud_cover,
+      windSpeed: hourly.wind_speed_10m,
+      visibility: hourly.visibility || null
+    })
   };
 }
+
 
 function findCurrentHourIndex(times) {
   const now = new Date();
@@ -787,191 +770,235 @@ function findCurrentHourIndex(times) {
   return bestIndex;
 }
 
+
+function getWindowIndexes(times, centerIndex) {
+  const indexes = [];
+
+  for (const offset of [-1, 0, 1, 2]) {
+    const idx = centerIndex + offset;
+
+    if (idx >= 0 && idx < times.length) {
+      indexes.push(idx);
+    }
+  }
+
+  return indexes;
+}
+
+function buildWeatherWindow({
+  times,
+  indexes,
+  weatherCode,
+  precipitation,
+  rain,
+  snowfall,
+  cloudCover,
+  windSpeed,
+  visibility
+}) {
+  const values = indexes.map((idx) => {
+    const code = Number(weatherCode?.[idx] ?? 0);
+
+    return {
+      time: times?.[idx],
+      code,
+      precipitation: Number(precipitation?.[idx] || 0),
+      rain: Number(rain?.[idx] || precipitation?.[idx] || 0),
+      snowfall: Number(snowfall?.[idx] || 0),
+      cloudCover: Number(cloudCover?.[idx] || 0),
+      windSpeed: Number(windSpeed?.[idx] || 0),
+      visibility: visibility ? Number(visibility?.[idx] || 99999) : 99999
+    };
+  });
+
+  const windMax = max(values.map((v) => v.windSpeed));
+  const rainMax = max(values.map((v) => Math.max(v.rain, v.precipitation)));
+  const snowMax = max(values.map((v) => v.snowfall));
+  const cloudAvg = average(values.map((v) => v.cloudCover));
+  const cloudMax = max(values.map((v) => v.cloudCover));
+  const visibilityMin = min(values.map((v) => v.visibility));
+
+  return {
+    values,
+    windMax,
+    rainMax,
+    snowMax,
+    cloudAvg,
+    cloudMax,
+    visibilityMin,
+    hasRainCode: values.some((v) => [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82, 95, 96, 99].includes(v.code)),
+    hasSnowCode: values.some((v) => [71, 73, 75, 77, 85, 86].includes(v.code)),
+    hasFogCode: values.some((v) => [45, 48].includes(v.code) || v.visibility < 1000)
+  };
+}
+
+function max(values) {
+  const clean = values.filter((v) => Number.isFinite(v));
+  return clean.length ? Math.max(...clean) : 0;
+}
+
+function min(values) {
+  const clean = values.filter((v) => Number.isFinite(v));
+  return clean.length ? Math.min(...clean) : 99999;
+}
+
+function average(values) {
+  const clean = values.filter((v) => Number.isFinite(v));
+  if (!clean.length) return 0;
+  return clean.reduce((sum, value) => sum + value, 0) / clean.length;
+}
+
 function estimatePokemonWeather(w) {
   const code = Number(w.weather_code);
-
-  const wind = Number(
-    w.wind_speed_10m || 0
-  );
-
+  const wind = Number(w.wind_speed_10m || 0);
   const rain = Number(w.rain || 0);
+  const snow = Number(w.snowfall || 0);
+  const precip = Number(w.precipitation || 0);
+  const clouds = Number(w.cloud_cover || 0);
+  const visibility = Number(w.visibility || 99999);
 
-  const snow = Number(
-    w.snowfall || 0
-  );
+  const window = w.window || {};
+  const windWindowMax = Number(window.windMax ?? wind);
+  const rainWindowMax = Number(window.rainMax ?? Math.max(rain, precip));
+  const snowWindowMax = Number(window.snowMax ?? snow);
+  const cloudWindowAvg = Number(window.cloudAvg ?? clouds);
+  const hasRainCode = Boolean(window.hasRainCode);
+  const hasSnowCode = Boolean(window.hasSnowCode);
+  const hasFogCode = Boolean(window.hasFogCode);
 
-  const precip = Number(
-    w.precipitation || 0
-  );
-
-  const clouds = Number(
-    w.cloud_cover || 0
-  );
-
-  const visibility = Number(
-    w.visibility || 99999
-  );
-
-  if (
-    snow >= 0.2 ||
-    [71, 73, 75, 77, 85, 86].includes(
-      code
-    )
-  ) {
+  if (snowWindowMax >= 0.2 || hasSnowCode || [71, 73, 75, 77, 85, 86].includes(code)) {
     return "Snow";
   }
 
   const realRain =
-    rain >= 0.8 ||
-    precip >= 0.8 ||
-    ([61, 63, 65, 80, 81, 82].includes(
-      code
-    ) &&
-      precip >= 0.5);
+    rainWindowMax >= 0.8 ||
+    hasRainCode ||
+    ([61, 63, 65, 80, 81, 82].includes(code) && Math.max(rain, precip) >= 0.5);
 
   const realThunderstorm =
-    [95, 96, 99].includes(code) &&
-    precip >= 0.5;
+    [95, 96, 99].includes(code) && Math.max(rain, precip, rainWindowMax) >= 0.5;
 
-  if (
-    realRain ||
-    realThunderstorm
-  ) {
+  if (realRain || realThunderstorm) {
     return "Rainy";
   }
 
-  if (
-    [45, 48].includes(code) ||
-    visibility < 1000
-  ) {
+  if (hasFogCode || [45, 48].includes(code) || visibility < 1000) {
     return "Fog";
   }
 
-  if (wind >= 30) {
+  // Important: this is the generic estimator.
+  // The hybrid estimator below gives previous-day forecast extra priority for Windy.
+  if (windWindowMax >= 28) {
     return "Windy";
   }
 
-  if (
-    clouds >= 80 ||
-    code === 3
-  ) {
+  // Recalibrated cloud logic:
+  // Pokémon GO Cloudy seems to trigger before "fully overcast" in some cities,
+  // so we do not wait for 90-100% clouds.
+  if (clouds >= 75 || cloudWindowAvg >= 78 || (code === 3 && clouds >= 70)) {
     return "Cloudy";
   }
 
-  if (
-    clouds >= 25 ||
-    code === 1 ||
-    code === 2
-  ) {
+  if (clouds >= 25 || cloudWindowAvg >= 30 || code === 1 || code === 2 || code === 3) {
     return "Partly Cloudy";
   }
 
   return "Clear";
 }
 
-function estimateHybridPokemonWeather(
-  pack
-) {
-  const previousWeather = pack.previous
-    ? estimatePokemonWeather(
-        pack.previous
-      )
-    : null;
 
-  const currentWeather =
-    estimatePokemonWeather(
-      pack.current
-    );
+function estimateHybridPokemonWeather(pack) {
+  const previous = pack.previous;
+  const current = pack.current;
+
+  const previousWeather = previous ? estimatePokemonWeather(previous) : null;
+  const currentWeather = estimatePokemonWeather(current);
 
   if (!previousWeather) {
     return currentWeather;
   }
 
-  const current = pack.current;
+  const previousWindow = previous.window || {};
+  const currentWindow = current.window || {};
 
-  const currentClouds = Number(
-    current.cloud_cover || 0
-  );
+  const previousWindMax = Number(previousWindow.windMax ?? previous.wind_speed_10m ?? 0);
+  const currentWindMax = Number(currentWindow.windMax ?? current.wind_speed_10m ?? 0);
 
-  const currentWind = Number(
-    current.wind_speed_10m || 0
-  );
+  const previousRainMax = Number(previousWindow.rainMax ?? Math.max(previous.rain || 0, previous.precipitation || 0));
+  const currentRainMax = Number(currentWindow.rainMax ?? Math.max(current.rain || 0, current.precipitation || 0));
 
-  const currentRain = Number(
-    current.rain ||
-      current.precipitation ||
-      0
-  );
+  const previousSnowMax = Number(previousWindow.snowMax ?? previous.snowfall ?? 0);
+  const currentSnowMax = Number(currentWindow.snowMax ?? current.snowfall ?? 0);
 
-  const currentSnow = Number(
-    current.snowfall || 0
-  );
+  const currentClouds = Number(current.cloud_cover || 0);
+  const currentCode = Number(current.weather_code);
+  const currentVisibility = Number(current.visibility || 99999);
 
-  const currentCode = Number(
-    current.weather_code
-  );
+  // 1) Windy is mostly based on the previous-day / old forecast window.
+  // This matches the common observation that Pokémon GO can show Windy
+  // even when current real weather is only mostly cloudy.
+  if (previousWindMax >= 22) {
+    return "Windy";
+  }
 
-  const currentVisibility = Number(
-    current.visibility || 99999
-  );
+  // If current forecast strongly says wind is coming/active, keep Windy too.
+  if (currentWindMax >= 28) {
+    return "Windy";
+  }
 
-  const currentHasBadWeather =
-    currentRain >= 0.5 ||
-    currentSnow >= 0.2 ||
-    [
-      61,
-      63,
-      65,
-      80,
-      81,
-      82,
-      95,
-      96,
-      99
-    ].includes(currentCode) ||
+  // 2) Snow and rain should not be corrected away too aggressively.
+  if (
+    previousSnowMax >= 0.2 ||
+    currentSnowMax >= 0.2 ||
+    previousWindow.hasSnowCode ||
+    currentWindow.hasSnowCode
+  ) {
+    return "Snow";
+  }
+
+  if (
+    previousRainMax >= 0.8 ||
+    currentRainMax >= 0.8 ||
+    previousWindow.hasRainCode ||
+    currentWindow.hasRainCode
+  ) {
+    return "Rainy";
+  }
+
+  // 3) Fog is rare, but if either source clearly flags it, keep it.
+  if (
+    previousWindow.hasFogCode ||
+    currentWindow.hasFogCode ||
     [45, 48].includes(currentCode) ||
-    currentVisibility < 1000 ||
-    currentWind >= 30;
+    currentVisibility < 1000
+  ) {
+    return "Fog";
+  }
 
-  if (currentHasBadWeather) {
-    return currentWeather;
+  // 4) Clouds are allowed to be corrected by current conditions,
+  // because clear/cloudy visual state often matches the current forecast better.
+  if (currentWeather === "Cloudy") {
+    return "Cloudy";
   }
 
   if (
     previousWeather === "Cloudy" &&
-    currentClouds <= 35 &&
-    [0, 1, 2].includes(
-      currentCode
-    )
+    ["Clear", "Partly Cloudy"].includes(currentWeather)
   ) {
+    if (currentClouds >= 75 || currentCode === 3) {
+      return "Cloudy";
+    }
+
+    if (currentClouds >= 25) {
+      return "Partly Cloudy";
+    }
+
     return "Clear";
-  }
-
-  if (
-    previousWeather === "Cloudy" &&
-    currentClouds < 75 &&
-    currentRain < 0.5 &&
-    currentWind < 30
-  ) {
-    return "Partly Cloudy";
-  }
-
-  if (
-    [
-      "Clear",
-      "Partly Cloudy"
-    ].includes(currentWeather) &&
-    [
-      "Cloudy",
-      "Rainy",
-      "Windy"
-    ].includes(previousWeather)
-  ) {
-    return currentWeather;
   }
 
   return previousWeather;
 }
+
 
 function voteWeather(pointResults) {
   const counts = {};
