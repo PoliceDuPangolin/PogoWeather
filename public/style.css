@@ -14,3 +14,108 @@
   display: block;
   margin-bottom: 6px;
 }
+/* SEO bilingual guide pages */
+.seo-article{max-width:930px;margin-left:auto;margin-right:auto}.seo-article p{font-size:16.5px}.seo-article h1{letter-spacing:-.03em}.seo-table{width:100%;border-collapse:collapse;margin:18px 0;border:1px solid var(--border);border-radius:16px;overflow:hidden}.seo-table th,.seo-table td{padding:13px 14px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}.seo-table th{background:var(--soft);font-weight:950}.seo-table tr:last-child td{border-bottom:none}.seo-link-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:16px 0}.seo-link-grid a{display:block;padding:13px 14px;border-radius:14px;border:1px solid var(--border);background:var(--soft);color:var(--text);font-weight:850;text-decoration:none}.seo-link-grid a:hover{border-color:var(--primary);color:var(--primary)}.internal-links{margin-top:24px;padding:16px;border-radius:16px;background:var(--soft);border:1px solid var(--border);line-height:1.8}.internal-links a{font-weight:850;color:var(--primary);text-decoration:none}.language-switch{width:min(930px,100%);margin:0 auto 14px;text-align:right}.language-switch a{display:inline-block;padding:8px 12px;border-radius:999px;background:var(--soft);border:1px solid var(--border);color:var(--primary);font-weight:900;text-decoration:none}.seo-guides-home h3{margin-top:22px}@media(max-width:800px){.seo-table{display:block;overflow-x:auto}.language-switch{text-align:left}.seo-link-grid{grid-template-columns:1fr}}
+
+/* Final SEO/content additions */
+.seo-article {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.internal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.internal-links a,
+.seo-link-grid a {
+  display: inline-block;
+  padding: 10px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--soft);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.internal-links a:hover,
+.seo-link-grid a:hover {
+  border-color: var(--primary);
+}
+
+.note-box {
+  margin: 18px 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--soft);
+}
+
+.seo-article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 18px 0;
+}
+
+.seo-article th,
+.seo-article td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.seo-article th {
+  background: var(--soft);
+}
+
+/* AdSense and SEO readiness additions */
+.trust-card {
+  margin-top: 22px;
+}
+
+.seo-link-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.seo-link-grid a {
+  display: inline-block;
+  padding: 10px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--soft);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.seo-link-grid a:hover {
+  border-color: var(--primary);
+}
+
+.seo-article {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.seo-article h1,
+.seo-article h2,
+.seo-article h3 {
+  scroll-margin-top: 90px;
+}
+
+.note-box {
+  margin: 18px 0;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--soft);
+}

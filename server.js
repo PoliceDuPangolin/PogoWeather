@@ -92,7 +92,7 @@ app.post("/api/search", searchLimiter, async (req, res) => {
   }
 });
 
-const pages = ["guide", "weather-boost", "best-cities", "windy-weather-rayquaza", "fog-weather", "raid-weather-boost", "privacy", "disclaimer", "about"];
+const pages = ["guide", "weather-boost", "best-cities", "windy-weather-rayquaza", "fog-weather", "raid-weather-boost", "privacy", "disclaimer", "about", "best-weather-rayquaza", "fr/meilleure-meteo-rayquaza", "best-weather-necrozma", "fr/meilleure-meteo-necrozma", "best-weather-kyogre", "fr/meilleure-meteo-kyogre", "best-weather-groudon", "fr/meilleure-meteo-groudon", "best-weather-darkrai", "fr/meilleure-meteo-darkrai", "weather-boost-guide", "fr/guide-boost-meteo-pokemon-go", "pokemon-go-weather-explained", "fr/meteo-pokemon-go-expliquee", "why-pokemon-go-weather-is-wrong", "fr/pourquoi-meteo-pokemon-go-differente", "gofest-weather", "fr/gofest-meteo", "gofest-live-weather", "fr/gofest-meteo-live", "fr/a-propos", "contact", "fr/contact", "gofest-raid-weather-boosts", "fr/gofest-boost-meteo-raids", "gofest-windy-weather-guide", "fr/gofest-guide-meteo-venteux", "gofest-weather-preparation-checklist", "fr/gofest-checklist-meteo", "fr/confidentialite", "cookie-policy", "fr/politique-cookies"];
 for (const page of pages) {
   app.get(`/${page}`, (req, res) => res.sendFile(path.join(__dirname, "public", `${page}.html`)));
 }

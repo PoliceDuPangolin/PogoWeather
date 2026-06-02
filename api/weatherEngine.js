@@ -12,8 +12,7 @@ const POKEMON_LIST_PATH = path.join(
   "pokemon-list.json",
 );
 
-const VISUAL_CROSSING_API_KEY = "2YBQHR3G4C62PS37PJM72SUQS";
-process.env.VISUAL_CROSSING_API_KEY || "";
+const VISUAL_CROSSING_API_KEY = process.env.VISUAL_CROSSING_API_KEY || "";
 
 const DEFAULT_CITIES = [
   { name: "Tokyo - Shibuya", country: "Japon", lat: 35.6595, lon: 139.7006 },
