@@ -349,9 +349,11 @@ async function analyzeCity({
 
   const vote = voteWeather(pointResults);
 
-  const targetVotes = pointResults.filter((p) => p.isTarget).length;
+ const targetVotes = pointResults.filter((p) => p.isTarget).length;
+  const totalPoints = pointResults.length;
+  const confidence = Math.round((targetVotes / totalPoints) * 100);
 
-  const confidence = Math.round((targetVotes / pointResults.length) * 100);
+  const dominantWeather = voteWeather(pointResults.map((p) => p.pogoWeather));
 
   return {
     name: city.name,
