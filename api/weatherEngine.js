@@ -888,10 +888,10 @@ function estimateHybridPokemonWeather(pack) {
   const currentCode = Number(current.weather_code);
   const currentVisibility = Number(current.visibility || 99999);
 
-  if (previousWindMax >= 25) {
+  if (previousWindMax >= 21) {
     return {
       weather: "Windy",
-      reason: `previous wind window >= 25 km/h (${Math.round(previousWindMax)} km/h)`,
+      reason: `previous wind window >= 21 km/h (${Math.round(previousWindMax)} km/h)`,
     };
   }
 
