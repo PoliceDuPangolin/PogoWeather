@@ -1,237 +1,220 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="https://www.w3.org/1999/xhtml">
-  <url>
-    <loc>https://pogoweather.com/about</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://pogoweather.com/about"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://pogoweather.com/fr/a-propos"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://pogoweather.com/about"/>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/best-cities</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/best-weather-darkrai</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/best-weather-groudon</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/best-weather-kyogre</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/best-weather-necrozma</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/best-weather-rayquaza</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/contact</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://pogoweather.com/contact"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://pogoweather.com/fr/contact"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://pogoweather.com/contact"/>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/cookie-policy</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://pogoweather.com/cookie-policy"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://pogoweather.com/fr/politique-cookies"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://pogoweather.com/cookie-policy"/>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/disclaimer</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fog-weather</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/a-propos</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://pogoweather.com/about"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://pogoweather.com/fr/a-propos"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://pogoweather.com/about"/>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/confidentialite</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://pogoweather.com/privacy"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://pogoweather.com/fr/confidentialite"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://pogoweather.com/privacy"/>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/contact</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://pogoweather.com/contact"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://pogoweather.com/fr/contact"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://pogoweather.com/contact"/>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/gofest-boost-meteo-raids</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/gofest-checklist-meteo</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/gofest-guide-meteo-venteux</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/gofest-meteo</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/gofest-meteo-live</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/guide-boost-meteo-pokemon-go</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/meilleure-meteo-darkrai</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/meilleure-meteo-groudon</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/meilleure-meteo-kyogre</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/meilleure-meteo-necrozma</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/meilleure-meteo-rayquaza</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/meteo-pokemon-go-expliquee</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/politique-cookies</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://pogoweather.com/cookie-policy"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://pogoweather.com/fr/politique-cookies"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://pogoweather.com/cookie-policy"/>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/fr/pourquoi-meteo-pokemon-go-differente</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/gofest-live-weather</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/gofest-raid-weather-boosts</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/gofest-weather</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/gofest-weather-preparation-checklist</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/gofest-windy-weather-guide</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/guide</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
   <url>
     <loc>https://pogoweather.com/</loc>
     <lastmod>2026-06-02</lastmod>
     <priority>1.0</priority>
   </url>
+
+  <url>
+    <loc>https://pogoweather.com/about</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/contact</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/privacy</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/cookie-policy</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/disclaimer</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/weather-boost-guide</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.9</priority>
+  </url>
+
   <url>
     <loc>https://pogoweather.com/pokemon-go-weather-explained</loc>
     <lastmod>2026-06-02</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://pogoweather.com/privacy</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://pogoweather.com/privacy"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://pogoweather.com/fr/confidentialite"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://pogoweather.com/privacy"/>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/raid-weather-boost</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/weather-boost</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pogoweather.com/weather-boost-guide</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
+
   <url>
     <loc>https://pogoweather.com/why-pokemon-go-weather-is-wrong</loc>
     <lastmod>2026-06-02</lastmod>
     <priority>0.8</priority>
   </url>
+
   <url>
-    <loc>https://pogoweather.com/windy-weather-rayquaza</loc>
+    <loc>https://pogoweather.com/best-weather-rayquaza</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/best-weather-necrozma</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/best-weather-kyogre</loc>
     <lastmod>2026-06-02</lastmod>
     <priority>0.8</priority>
   </url>
+
+  <url>
+    <loc>https://pogoweather.com/best-weather-groudon</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/best-weather-darkrai</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/gofest-weather</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/gofest-live-weather</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/gofest-raid-weather-boosts</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/gofest-windy-weather-guide</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/gofest-weather-preparation-checklist</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/a-propos</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/contact</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/confidentialite</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/politique-cookies</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/guide-boost-meteo-pokemon-go</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/meteo-pokemon-go-expliquee</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/pourquoi-meteo-pokemon-go-differente</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/meilleure-meteo-rayquaza</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/meilleure-meteo-necrozma</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/meilleure-meteo-kyogre</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/meilleure-meteo-groudon</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/meilleure-meteo-darkrai</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/gofest-meteo</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/gofest-meteo-live</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/gofest-boost-meteo-raids</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/gofest-guide-meteo-venteux</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://pogoweather.com/fr/gofest-checklist-meteo</loc>
+    <lastmod>2026-06-02</lastmod>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
