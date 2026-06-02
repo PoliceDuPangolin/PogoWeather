@@ -40,6 +40,16 @@ const searchLimiter = rateLimit({
   message: { error: "Trop de recherches. Attends un peu avant de relancer." }
 });
 
+app.get("/translations", (req, res) => {
+  res.type("application/javascript");
+  res.sendFile(path.join(__dirname, "public", "translations.js"));
+});
+
+app.get("/translations.js", (req, res) => {
+  res.type("application/javascript");
+  res.sendFile(path.join(__dirname, "public", "translations.js"));
+});
+
 app.use("/api", apiLimiter);
 
 app.use(express.static(path.join(__dirname, "public"), {
