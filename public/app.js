@@ -759,18 +759,86 @@ function renderForecastResults(data) {
   if (!forecastResults) return;
 
   const isSevenDays = data.horizon === "7d";
-  const targetLabel = (data.targetWeathersFr || []).map(escapeHtml).join(" / ");
   const cities = Array.isArray(data.cities) ? data.cities : [];
+  const targetLabel = (data.targetWeathersFr || []).map(escapeHtml).join(" / ");
+
+  const labels =
+    currentLang === "en"
+      ? {
+          boostedHours: "Boosted hours",
+          analyzedHours: "analyzed hours",
+          target: "Target weather",
+          best: "Best window",
+          noBest: "No clear boost window detected",
+          byDay: "Daily summary",
+          details: "More details",
+          maps: "Google Maps",
+          dominant: "Most common weather",
+          next: "Next possible boost",
+          confidence: "Estimated chance",
+        }
+      : {
+          boostedHours: "Heures boostées",
+          analyzedHours: "heures analysées",
+          target: "Météo recherchée",
+          best: "Meilleur créneau",
+          noBest: "Aucun créneau clair détecté",
+          byDay: "Résumé par jour",
+          details: "Plus de détails",
+          maps: "Google Maps",
+          dominant: "Météo la plus fréquente",
+          next: "Prochain boost possible",
+          confidence: "Chance estimée",
+        };
 
   forecastResults.innerHTML = cities
     .slice(0, 12)
     .map((city) => {
-      const hasBoost = Number(city.boostedHours || 0) > 0;
+      const boostedHours = Number(city.boostedHours || 0);
+      const totalHours = Number(city.totalHours || 0);
+      const hasBoost = boostedHours > 0;
+      const bestWindow = city.bestWindows?.[0] || null;
+
+      const bestText = bestWindow
+        ? `${formatForecastTime(bestWindow.start)} → ${formatForecastTime(bestWindow.end)}`
+        : labels.noBest;
+
+      const bestWeather = bestWindow
+        ? `${escapeHtml(bestWindow.weatherFr || bestWindow.weather)} · ${bestWindow.hours}h`
+        : "";
+
       const nextBoost = city.nextBoostTime
         ? `${formatForecastTime(city.nextBoostTime)} · ${escapeHtml(city.nextBoostWeatherFr || city.nextBoostWeather)}`
-        : currentLang === "en"
-          ? "No boost window detected"
-          : "Aucune fenêtre boostée détectée";
+        : labels.noBest;
+
+      const timeline = !isSevenDays
+        ? `<div class="simple-timeline">${(city.timeline || [])
+            .slice(0, 24)
+            .map(
+              (h) =>
+                `<span class="${h.isBoosted ? "on" : ""}" title="${escapeHtml(h.pogoWeatherFr || h.pogoWeather)}">
+                  <strong>${escapeHtml(h.hour || String(h.time || "").slice(11, 16))}</strong>
+                  <small>${h.isBoosted ? "boost" : escapeHtml(h.pogoWeatherFr || h.pogoWeather || "")}</small>
+                </span>`,
+            )
+            .join("")}</div>`
+        : "";
+
+      const daily = isSevenDays
+        ? `<section class="forecast-simple-section">
+            <h4>${labels.byDay}</h4>
+            <div class="simple-days">${(city.dailySummary || [])
+              .map(
+                (day) =>
+                  `<div class="${day.boostedHours ? "on" : ""}">
+                    <strong>${formatForecastDate(day.date)}</strong>
+                    <span>${day.boostedHours}h boost</span>
+                    <small>${escapeHtml(day.dominantWeatherFr || day.dominantWeather || "N/A")}</small>
+                  </div>`,
+              )
+              .join("")}</div>
+          </section>`
+        : "";
 
       const windows = city.bestWindows?.length
         ? city.bestWindows
@@ -783,71 +851,50 @@ function renderForecastResults(data) {
                 </li>`,
             )
             .join("")
-        : `<li><span>${copy("noWindow")}</span></li>`;
+        : `<li><span>${labels.noBest}</span></li>`;
 
-      const summary = isSevenDays
-        ? `<div class="daily-summary pretty">${(city.dailySummary || [])
-            .map(
-              (day) =>
-                `<div class="day-pill ${day.boostedHours ? "boosted" : ""}">
-                  <strong>${formatForecastDate(day.date)}</strong>
-                  <span>${day.boostedHours}/${day.totalHours}h</span>
-                  <small>${escapeHtml(day.dominantWeatherFr || day.dominantWeather)}</small>
-                </div>`,
-            )
-            .join("")}</div>`
-        : "";
-
-      const timeline = !isSevenDays
-        ? `<div class="forecast-timeline pretty">${(city.timeline || [])
-            .slice(0, 24)
-            .map(
-              (h) =>
-                `<span class="forecast-hour ${h.isBoosted ? "boosted" : ""}" title="${escapeHtml(h.pogoWeatherFr || h.pogoWeather)}">
-                  <strong>${escapeHtml(h.hour || String(h.time || "").slice(11, 16))}</strong>
-                  <small>${h.isBoosted ? "✓" : "·"}</small>
-                </span>`,
-            )
-            .join("")}</div>`
-        : "";
-
-      return `<article class="forecast-card clean ${hasBoost ? "match" : ""}">
-        <div class="forecast-card-header">
+      return `<article class="forecast-simple-card ${hasBoost ? "match" : ""}">
+        <header>
           <div>
             <h3>${escapeHtml(city.name)}</h3>
             <p>${escapeHtml(city.country)} · ${Number(city.lat).toFixed(4)}, ${Number(city.lon).toFixed(4)}</p>
           </div>
-          <span class="forecast-score ${hasBoost ? "good" : ""}">${city.boostedHours}/${city.totalHours}h</span>
-        </div>
+          <div class="forecast-main-score ${hasBoost ? "good" : ""}">
+            <strong>${boostedHours}h</strong>
+            <span>/${totalHours}h</span>
+          </div>
+        </header>
 
-        <div class="forecast-metrics">
+        <div class="forecast-big-summary">
           <div>
-            <span>Boost recherché</span>
+            <span>${labels.target}</span>
             <strong>${targetLabel}</strong>
           </div>
           <div>
-            <span>Probabilité</span>
-            <strong>${city.confidence}%</strong>
+            <span>${labels.boostedHours}</span>
+            <strong>${boostedHours} ${labels.analyzedHours}</strong>
           </div>
           <div>
-            <span>Prochaine fenêtre</span>
-            <strong>${nextBoost}</strong>
-          </div>
-          <div>
-            <span>Météo dominante</span>
-            <strong>${escapeHtml(city.dominantWeatherFr || city.dominantWeather || "N/A")}</strong>
+            <span>${labels.best}</span>
+            <strong>${bestText}</strong>
+            ${bestWeather ? `<small>${bestWeather}</small>` : ""}
           </div>
         </div>
 
         ${timeline}
-        ${summary}
+        ${daily}
 
-        <details class="best-window-details">
-          <summary>${copy("bestWindows")}</summary>
+        <details class="forecast-simple-details">
+          <summary>${labels.details}</summary>
+          <div class="forecast-extra-grid">
+            <div><span>${labels.next}</span><strong>${nextBoost}</strong></div>
+            <div><span>${labels.dominant}</span><strong>${escapeHtml(city.dominantWeatherFr || city.dominantWeather || "N/A")}</strong></div>
+            <div><span>${labels.confidence}</span><strong>${Number(city.confidence || 0)}%</strong></div>
+          </div>
           <ul class="best-window-list">${windows}</ul>
         </details>
 
-        <a class="maps-btn forecast-map-btn" href="https://www.google.com/maps?q=${city.lat},${city.lon}" target="_blank" rel="noopener noreferrer">${copy("maps")}</a>
+        <a class="maps-btn forecast-map-btn" href="https://www.google.com/maps?q=${city.lat},${city.lon}" target="_blank" rel="noopener noreferrer">${labels.maps}</a>
       </article>`;
     })
     .join("");
