@@ -1091,3 +1091,228 @@
     margin-left: 0;
   }
 }
+
+
+/* Clean forecast UI: one selector only, prettier results */
+.forecast-controls {
+  display: none !important;
+}
+
+.forecast-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+}
+
+.forecast-card.clean {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 18px;
+  background:
+    radial-gradient(circle at top right, rgba(96, 165, 250, 0.16), transparent 34%),
+    var(--card);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+}
+
+.forecast-card.clean.match {
+  border-color: rgba(34, 197, 94, 0.55);
+  background:
+    radial-gradient(circle at top right, rgba(34, 197, 94, 0.16), transparent 34%),
+    var(--card);
+}
+
+.forecast-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.forecast-card-header h3 {
+  margin: 0 0 5px;
+  font-size: 20px;
+}
+
+.forecast-card-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.forecast-score {
+  flex: 0 0 auto;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  font-weight: 950;
+}
+
+.forecast-score.good {
+  background: rgba(34, 197, 94, 0.14);
+  color: #86efac;
+  border-color: rgba(34, 197, 94, 0.55);
+}
+
+.forecast-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.forecast-metrics div {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--soft);
+}
+
+.forecast-metrics span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  margin-bottom: 5px;
+}
+
+.forecast-metrics strong {
+  display: block;
+  line-height: 1.35;
+  font-size: 14px;
+}
+
+.forecast-timeline.pretty {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.forecast-hour {
+  min-height: 52px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--soft);
+  display: grid;
+  place-items: center;
+  gap: 2px;
+}
+
+.forecast-hour strong {
+  font-size: 13px;
+}
+
+.forecast-hour small {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.forecast-hour.boosted {
+  border-color: rgba(34, 197, 94, 0.65);
+  background: rgba(34, 197, 94, 0.13);
+}
+
+.forecast-hour.boosted small {
+  color: #86efac;
+}
+
+.daily-summary.pretty {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.day-pill {
+  border-radius: 16px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  background: var(--soft);
+}
+
+.day-pill strong,
+.day-pill span,
+.day-pill small {
+  display: block;
+}
+
+.day-pill span {
+  margin: 4px 0;
+  font-weight: 950;
+}
+
+.day-pill small {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.day-pill.boosted {
+  border-color: rgba(34, 197, 94, 0.65);
+  background: rgba(34, 197, 94, 0.13);
+}
+
+.best-window-details {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--soft);
+}
+
+.best-window-details summary {
+  cursor: pointer;
+  font-weight: 950;
+}
+
+.best-window-list {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.best-window-list li {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 10px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+
+.best-window-list em {
+  font-style: normal;
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.forecast-map-btn {
+  margin-top: 14px;
+}
+
+@media (max-width: 640px) {
+  .forecast-results {
+    grid-template-columns: 1fr;
+  }
+
+  .forecast-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .forecast-timeline.pretty {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .best-window-list li {
+    grid-template-columns: 1fr;
+  }
+}
