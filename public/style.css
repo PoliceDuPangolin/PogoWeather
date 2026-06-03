@@ -532,3 +532,78 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Forecast mode selector in search box */
+.search-mode-row {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0 14px;
+}
+
+.search-mode-row label {
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.search-mode-row select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: var(--soft);
+  color: var(--text);
+  font-weight: 900;
+}
+
+/* Prevent raid CP columns from becoming unreadable */
+.raid-table {
+  min-width: 980px;
+}
+
+.raid-table th:nth-child(5),
+.raid-table td:nth-child(5),
+.raid-table th:nth-child(6),
+.raid-table td:nth-child(6) {
+  min-width: 112px;
+  white-space: nowrap;
+}
+
+.raid-table th:nth-child(7),
+.raid-table td:nth-child(7) {
+  min-width: 170px;
+}
+
+
+/* 7-day forecast single-city selector */
+.search-mode-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 12px 0 14px;
+}
+
+.search-mode-row small {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+#forecastPanelCitySelect {
+  min-width: 240px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px 12px;
+  background: var(--soft);
+  color: var(--text);
+  font-weight: 800;
+}
+
+@media (max-width: 760px) {
+  .search-mode-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #forecastPanelCitySelect {
+    width: 100%;
+  }
+}

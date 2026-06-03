@@ -115,6 +115,7 @@ app.post("/api/forecast", searchLimiter, async (req, res) => {
       pokemonName,
       customCities = [],
       horizon = "24h",
+      selectedCity = null,
     } = req.body || {};
 
     if (!pokemonName || typeof pokemonName !== "string") {
@@ -129,10 +130,35 @@ app.post("/api/forecast", searchLimiter, async (req, res) => {
 
     const cleanHorizon = horizon === "7d" ? "7d" : "24h";
 
+
+    let cleanSelectedCity = null;
+
+    if (selectedCity && typeof selectedCity === "object") {
+      const lat = Number(selectedCity.lat);
+      const lon = Number(selectedCity.lon);
+
+      if (
+        Number.isFinite(lat) &&
+        Number.isFinite(lon) &&
+        lat >= -90 &&
+        lat <= 90 &&
+        lon >= -180 &&
+        lon <= 180
+      ) {
+        cleanSelectedCity = {
+          name: String(selectedCity.name || "Selected city").slice(0, 80),
+          country: String(selectedCity.country || "Custom").slice(0, 80),
+          lat,
+          lon,
+        };
+      }
+    }
+
     const data = await searchWeatherForecast({
       pokemonName,
       customCities: cleanCustomCities,
       horizon: cleanHorizon,
+      selectedCity: cleanSelectedCity,
     });
 
     res.set("Cache-Control", "private, max-age=600");

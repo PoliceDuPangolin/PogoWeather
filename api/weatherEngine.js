@@ -258,6 +258,7 @@ export async function searchWeatherForecast({
   pokemonName,
   customCities = [],
   horizon = "24h",
+  selectedCity = null,
 }) {
   const pokemon = await getPokemonData(pokemonName);
 
@@ -266,7 +267,12 @@ export async function searchWeatherForecast({
   ];
 
   const hours = horizon === "7d" ? 168 : 24;
-  const cities = [...DEFAULT_CITIES, ...customCities].slice(0, 25);
+  const allForecastCities = [...DEFAULT_CITIES, ...customCities];
+
+  const cities =
+    horizon === "7d"
+      ? [resolveForecastCity(selectedCity, allForecastCities)]
+      : allForecastCities.slice(0, 25);
   const cityResults = [];
 
   const batchSize = 4;
@@ -310,6 +316,59 @@ export async function searchWeatherForecast({
     disclaimer:
       "Forecast mode is indicative only. Pokémon GO may use different forecast runs and hourly weather blocks.",
   };
+}
+
+
+function resolveForecastCity(selectedCity, allForecastCities) {
+  if (!selectedCity) {
+    return allForecastCities[0];
+  }
+
+  const selectedLat = Number(selectedCity.lat);
+  const selectedLon = Number(selectedCity.lon);
+
+  if (Number.isFinite(selectedLat) && Number.isFinite(selectedLon)) {
+    const found = allForecastCities.find((city) => {
+      return (
+        Math.abs(Number(city.lat) - selectedLat) < 0.0001 &&
+        Math.abs(Number(city.lon) - selectedLon) < 0.0001
+      );
+    });
+
+    if (found) {
+      return found;
+    }
+
+    return {
+      name: String(selectedCity.name || "Selected city").slice(0, 80),
+      country: String(selectedCity.country || "Custom").slice(0, 80),
+      lat: selectedLat,
+      lon: selectedLon,
+    };
+  }
+
+  const selectedName = normalizeForecastCityName(selectedCity.name);
+
+  if (selectedName) {
+    const found = allForecastCities.find(
+      (city) => normalizeForecastCityName(city.name) === selectedName,
+    );
+
+    if (found) {
+      return found;
+    }
+  }
+
+  return allForecastCities[0];
+}
+
+function normalizeForecastCityName(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
 }
 
 async function analyzeForecastCity({ city, targetWeathers, hours }) {

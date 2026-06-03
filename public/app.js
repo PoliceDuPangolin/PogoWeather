@@ -28,6 +28,10 @@ const pokemonInput = $("pokemonInput"),
   selectedPokemon = $("selectedPokemon"),
   useCityGrid = $("useCityGrid"),
   usePreviousDayForecast = $("usePreviousDayForecast"),
+  searchMode = $("searchMode"),
+  forecastCitySelectorWrap = $("forecastCitySelectorWrap"),
+  forecastCitySelect = $("forecastCitySelect"),
+  forecastPanelCitySelect = $("forecastPanelCitySelect"),
   loader = $("loader"),
   themeToggle = $("themeToggle"),
   cityNameInput = $("cityNameInput"),
@@ -49,6 +53,25 @@ let customCities = JSON.parse(localStorage.getItem("customCities") || "[]"),
   lastSearch = null,
   currentPage = 1;
 const PAGE_SIZE = 9;
+
+const DEFAULT_FORECAST_CITIES = [
+  { name: "Tokyo - Shibuya", country: "Japon", lat: 35.6595, lon: 139.7006 },
+  { name: "New York - Central Park", country: "États-Unis", lat: 40.7851, lon: -73.9683 },
+  { name: "San Francisco - Pier 39", country: "États-Unis", lat: 37.8086, lon: -122.4098 },
+  { name: "Honolulu - Ala Moana", country: "États-Unis", lat: 21.291, lon: -157.844 },
+  { name: "Sydney - Circular Quay", country: "Australie", lat: -33.861, lon: 151.2128 },
+  { name: "Paris", country: "France", lat: 48.8566, lon: 2.3522 },
+  { name: "London", country: "Royaume-Uni", lat: 51.5072, lon: -0.1276 },
+  { name: "Zaragoza", country: "Espagne", lat: 41.6611, lon: -0.8938 },
+  { name: "Dubai Marina", country: "Émirats arabes unis", lat: 25.0763, lon: 55.1324 },
+  { name: "Taipei Main Station", country: "Taïwan", lat: 25.0478, lon: 121.517 },
+  { name: "Singapore", country: "Singapour", lat: 1.3521, lon: 103.8198 },
+  { name: "Seoul", country: "Corée du Sud", lat: 37.5665, lon: 126.978 },
+  { name: "Bangkok", country: "Thaïlande", lat: 13.7563, lon: 100.5018 },
+  { name: "São Paulo", country: "Brésil", lat: -23.5558, lon: -46.6396 },
+  { name: "Mexico City", country: "Mexique", lat: 19.4326, lon: -99.1332 },
+];
+
 function initTheme() {
   const s = localStorage.getItem("theme"),
     p =
@@ -65,6 +88,71 @@ themeToggle.addEventListener("click", () => {
   localStorage.setItem("theme", d ? "dark" : "light");
   themeToggle.textContent = d ? "☀️" : "🌙";
 });
+
+function getForecastCityOptions() {
+  const map = new Map();
+
+  [...DEFAULT_FORECAST_CITIES, ...customCities].forEach((city) => {
+    const key = `${Number(city.lat).toFixed(4)},${Number(city.lon).toFixed(4)}`;
+    map.set(key, city);
+  });
+
+  return [...map.values()];
+}
+
+function renderForecastCitySelectors() {
+  const cities = getForecastCityOptions();
+
+  const options = cities
+    .map((city, index) => {
+      const label = `${city.name}, ${city.country}`;
+      return `<option value="${index}">${escapeHtml(label)}</option>`;
+    })
+    .join("");
+
+  if (forecastCitySelect) {
+    const previous = forecastCitySelect.value;
+    forecastCitySelect.innerHTML = options;
+    if (previous && Number(previous) < cities.length) {
+      forecastCitySelect.value = previous;
+    }
+  }
+
+  if (forecastPanelCitySelect) {
+    const previous = forecastPanelCitySelect.value;
+    forecastPanelCitySelect.innerHTML = options;
+    if (previous && Number(previous) < cities.length) {
+      forecastPanelCitySelect.value = previous;
+    }
+  }
+}
+
+function getSelectedForecastCity(source = "search") {
+  const cities = getForecastCityOptions();
+  const select = source === "panel" ? forecastPanelCitySelect : forecastCitySelect;
+  const index = Number(select?.value || 0);
+  return cities[index] || cities[0];
+}
+
+function syncForecastCitySelectors(source = "search") {
+  if (!forecastCitySelect || !forecastPanelCitySelect) return;
+
+  if (source === "panel") {
+    forecastCitySelect.value = forecastPanelCitySelect.value;
+  } else {
+    forecastPanelCitySelect.value = forecastCitySelect.value;
+  }
+}
+
+function updateForecastCitySelectorVisibility() {
+  const searchModeValue = searchMode?.value || "now";
+  const panelHorizonValue = forecastHorizon?.value || "24h";
+
+  forecastCitySelectorWrap?.classList.toggle("hidden", searchModeValue !== "7d");
+  forecastPanelCitySelect?.classList.toggle("hidden", panelHorizonValue !== "7d");
+}
+
+
 function setLoading(v) {
   loader.classList.toggle("hidden", !v);
   searchBtn.disabled = v;
@@ -82,6 +170,7 @@ function renderCityList() {
       customCities.splice(Number(b.dataset.i), 1);
       localStorage.setItem("customCities", JSON.stringify(customCities));
       renderCityList();
+      renderForecastCitySelectors();
     }),
   );
 }
@@ -100,6 +189,7 @@ addCityBtn.addEventListener("click", () => {
     cityLonInput.value =
       "";
   renderCityList();
+  renderForecastCitySelectors();
 });
 let suggestionTimer = null;
 pokemonInput.addEventListener("input", () => {
@@ -140,6 +230,41 @@ document.addEventListener("click", (e) => {
   )
     suggestions.innerHTML = "";
 });
+
+searchMode?.addEventListener("change", () => {
+  const mode = searchMode.value;
+  updateForecastCitySelectorVisibility();
+
+  if (mode === "now") {
+    statusText.textContent = "Mode météo actuelle sélectionné.";
+  } else {
+    forecastSection?.classList.remove("hidden");
+
+    if (forecastHorizon) {
+      forecastHorizon.value = mode;
+      updateForecastCitySelectorVisibility();
+    }
+
+    if (forecastStatus) {
+      forecastStatus.textContent =
+        mode === "7d"
+          ? "Mode prévision 7 jours sélectionné. Choisis une ville puis lance une recherche Pokémon."
+          : "Mode prévision 24h sélectionné. Lance une recherche Pokémon.";
+    }
+  }
+});
+
+forecastCitySelect?.addEventListener("change", () => syncForecastCitySelectors("search"));
+forecastPanelCitySelect?.addEventListener("change", () => syncForecastCitySelectors("panel"));
+
+forecastHorizon?.addEventListener("change", () => {
+  updateForecastCitySelectorVisibility();
+
+  if (forecastHorizon.value === "7d") {
+    forecastStatus.textContent = "Le mode 7 jours analyse une seule ville pour rester rapide.";
+  }
+});
+
 searchBtn.addEventListener("click", searchPokemon);
 refreshBtn.addEventListener("click", () =>
   lastSearch ? searchPokemon() : null,
@@ -154,6 +279,19 @@ async function searchPokemon() {
       statusText.textContent = "Tape un Pokémon.";
       return;
     }
+    const mode = searchMode?.value || "now";
+    if (mode !== "now") {
+      lastSearch = pokemonName;
+      currentPage = 1;
+      results.innerHTML = "";
+      pager.innerHTML = "";
+      forecastSection?.classList.remove("hidden");
+      statusText.textContent = mode === "7d" ? "Prévision sur 7 jours..." : "Prévision sur 24h...";
+      if (mode === "7d") syncForecastCitySelectors("search");
+      await loadForecast(mode);
+      return;
+    }
+
     lastSearch = pokemonName;
     currentPage = 1;
     setLoading(true);
@@ -267,14 +405,19 @@ window.copyCoords = async (coords) => {
 
 forecastBtn?.addEventListener("click", loadForecast);
 
-async function loadForecast() {
+async function loadForecast(forcedHorizon = null) {
   if (!lastSearch) {
     forecastStatus.textContent = "Lance d'abord une recherche Pokémon.";
+    forecastSection?.classList.remove("hidden");
     return;
   }
 
+  if (forcedHorizon && forecastHorizon) {
+    forecastHorizon.value = forcedHorizon;
+  }
+
   try {
-    forecastBtn.disabled = true;
+    if (forecastBtn) forecastBtn.disabled = true;
     forecastResults.innerHTML = "";
     forecastStatus.textContent = "Calcul des prévisions météo...";
 
@@ -284,7 +427,11 @@ async function loadForecast() {
       body: JSON.stringify({
         pokemonName: lastSearch,
         customCities,
-        horizon: forecastHorizon.value || "24h",
+        horizon: forcedHorizon || forecastHorizon.value || "24h",
+        selectedCity:
+          (forcedHorizon || forecastHorizon.value || "24h") === "7d"
+            ? getSelectedForecastCity(forcedHorizon ? "search" : "panel")
+            : null,
       }),
     });
 
@@ -292,14 +439,18 @@ async function loadForecast() {
 
     if (!res.ok) throw new Error(data.error || "Erreur prévision.");
 
+    renderPokemon(data.pokemon, data.targetWeathersFr);
     renderForecastResults(data);
-    forecastStatus.textContent = `${data.cities.length} ville(s) analysée(s) sur ${data.horizon === "7d" ? "7 jours" : "24h"}.`;
+    forecastStatus.textContent =
+      data.horizon === "7d"
+        ? `1 ville analysée sur 7 jours : ${data.cities[0]?.name || "ville sélectionnée"}.`
+        : `${data.cities.length} ville(s) analysée(s) sur 24h.`;
   } catch (error) {
     console.error(error);
     forecastStatus.textContent = "Erreur prévision météo.";
     forecastResults.innerHTML = `<div class="error">${escapeHtml(error.message)}</div>`;
   } finally {
-    forecastBtn.disabled = false;
+    if (forecastBtn) forecastBtn.disabled = false;
   }
 }
 
