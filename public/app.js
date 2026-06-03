@@ -5,19 +5,39 @@ import { translations } from "./translations.js"
 let currentLang = localStorage.getItem("lang") || "fr";
 
 function t(key) {
-  return translations[currentLang][key] || key;
+  return translations[currentLang]?.[key] || key;
 }
+
 const languageSelect = document.getElementById("languageSelect");
+const languageButtons = document.querySelectorAll("[data-lang]");
 
-languageSelect.value = currentLang;
-
-languageSelect.addEventListener("change", (e) => {
-  currentLang = e.target.value;
-
+function setLanguage(lang) {
+  currentLang = lang === "en" ? "en" : "fr";
   localStorage.setItem("lang", currentLang);
 
+  if (languageSelect) {
+    languageSelect.value = currentLang;
+  }
+
+  languageButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.lang === currentLang);
+    button.setAttribute("aria-pressed", String(button.dataset.lang === currentLang));
+  });
+
   applyTranslations();
+}
+
+languageSelect?.addEventListener("change", (e) => {
+  setLanguage(e.target.value);
 });
+
+languageButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    setLanguage(button.dataset.lang);
+  });
+});
+const searchModeButtons = document.querySelectorAll("[data-search-mode]");
+const forecastHorizonButtons = document.querySelectorAll("[data-forecast-horizon]");
 const $ = (id) => document.getElementById(id);
 const pokemonInput = $("pokemonInput"),
   suggestions = $("pokemonSuggestions"),
@@ -150,13 +170,128 @@ function updateForecastCitySelectorVisibility() {
 
   forecastCitySelectorWrap?.classList.toggle("hidden", searchModeValue !== "7d");
   forecastPanelCitySelect?.classList.toggle("hidden", panelHorizonValue !== "7d");
+
+  searchModeButtons.forEach((button) => {
+    const active = button.dataset.searchMode === searchModeValue;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+
+  forecastHorizonButtons.forEach((button) => {
+    const active = button.dataset.forecastHorizon === panelHorizonValue;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+}
+
+
+
+const HOME_COPY = {
+  fr: {
+    heroEyebrow: "Outil non officiel Pokémon GO",
+    heroSubtitle: "Trouve rapidement les villes où ton Pokémon a le plus de chances d’être boosté météo dans Pokémon GO.",
+    searchTitle: "Weather Boost Finder",
+    searchHint: "Tape un Pokémon, puis choisis le mode d’analyse.",
+    pokemonLabel: "Pokémon",
+    searchButton: "Rechercher",
+    refreshButton: "Actualiser maintenant",
+    modeLabel: "Mode d’analyse",
+    modeNowTitle: "Maintenant",
+    modeNowSub: "Météo actuelle",
+    mode24Title: "24h",
+    mode24Sub: "Toutes les villes",
+    mode7Title: "7 jours",
+    mode7Sub: "1 ville",
+    city7Label: "Ville pour la prévision 7 jours",
+    city7Help: "Le mode 7 jours analyse une seule ville pour rester rapide.",
+    forecastTitle: "Prévision de boost météo",
+    forecastHint: "Lance une recherche Pokémon, puis calcule les meilleures fenêtres de boost sur 24h ou 7 jours.",
+    forecastBtn: "Voir la prévision",
+    panel24Sub: "Toutes les villes",
+    panel7Sub: "1 ville",
+    currentSelected: "Mode météo actuelle sélectionné.",
+    forecast24Selected: "Mode prévision 24h sélectionné. Lance une recherche Pokémon.",
+    forecast7Selected: "Mode prévision 7 jours sélectionné. Choisis une ville puis lance une recherche Pokémon.",
+  },
+  en: {
+    heroEyebrow: "Unofficial Pokémon GO tool",
+    heroSubtitle: "Quickly find cities where your Pokémon is more likely to be weather boosted in Pokémon GO.",
+    searchTitle: "Weather Boost Finder",
+    searchHint: "Enter a Pokémon, then choose an analysis mode.",
+    pokemonLabel: "Pokémon",
+    searchButton: "Search",
+    refreshButton: "Refresh now",
+    modeLabel: "Analysis mode",
+    modeNowTitle: "Now",
+    modeNowSub: "Current weather",
+    mode24Title: "24h",
+    mode24Sub: "All cities",
+    mode7Title: "7 days",
+    mode7Sub: "1 city",
+    city7Label: "City for 7-day forecast",
+    city7Help: "7-day mode analyzes only one city to stay fast.",
+    forecastTitle: "Weather boost forecast",
+    forecastHint: "Search a Pokémon, then calculate the best boost windows over 24h or 7 days.",
+    forecastBtn: "Show forecast",
+    panel24Sub: "All cities",
+    panel7Sub: "1 city",
+    currentSelected: "Current weather mode selected.",
+    forecast24Selected: "24h forecast mode selected. Search a Pokémon.",
+    forecast7Selected: "7-day forecast mode selected. Choose a city, then search a Pokémon.",
+  },
+};
+
+function applyTranslations() {
+  const copy = HOME_COPY[currentLang] || HOME_COPY.fr;
+  document.documentElement.lang = currentLang;
+
+  const setText = (selector, value) => {
+    const el = document.querySelector(selector);
+    if (el) el.textContent = value;
+  };
+
+  setText(".hero .eyebrow", copy.heroEyebrow);
+  setText(".hero .hero-subtitle", copy.heroSubtitle);
+  setText(".search-card h2", copy.searchTitle);
+  setText(".search-card .hint", copy.searchHint);
+  setText("label[for='pokemonInput']", copy.pokemonLabel);
+  setText("#searchBtn", copy.searchButton);
+  setText("#refreshBtn", copy.refreshButton);
+  setText("#searchModeLabel", copy.modeLabel);
+  setText("[data-search-mode='now'] strong", copy.modeNowTitle);
+  setText("[data-search-mode='now'] span", copy.modeNowSub);
+  setText("[data-search-mode='24h'] strong", copy.mode24Title);
+  setText("[data-search-mode='24h'] span", copy.mode24Sub);
+  setText("[data-search-mode='7d'] strong", copy.mode7Title);
+  setText("[data-search-mode='7d'] span", copy.mode7Sub);
+  setText("label[for='forecastCitySelect']", copy.city7Label);
+  setText("#forecastCitySelectorWrap small", copy.city7Help);
+  setText("#forecastSection h2", copy.forecastTitle);
+  setText("#forecastBtn", copy.forecastBtn);
+  setText("[data-forecast-horizon='24h'] strong", copy.mode24Title);
+  setText("[data-forecast-horizon='24h'] span", copy.panel24Sub);
+  setText("[data-forecast-horizon='7d'] strong", copy.mode7Title);
+  setText("[data-forecast-horizon='7d'] span", copy.panel7Sub);
+
+  if (pokemonInput) {
+    pokemonInput.placeholder =
+      currentLang === "en"
+        ? "Example: Rayquaza, Charizard, Pikachu..."
+        : "Ex : Rayquaza, Dracaufeu, Pikachu...";
+  }
+
+  if (forecastStatus && !lastSearch) {
+    forecastStatus.textContent = copy.forecastHint;
+  }
+
+  updateForecastCitySelectorVisibility();
 }
 
 
 function setLoading(v) {
   loader.classList.toggle("hidden", !v);
-  searchBtn.disabled = v;
-  refreshBtn.disabled = v;
+  if (searchBtn) searchBtn.disabled = v;
+  if (refreshBtn) refreshBtn.disabled = v;
 }
 function renderCityList() {
   cityList.innerHTML = customCities
@@ -235,8 +370,10 @@ searchMode?.addEventListener("change", () => {
   const mode = searchMode.value;
   updateForecastCitySelectorVisibility();
 
+  const copy = HOME_COPY[currentLang] || HOME_COPY.fr;
+
   if (mode === "now") {
-    statusText.textContent = "Mode météo actuelle sélectionné.";
+    statusText.textContent = copy.currentSelected;
   } else {
     forecastSection?.classList.remove("hidden");
 
@@ -248,8 +385,8 @@ searchMode?.addEventListener("change", () => {
     if (forecastStatus) {
       forecastStatus.textContent =
         mode === "7d"
-          ? "Mode prévision 7 jours sélectionné. Choisis une ville puis lance une recherche Pokémon."
-          : "Mode prévision 24h sélectionné. Lance une recherche Pokémon.";
+          ? copy.forecast7Selected
+          : copy.forecast24Selected;
     }
   }
 });
@@ -260,8 +397,13 @@ forecastPanelCitySelect?.addEventListener("change", () => syncForecastCitySelect
 forecastHorizon?.addEventListener("change", () => {
   updateForecastCitySelectorVisibility();
 
+  updateForecastCitySelectorVisibility();
+
   if (forecastHorizon.value === "7d") {
-    forecastStatus.textContent = "Le mode 7 jours analyse une seule ville pour rester rapide.";
+    forecastStatus.textContent =
+      currentLang === "en"
+        ? "7-day mode analyzes one city only to stay fast."
+        : "Le mode 7 jours analyse une seule ville pour rester rapide.";
   }
 });
 
@@ -414,6 +556,7 @@ async function loadForecast(forcedHorizon = null) {
 
   if (forcedHorizon && forecastHorizon) {
     forecastHorizon.value = forcedHorizon;
+    updateForecastCitySelectorVisibility();
   }
 
   try {
@@ -537,4 +680,6 @@ function escapeHtml(str) {
 }
 initTheme();
 renderCityList();
+renderForecastCitySelectors();
+setLanguage(currentLang);
 window.addEventListener("load", initMap);

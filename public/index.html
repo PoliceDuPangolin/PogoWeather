@@ -4,10 +4,6 @@
   <link rel="apple-touch-icon" href="/assets/logo-192.png" />
   <link rel="manifest" href="/manifest.webmanifest" />
 <link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<select id="languageSelect">
-  <option value="fr">FR</option>
-  <option value="en">EN</option>
-</select>
 <!-- Google Analytics à activer plus tard :
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
@@ -35,14 +31,38 @@ gtag('config', 'G-XXXXXXXXXX');
   <meta name="twitter:image" content="/assets/og-image.png">
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "PogoWeather", "url": "https://pogoweather.com", "logo": "https://pogoweather.com/assets/logo-192.png", "email": "contact@pogoweather.com", "sameAs": ["https://www.tiktok.com/@pogoweather"], "contactPoint": [{"@type": "ContactPoint", "email": "contact@pogoweather.com", "contactType": "customer support", "availableLanguage": ["en", "fr"]}]}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "PogoWeather", "url": "https://pogoweather.com", "potentialAction": {"@type": "SearchAction", "target": "https://pogoweather.com/?pokemon={search_term_string}", "query-input": "required name=search_term_string"}}</script>
-</head><body><nav class="top-nav"><a href="/" class="brand"><img src="/assets/logo-192.png" alt=""><span>PogoWeather</span></a><div class="nav-links"><a href="/">Outil</a><a href="/guide">Guide</a><a href="/weather-boost">Météo</a><a href="/best-cities">Villes</a><a href="/privacy">Confidentialité</a><a href="/pokemon-go-current-raids">Current Raids</a><a href="/pokemon-go-weather-forecast">Forecast</a><a href="/gofest-weather">GO Fest</a><a href="/about">About</a><a href="/contact">Contact</a></div><button id="themeToggle" class="theme-btn">🌙</button></nav><main class="app"><header class="hero"><p class="eyebrow">Outil non officiel Pokémon GO</p><h1>PogoWeather</h1><p class="hero-subtitle">Trouve rapidement les villes où ton Pokémon a le plus de chances d’être boosté météo dans Pokémon GO.</p><p class="warning">Estimation fan-made : ce site n’est pas affilié à Niantic, Nintendo ou The Pokémon Company.</p></header><section class="card search-card"><h2>Weather Boost Finder</h2><p class="hint">Tape un Pokémon, puis PogoWeather analyse les hotspots configurés côté serveur.</p><label for="pokemonInput">Pokémon</label><div class="search-mode-grid">
+</head><body><nav class="top-nav"><a href="/" class="brand"><img src="/assets/logo-192.png" alt=""><span>PogoWeather</span></a><div class="nav-links"><a href="/">Outil</a><a href="/guide">Guide</a><a href="/weather-boost">Météo</a><a href="/best-cities">Villes</a><a href="/privacy">Confidentialité</a><a href="/pokemon-go-current-raids">Current Raids</a><a href="/pokemon-go-weather-forecast">Forecast</a><a href="/gofest-weather">GO Fest</a><a href="/about">About</a><a href="/contact">Contact</a></div><div class="nav-actions">
+  <select id="languageSelect" class="native-hidden" aria-label="Language">
+    <option value="fr">FR</option>
+    <option value="en">EN</option>
+  </select>
+  <div id="languageToggle" class="language-toggle" role="group" aria-label="Language">
+    <button type="button" data-lang="fr">FR</button>
+    <button type="button" data-lang="en">EN</button>
+  </div>
+  <button id="themeToggle" class="theme-btn" type="button" aria-label="Changer le thème">🌙</button>
+</div></nav><main class="app"><header class="hero"><p class="eyebrow">Outil non officiel Pokémon GO</p><h1>PogoWeather</h1><p class="hero-subtitle">Trouve rapidement les villes où ton Pokémon a le plus de chances d’être boosté météo dans Pokémon GO.</p><p class="warning">Estimation fan-made : ce site n’est pas affilié à Niantic, Nintendo ou The Pokémon Company.</p></header><section class="card search-card"><h2>Weather Boost Finder</h2><p class="hint">Tape un Pokémon, puis PogoWeather analyse les hotspots configurés côté serveur.</p><label for="pokemonInput">Pokémon</label><div class="search-mode-grid">
   <div class="search-mode-row">
-    <label for="searchMode">Mode d’analyse</label>
-    <select id="searchMode">
+    <label id="searchModeLabel" for="searchMode">Mode d’analyse</label>
+    <select id="searchMode" class="native-hidden" aria-label="Mode d’analyse">
       <option value="now">Météo actuelle</option>
       <option value="24h">Prévision 24h</option>
       <option value="7d">Prévision 7 jours</option>
     </select>
+    <div id="searchModeTabs" class="mode-tabs" role="group" aria-labelledby="searchModeLabel">
+      <button type="button" data-search-mode="now">
+        <strong>Maintenant</strong>
+        <span>Météo actuelle</span>
+      </button>
+      <button type="button" data-search-mode="24h">
+        <strong>24h</strong>
+        <span>Toutes les villes</span>
+      </button>
+      <button type="button" data-search-mode="7d">
+        <strong>7 jours</strong>
+        <span>1 ville</span>
+      </button>
+    </div>
   </div>
 
   <div id="forecastCitySelectorWrap" class="search-mode-row hidden">
@@ -59,11 +79,15 @@ gtag('config', 'G-XXXXXXXXXX');
       <p id="forecastStatus" class="hint">Lance une recherche Pokémon, puis calcule les meilleures fenêtres de boost sur 24h ou 7 jours.</p>
     </div>
     <div class="forecast-controls">
-      <select id="forecastHorizon">
+      <select id="forecastHorizon" class="native-hidden" aria-label="Horizon de prévision">
         <option value="24h">Prochaines 24h</option>
         <option value="7d">7 jours</option>
       </select>
-      <select id="forecastPanelCitySelect" class="hidden" aria-label="Ville pour la prévision 7 jours"></select>
+      <div id="forecastHorizonTabs" class="mode-tabs compact" role="group" aria-label="Horizon de prévision">
+        <button type="button" data-forecast-horizon="24h"><strong>24h</strong><span>Toutes les villes</span></button>
+        <button type="button" data-forecast-horizon="7d"><strong>7 jours</strong><span>1 ville</span></button>
+      </div>
+      <select id="forecastPanelCitySelect" class="hidden pretty-select" aria-label="Ville pour la prévision 7 jours"></select>
       <button id="forecastBtn" type="button">Voir la prévision</button>
     </div>
   </div>
