@@ -3,7 +3,7 @@
   <link rel="icon" type="image/png" href="/assets/favicon.png" />
   <link rel="apple-touch-icon" href="/assets/logo-192.png" />
   <link rel="manifest" href="/manifest.webmanifest" />
-<link rel="stylesheet" href="/style.css?v=forecast-buttons-real-fix-1"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="/style.css?v=full-bugfix-2026-06-03-1"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <!-- Google Analytics à activer plus tard :
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
@@ -16,7 +16,7 @@ gtag('config', 'G-XXXXXXXXXX');
 <!-- Google Search Console : ajoute la meta fournie par Google ici -->
 
 <!-- Google Analytics à activer plus tard :
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
@@ -63,7 +63,7 @@ gtag('config', 'G-XXXXXXXXXX');
     <small>Le mode 7 jours analyse une seule ville pour rester rapide.</small>
   </div>
 </div>
-<div class="search-box"><input id="pokemonInput" type="text" placeholder="Ex : Rayquaza, Dracaufeu, Pikachu..." autocomplete="off"><button id="searchBtn">Rechercher</button></div><div id="pokemonSuggestions" class="suggestions"></div><div class="options"><label><input id="useCityGrid" type="checkbox"> Mode précis : centre + nord/sud/est/ouest</label><label><input id="usePreviousDayForecast" type="checkbox" checked> Prévision d’hier pour aujourd’hui</label></div></section><section class="card city-manager"><h2>Villes personnalisées</h2><p class="hint">Elles restent stockées localement dans ton navigateur, puis sont envoyées à l’API seulement pendant la recherche.</p><div class="city-form"><input id="cityNameInput" type="text" placeholder="Nom de la ville"><input id="cityCountryInput" type="text" placeholder="Pays"><input id="cityLatInput" type="number" step="any" placeholder="Latitude"><input id="cityLonInput" type="number" step="any" placeholder="Longitude"><button id="addCityBtn">Ajouter</button></div><div id="cityList" class="city-list"></div></section><section id="selectedPokemon" class="card selected hidden"></section><section class="card"><div class="status-row"><div><h2>Résultats</h2><p id="statusText">Prêt.</p></div><button id="refreshBtn">Actualiser maintenant</button></div><div id="loader" class="loader hidden"></div><div id="results" class="results"></div><div id="pager" class="pager"></div></section>
+<div class="search-box"><input id="pokemonInput" type="text" placeholder="Ex : Rayquaza, Dracaufeu, Pikachu..." autocomplete="off"><button id="searchBtn" type="button">Rechercher</button></div><div id="pokemonSuggestions" class="suggestions"></div><div class="options"><label><input id="useCityGrid" type="checkbox"> Mode précis : centre + nord/sud/est/ouest</label><label><input id="usePreviousDayForecast" type="checkbox" checked> Prévision d’hier pour aujourd’hui</label></div></section><section class="card city-manager"><h2>Villes personnalisées</h2><p class="hint">Elles restent stockées localement dans ton navigateur, puis sont envoyées à l’API seulement pendant la recherche.</p><div class="city-form"><input id="cityNameInput" type="text" placeholder="Nom de la ville"><input id="cityCountryInput" type="text" placeholder="Pays"><input id="cityLatInput" type="number" step="any" placeholder="Latitude"><input id="cityLonInput" type="number" step="any" placeholder="Longitude"><button id="addCityBtn">Ajouter</button></div><div id="cityList" class="city-list"></div></section><section id="selectedPokemon" class="card selected hidden"></section><section class="card"><div class="status-row"><div><h2>Résultats</h2><p id="statusText">Prêt.</p></div><button id="refreshBtn" type="button">Actualiser maintenant</button></div><div id="loader" class="loader hidden"></div><div id="results" class="results"></div><div id="pager" class="pager"></div></section>
 <section id="forecastSection" class="card forecast-section hidden">
   <div class="status-row">
     <div>
@@ -105,4 +105,4 @@ gtag('config', 'G-XXXXXXXXXX');
   </div>
 </section>
 
-</main><footer class="footer"><div><strong>PogoWeather</strong><p>Outil fan-made pour estimer les boosts météo Pokémon GO.</p></div><div class="footer-links"><a href="/guide">Guide</a><a href="/weather-boost">Météo</a><a href="/best-cities">Villes</a><a href="/privacy">Confidentialité</a><a href="/disclaimer">Disclaimer</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/fr/a-propos">À propos</a><a href="/fr/contact">Contact FR</a><a href="/cookie-policy">Cookie Policy</a><a href="/fr/confidentialite">Confidentialité</a><a href="/fr/politique-cookies">Cookies</a><a href="/pokemon-go-current-raids">Current Raids</a><a href="/fr/raids-actuels-pokemon-go">Raids FR</a></div></footer><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script type="module" src="/app.js?v=forecast-buttons-real-fix-1"></script></body></html>
+</main><footer class="footer"><div><strong>PogoWeather</strong><p>Outil fan-made pour estimer les boosts météo Pokémon GO.</p></div><div class="footer-links"><a href="/guide">Guide</a><a href="/weather-boost">Météo</a><a href="/best-cities">Villes</a><a href="/privacy">Confidentialité</a><a href="/disclaimer">Disclaimer</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/fr/a-propos">À propos</a><a href="/fr/contact">Contact FR</a><a href="/cookie-policy">Cookie Policy</a><a href="/fr/confidentialite">Confidentialité</a><a href="/fr/politique-cookies">Cookies</a><a href="/pokemon-go-current-raids">Current Raids</a><a href="/fr/raids-actuels-pokemon-go">Raids FR</a></div></footer><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script type="module" src="/app.js?v=full-bugfix-2026-06-03-1"></script></body></html>
