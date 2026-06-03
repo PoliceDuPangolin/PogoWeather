@@ -172,7 +172,6 @@ function updateForecastCitySelectorVisibility() {
   forecastCitySelectorWrap?.classList.toggle("hidden", searchModeValue !== "7d");
   forecastPanelCitySelect?.classList.toggle("hidden", panelHorizonValue !== "7d");
 
-  
   searchModeButtons.forEach((button) => {
     const active = button.dataset.searchMode === searchModeValue;
     button.classList.toggle("active", active);
@@ -518,6 +517,137 @@ function escapeHtml(str) {
       })[m],
   );
 }
+
+const HOME_COPY = {
+  fr: {
+    heroEyebrow: "Outil non officiel Pokémon GO",
+    heroSubtitle: "Trouve rapidement les villes où ton Pokémon a le plus de chances d’être boosté météo dans Pokémon GO.",
+    searchTitle: "Weather Boost Finder",
+    searchHint: "Tape un Pokémon, puis PogoWeather analyse les hotspots configurés côté serveur.",
+    pokemonLabel: "Pokémon",
+    searchButton: "Rechercher",
+    refreshButton: "Actualiser maintenant",
+    modeLabel: "Mode d’analyse",
+    modeNowTitle: "Maintenant",
+    modeNowSub: "Météo actuelle",
+    mode24Title: "24h",
+    mode24Sub: "Toutes les villes",
+    mode7Title: "7 jours",
+    mode7Sub: "1 ville",
+    city7Label: "Ville pour la prévision 7 jours",
+    city7Help: "Le mode 7 jours analyse une seule ville pour rester rapide.",
+    forecastTitle: "Prévision de boost météo",
+    forecastBtn: "Voir la prévision",
+    currentSelected: "Mode météo actuelle sélectionné.",
+    forecast24Selected: "Mode prévision 24h sélectionné. Lance une recherche Pokémon.",
+    forecast7Selected: "Mode prévision 7 jours sélectionné. Choisis une ville puis lance une recherche Pokémon.",
+  },
+  en: {
+    heroEyebrow: "Unofficial Pokémon GO tool",
+    heroSubtitle: "Quickly find cities where your Pokémon is more likely to be weather boosted in Pokémon GO.",
+    searchTitle: "Weather Boost Finder",
+    searchHint: "Enter a Pokémon, then PogoWeather analyzes configured hotspots server-side.",
+    pokemonLabel: "Pokémon",
+    searchButton: "Search",
+    refreshButton: "Refresh now",
+    modeLabel: "Analysis mode",
+    modeNowTitle: "Now",
+    modeNowSub: "Current weather",
+    mode24Title: "24h",
+    mode24Sub: "All cities",
+    mode7Title: "7 days",
+    mode7Sub: "1 city",
+    city7Label: "City for 7-day forecast",
+    city7Help: "7-day mode analyzes only one city to stay fast.",
+    forecastTitle: "Weather boost forecast",
+    forecastBtn: "Show forecast",
+    currentSelected: "Current weather mode selected.",
+    forecast24Selected: "24h forecast mode selected. Search a Pokémon.",
+    forecast7Selected: "7-day forecast mode selected. Choose a city, then search a Pokémon.",
+  },
+};
+
+function applyTranslations() {
+  const copy = HOME_COPY[currentLang] || HOME_COPY.fr;
+  document.documentElement.lang = currentLang;
+
+  const setText = (selector, value) => {
+    const el = document.querySelector(selector);
+    if (el) el.textContent = value;
+  };
+
+  setText(".hero .eyebrow", copy.heroEyebrow);
+  setText(".hero .hero-subtitle", copy.heroSubtitle);
+  setText(".search-card h2", copy.searchTitle);
+  setText(".search-card .hint", copy.searchHint);
+  setText("label[for='pokemonInput']", copy.pokemonLabel);
+  setText("#searchBtn", copy.searchButton);
+  setText("#refreshBtn", copy.refreshButton);
+  setText("#searchModeLabel", copy.modeLabel);
+
+  setText("[data-search-mode='now'] strong", copy.modeNowTitle);
+  setText("[data-search-mode='now'] span", copy.modeNowSub);
+  setText("[data-search-mode='24h'] strong", copy.mode24Title);
+  setText("[data-search-mode='24h'] span", copy.mode24Sub);
+  setText("[data-search-mode='7d'] strong", copy.mode7Title);
+  setText("[data-search-mode='7d'] span", copy.mode7Sub);
+
+  setText("[data-forecast-horizon='24h'] strong", copy.mode24Title);
+  setText("[data-forecast-horizon='24h'] span", copy.mode24Sub);
+  setText("[data-forecast-horizon='7d'] strong", copy.mode7Title);
+  setText("[data-forecast-horizon='7d'] span", copy.mode7Sub);
+
+  setText("label[for='forecastCitySelect']", copy.city7Label);
+  setText("#forecastCitySelectorWrap small", copy.city7Help);
+  setText("#forecastSection h2", copy.forecastTitle);
+  setText("#forecastBtn", copy.forecastBtn);
+
+  if (pokemonInput) {
+    pokemonInput.placeholder =
+      currentLang === "en"
+        ? "Example: Rayquaza, Charizard, Pikachu..."
+        : "Ex : Rayquaza, Dracaufeu, Pikachu...";
+  }
+
+  languageButtons.forEach((button) => {
+    const active = button.dataset.lang === currentLang;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+
+  updateForecastCitySelectorVisibility();
+}
+
+function setLoading(v) {
+  loader?.classList.toggle("hidden", !v);
+
+  if (searchBtn) searchBtn.disabled = v;
+  if (refreshBtn) refreshBtn.disabled = v;
+}
+
+function renderCityList() {
+  if (!cityList) return;
+
+  cityList.innerHTML = customCities
+    .map(
+      (c, i) =>
+        `<span class="city-pill">${escapeHtml(c.name)}
+          <button type="button" data-i="${i}" aria-label="Supprimer ${escapeHtml(c.name)}">×</button>
+        </span>`,
+    )
+    .join("");
+
+  cityList.querySelectorAll("[data-i]").forEach((button) => {
+    button.addEventListener("click", () => {
+      customCities.splice(Number(button.dataset.i), 1);
+      localStorage.setItem("customCities", JSON.stringify(customCities));
+      renderCityList();
+      renderForecastCitySelectors();
+      updateForecastCitySelectorVisibility();
+    });
+  });
+}
+
 initTheme();
 renderCityList();
 renderForecastCitySelectors();
