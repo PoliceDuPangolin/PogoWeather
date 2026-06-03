@@ -279,3 +279,256 @@
     padding: 12px 14px;
   }
 }
+
+
+/* Current raids interactive table */
+.raid-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.raid-filters {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.raid-filters label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.raid-filters select,
+.raid-filters input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 15px;
+  background: var(--soft);
+  color: var(--text);
+}
+
+.raid-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--soft);
+}
+
+.raid-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 850px;
+}
+
+.raid-table th,
+.raid-table td {
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.raid-table th {
+  background: color-mix(in srgb, var(--soft) 82%, var(--primary) 18%);
+  font-weight: 950;
+}
+
+.raid-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.raid-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 900;
+}
+
+.raid-sprite {
+  width: 42px;
+  height: 42px;
+  image-rendering: pixelated;
+}
+
+.shiny-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #facc15;
+  color: #422006;
+  font-weight: 950;
+}
+
+.raid-cards {
+  display: none;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.raid-card {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 14px;
+  background: var(--soft);
+}
+
+.raid-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.raid-card-head strong {
+  display: block;
+  font-size: 18px;
+}
+
+.raid-card-head span {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.raid-card-img {
+  width: 54px;
+  height: 54px;
+  image-rendering: pixelated;
+}
+
+.raid-card-row {
+  margin: 8px 0;
+}
+
+@media (max-width: 760px) {
+  .raid-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .raid-table-wrap {
+    display: none;
+  }
+
+  .raid-cards {
+    display: grid;
+  }
+}
+
+
+/* Weather boost forecast */
+.forecast-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.forecast-controls select {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px 12px;
+  background: var(--soft);
+  color: var(--text);
+  font-weight: 800;
+}
+
+.forecast-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.forecast-card {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  background: var(--soft);
+}
+
+.forecast-card.match {
+  border-color: rgba(34, 197, 94, 0.65);
+}
+
+.forecast-card h3 {
+  margin-top: 0;
+}
+
+.forecast-timeline {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin: 14px 0;
+}
+
+.forecast-hour {
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+  padding: 8px 4px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--soft) 80%, #000 0%);
+  font-size: 12px;
+}
+
+.forecast-hour.boosted {
+  border-color: rgba(34, 197, 94, 0.75);
+  background: rgba(34, 197, 94, 0.12);
+}
+
+.daily-summary {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.day-pill {
+  display: grid;
+  grid-template-columns: 70px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--soft) 88%, #000 0%);
+}
+
+.day-pill.boosted {
+  border-color: rgba(34, 197, 94, 0.75);
+  background: rgba(34, 197, 94, 0.12);
+}
+
+.day-pill small {
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .forecast-controls {
+    justify-content: stretch;
+  }
+
+  .forecast-controls select,
+  .forecast-controls button {
+    width: 100%;
+  }
+
+  .forecast-timeline {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .day-pill {
+    grid-template-columns: 1fr;
+  }
+}

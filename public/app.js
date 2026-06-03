@@ -36,7 +36,12 @@ const pokemonInput = $("pokemonInput"),
   cityLonInput = $("cityLonInput"),
   addCityBtn = $("addCityBtn"),
   cityList = $("cityList"),
-  pager = $("pager");
+  pager = $("pager"),
+  forecastSection = $("forecastSection"),
+  forecastBtn = $("forecastBtn"),
+  forecastHorizon = $("forecastHorizon"),
+  forecastStatus = $("forecastStatus"),
+  forecastResults = $("forecastResults");
 let customCities = JSON.parse(localStorage.getItem("customCities") || "[]"),
   map,
   markersLayer,
@@ -172,6 +177,9 @@ async function searchPokemon() {
     renderPokemon(data.pokemon, data.targetWeathersFr);
     renderResultsPage();
     renderMap(data.cities);
+    forecastSection?.classList.remove("hidden");
+    if (forecastResults) forecastResults.innerHTML = "";
+    if (forecastStatus) forecastStatus.textContent = "Tu peux maintenant calculer les meilleures fenêtres de boost météo.";
     statusText.textContent = `${data.cities.filter((c) => c.isBoosted).length} ville(s) semblent avoir la bonne météo.`;
     track("search_success", { pokemon: data.pokemon.name });
   } catch (e) {
@@ -256,6 +264,110 @@ window.copyCoords = async (coords) => {
     prompt("Copie les coordonnées :", coords);
   }
 };
+
+forecastBtn?.addEventListener("click", loadForecast);
+
+async function loadForecast() {
+  if (!lastSearch) {
+    forecastStatus.textContent = "Lance d'abord une recherche Pokémon.";
+    return;
+  }
+
+  try {
+    forecastBtn.disabled = true;
+    forecastResults.innerHTML = "";
+    forecastStatus.textContent = "Calcul des prévisions météo...";
+
+    const res = await fetch("/api/forecast", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        pokemonName: lastSearch,
+        customCities,
+        horizon: forecastHorizon.value || "24h",
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || "Erreur prévision.");
+
+    renderForecastResults(data);
+    forecastStatus.textContent = `${data.cities.length} ville(s) analysée(s) sur ${data.horizon === "7d" ? "7 jours" : "24h"}.`;
+  } catch (error) {
+    console.error(error);
+    forecastStatus.textContent = "Erreur prévision météo.";
+    forecastResults.innerHTML = `<div class="error">${escapeHtml(error.message)}</div>`;
+  } finally {
+    forecastBtn.disabled = false;
+  }
+}
+
+function renderForecastResults(data) {
+  const isSevenDays = data.horizon === "7d";
+  const targetLabel = data.targetWeathersFr.map(escapeHtml).join(" / ");
+
+  forecastResults.innerHTML = data.cities
+    .slice(0, 12)
+    .map((city) => {
+      const nextBoost = city.nextBoostTime
+        ? `${formatForecastTime(city.nextBoostTime)} · ${escapeHtml(city.nextBoostWeatherFr || city.nextBoostWeather)}`
+        : "Aucune fenêtre détectée";
+
+      const windows = city.bestWindows?.length
+        ? city.bestWindows
+            .map((w) => `<li>${formatForecastTime(w.start)} → ${formatForecastTime(w.end)} · ${escapeHtml(w.weatherFr || w.weather)} · ${w.hours}h</li>`)
+            .join("")
+        : "<li>Aucune fenêtre boostée détectée.</li>";
+
+      const summary = isSevenDays
+        ? `<div class="daily-summary">${(city.dailySummary || [])
+            .map((day) => `<div class="day-pill ${day.boostedHours ? "boosted" : ""}"><strong>${formatForecastDate(day.date)}</strong><span>${day.boostedHours}/${day.totalHours}h boost</span><small>${escapeHtml(day.dominantWeatherFr)}</small></div>`)
+            .join("")}</div>`
+        : "";
+
+      const timeline = !isSevenDays
+        ? `<div class="forecast-timeline">${(city.timeline || [])
+            .slice(0, 24)
+            .map((h) => `<span class="forecast-hour ${h.isBoosted ? "boosted" : ""}" title="${escapeHtml(h.pogoWeatherFr)}">
+              <strong>${escapeHtml(h.hour)}</strong>
+              <small>${h.isBoosted ? "✅" : "—"}</small>
+            </span>`)
+            .join("")}</div>`
+        : "";
+
+      return `<article class="forecast-card ${city.boostedHours ? "match" : ""}">
+        <h3>${escapeHtml(city.name)}, ${escapeHtml(city.country)}</h3>
+        <div class="coords">${city.lat.toFixed(4)}, ${city.lon.toFixed(4)}</div>
+        <p><strong>Boost recherché :</strong> ${targetLabel}</p>
+        <p><strong>Heures boostées :</strong> ${city.boostedHours}/${city.totalHours}h · ${city.confidence}%</p>
+        <p><strong>Prochaine fenêtre :</strong> ${nextBoost}</p>
+        <p><strong>Météo dominante prévue :</strong> ${escapeHtml(city.dominantWeatherFr)}</p>
+        ${timeline}
+        ${summary}
+        <details>
+          <summary>Meilleures fenêtres</summary>
+          <ul>${windows}</ul>
+        </details>
+        <a class="maps-btn" href="https://www.google.com/maps?q=${city.lat},${city.lon}" target="_blank" rel="noopener noreferrer">Google Maps</a>
+      </article>`;
+    })
+    .join("");
+}
+
+function formatForecastTime(time) {
+  if (!time) return "N/A";
+  const raw = String(time);
+  const date = raw.slice(5, 10);
+  const hour = raw.slice(11, 16);
+  return `${date} ${hour}`;
+}
+
+function formatForecastDate(date) {
+  if (!date) return "N/A";
+  return String(date).slice(5);
+}
+
 function track(name, params = {}) {
   if (window.gtag) window.gtag("event", name, params);
 }

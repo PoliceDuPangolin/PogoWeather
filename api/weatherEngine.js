@@ -253,6 +253,366 @@ export async function searchWeatherBoost({
   };
 }
 
+
+export async function searchWeatherForecast({
+  pokemonName,
+  customCities = [],
+  horizon = "24h",
+}) {
+  const pokemon = await getPokemonData(pokemonName);
+
+  const targetWeathers = [
+    ...new Set(pokemon.types.flatMap((type) => TYPE_TO_WEATHER[type] || [])),
+  ];
+
+  const hours = horizon === "7d" ? 168 : 24;
+  const cities = [...DEFAULT_CITIES, ...customCities].slice(0, 25);
+  const cityResults = [];
+
+  const batchSize = 4;
+
+  for (let i = 0; i < cities.length; i += batchSize) {
+    const batch = cities.slice(i, i + batchSize);
+
+    const partial = await Promise.all(
+      batch.map((city) =>
+        analyzeForecastCity({
+          city,
+          targetWeathers,
+          hours,
+        }),
+      ),
+    );
+
+    cityResults.push(...partial);
+  }
+
+  cityResults.sort((a, b) => {
+    if (b.boostedHours !== a.boostedHours) return b.boostedHours - a.boostedHours;
+
+    const aNext = a.nextBoostTime ? new Date(a.nextBoostTime).getTime() : Infinity;
+    const bNext = b.nextBoostTime ? new Date(b.nextBoostTime).getTime() : Infinity;
+
+    return aNext - bNext;
+  });
+
+  return {
+    pokemon: {
+      ...pokemon,
+      typesFr: pokemon.types.map((t) => TYPE_FR[t] || t),
+    },
+    targetWeathers,
+    targetWeathersFr: targetWeathers.map((w) => WEATHER_FR[w] || w),
+    horizon,
+    hours,
+    cities: cityResults,
+    generatedAt: new Date().toISOString(),
+    disclaimer:
+      "Forecast mode is indicative only. Pokémon GO may use different forecast runs and hourly weather blocks.",
+  };
+}
+
+async function analyzeForecastCity({ city, targetWeathers, hours }) {
+  const forecast = await fetchForecastTimeline(city.lat, city.lon, hours);
+
+  const timeline = forecast.timeline.map((hour) => {
+    const pogoWeather = estimateFuturePokemonWeather(hour);
+    const isBoosted = targetWeathers.includes(pogoWeather);
+
+    return {
+      time: hour.time,
+      date: hour.time.slice(0, 10),
+      hour: hour.time.slice(11, 16),
+      pogoWeather,
+      pogoWeatherFr: WEATHER_FR[pogoWeather] || pogoWeather,
+      isBoosted,
+      meteoPublic: sanitizeMeteo(hour),
+    };
+  });
+
+  const boostedHours = timeline.filter((hour) => hour.isBoosted).length;
+  const confidence = timeline.length
+    ? Math.round((boostedHours / timeline.length) * 100)
+    : 0;
+
+  const bestWindows = buildBestBoostWindows(timeline);
+  const dailySummary = buildDailyForecastSummary(timeline);
+  const dominantWeather = voteWeatherFromStrings(timeline.map((hour) => hour.pogoWeather));
+  const nextBoost = timeline.find((hour) => hour.isBoosted);
+
+  return {
+    name: city.name,
+    country: city.country,
+    lat: city.lat,
+    lon: city.lon,
+    timezone: forecast.timezone,
+    boostedHours,
+    totalHours: timeline.length,
+    confidence,
+    dominantWeather,
+    dominantWeatherFr: WEATHER_FR[dominantWeather] || dominantWeather,
+    nextBoostTime: nextBoost?.time || null,
+    nextBoostWeather: nextBoost?.pogoWeather || null,
+    nextBoostWeatherFr: nextBoost
+      ? WEATHER_FR[nextBoost.pogoWeather] || nextBoost.pogoWeather
+      : null,
+    bestWindows,
+    dailySummary,
+    timeline: timeline.slice(0, hours === 168 ? 48 : 24),
+  };
+}
+
+async function fetchForecastTimeline(lat, lon, hours) {
+  const currentHourKey = new Date().toISOString().slice(0, 13);
+  const cacheKey = `${roundCoord(lat)}_${roundCoord(lon)}_forecast_${hours}_${currentHourKey}`;
+
+  const cached = cacheGet(weatherCache, cacheKey);
+  if (cached) return cached;
+
+  const forecastDays = hours > 48 ? 7 : 2;
+
+  const variables = [
+    "weather_code",
+    "precipitation",
+    "rain",
+    "snowfall",
+    "cloud_cover",
+    "wind_speed_10m",
+    "visibility",
+  ].join(",");
+
+  const params = new URLSearchParams({
+    latitude: lat,
+    longitude: lon,
+    timezone: "auto",
+    forecast_days: String(forecastDays),
+    hourly: variables,
+  });
+
+  const res = await fetch(
+    `https://api.open-meteo.com/v1/forecast?${params.toString()}`,
+  );
+
+  if (!res.ok) {
+    throw new Error("Prévision météo indisponible.");
+  }
+
+  const data = await res.json();
+  const hourly = data.hourly;
+
+  const startIndex = findLocalCurrentHourIndex(
+    hourly.time,
+    Number(data.utc_offset_seconds || 0),
+  );
+
+  const endIndex = Math.min(hourly.time.length, startIndex + hours);
+
+  const timeline = [];
+
+  for (let index = startIndex; index < endIndex; index += 1) {
+    const windowIndexes = getWindowIndexes(hourly.time, index);
+
+    timeline.push({
+      source: "Forecast",
+      time: hourly.time[index],
+      weather_code: hourly.weather_code[index],
+      precipitation: hourly.precipitation[index],
+      rain: hourly.rain[index],
+      snowfall: hourly.snowfall[index],
+      cloud_cover: hourly.cloud_cover[index],
+      wind_speed_10m: hourly.wind_speed_10m[index],
+      visibility: hourly.visibility ? hourly.visibility[index] : 99999,
+      window: buildWeatherWindow({
+        times: hourly.time,
+        indexes: windowIndexes,
+        weatherCode: hourly.weather_code,
+        precipitation: hourly.precipitation,
+        rain: hourly.rain,
+        snowfall: hourly.snowfall,
+        cloudCover: hourly.cloud_cover,
+        windSpeed: hourly.wind_speed_10m,
+        visibility: hourly.visibility || null,
+      }),
+    });
+  }
+
+  const result = {
+    timezone: data.timezone || "auto",
+    utcOffsetSeconds: Number(data.utc_offset_seconds || 0),
+    timeline,
+  };
+
+  cacheSet(weatherCache, cacheKey, result, WEATHER_CACHE_TTL_MS);
+
+  return result;
+}
+
+function findLocalCurrentHourIndex(times, utcOffsetSeconds) {
+  const localNow = new Date(Date.now() + utcOffsetSeconds * 1000)
+    .toISOString()
+    .slice(0, 13);
+
+  const exactIndex = times.findIndex((time) => String(time).slice(0, 13) === localNow);
+
+  if (exactIndex !== -1) return exactIndex;
+
+  let bestIndex = 0;
+  let bestDiff = Infinity;
+
+  times.forEach((time, index) => {
+    const diff = Math.abs(new Date(`${time}:00Z`) - new Date(`${localNow}:00Z`));
+
+    if (diff < bestDiff) {
+      bestDiff = diff;
+      bestIndex = index;
+    }
+  });
+
+  return bestIndex;
+}
+
+function estimateFuturePokemonWeather(w) {
+  const code = Number(w.weather_code);
+  const wind = Number(w.wind_speed_10m || 0);
+  const rain = Number(w.rain || 0);
+  const snow = Number(w.snowfall || 0);
+  const precip = Number(w.precipitation || 0);
+  const clouds = Number(w.cloud_cover || 0);
+  const visibility = Number(w.visibility || 99999);
+
+  const window = w.window || {};
+  const windWindowMax = Number(window.windMax ?? wind);
+  const rainWindowMax = Number(window.rainMax ?? Math.max(rain, precip));
+  const snowWindowMax = Number(window.snowMax ?? snow);
+  const cloudWindowAvg = Number(window.cloudAvg ?? clouds);
+
+  if (
+    snowWindowMax >= 0.2 ||
+    window.hasSnowCode ||
+    [71, 73, 75, 77, 85, 86].includes(code)
+  ) {
+    return "Snow";
+  }
+
+  const realRain =
+    rainWindowMax >= 1.0 ||
+    (window.hasRainCode && rainWindowMax >= 0.5) ||
+    ([61, 63, 65, 80, 81, 82].includes(code) && Math.max(rain, precip) >= 0.6);
+
+  const realThunderstorm =
+    [95, 96, 99].includes(code) && Math.max(rain, precip, rainWindowMax) >= 0.5;
+
+  if (realRain || realThunderstorm) {
+    return "Rainy";
+  }
+
+  if (window.hasFogCode || [45, 48].includes(code) || visibility < 1000) {
+    return "Fog";
+  }
+
+  // Future forecast is less precise than current in-game weather.
+  // A slightly lower threshold helps identify possible Windy windows.
+  if (windWindowMax >= 24) {
+    return "Windy";
+  }
+
+  if (clouds >= 75 || cloudWindowAvg >= 78 || (code === 3 && clouds >= 70)) {
+    return "Cloudy";
+  }
+
+  if (
+    clouds >= 25 ||
+    cloudWindowAvg >= 30 ||
+    code === 1 ||
+    code === 2 ||
+    code === 3
+  ) {
+    return "Partly Cloudy";
+  }
+
+  return "Clear";
+}
+
+function buildBestBoostWindows(timeline) {
+  const windows = [];
+  let current = null;
+
+  for (const hour of timeline) {
+    if (hour.isBoosted) {
+      if (!current) {
+        current = {
+          start: hour.time,
+          end: hour.time,
+          weather: hour.pogoWeather,
+          weatherFr: hour.pogoWeatherFr,
+          hours: 1,
+        };
+      } else {
+        current.end = hour.time;
+        current.hours += 1;
+      }
+    } else if (current) {
+      windows.push(current);
+      current = null;
+    }
+  }
+
+  if (current) windows.push(current);
+
+  return windows
+    .sort((a, b) => b.hours - a.hours)
+    .slice(0, 5);
+}
+
+function buildDailyForecastSummary(timeline) {
+  const days = new Map();
+
+  for (const hour of timeline) {
+    if (!days.has(hour.date)) {
+      days.set(hour.date, {
+        date: hour.date,
+        boostedHours: 0,
+        totalHours: 0,
+        weathers: {},
+      });
+    }
+
+    const day = days.get(hour.date);
+    day.totalHours += 1;
+
+    if (hour.isBoosted) {
+      day.boostedHours += 1;
+    }
+
+    day.weathers[hour.pogoWeather] = (day.weathers[hour.pogoWeather] || 0) + 1;
+  }
+
+  return [...days.values()].map((day) => {
+    const dominantWeather = Object.entries(day.weathers).sort((a, b) => b[1] - a[1])[0]?.[0] || "Unknown";
+
+    return {
+      date: day.date,
+      boostedHours: day.boostedHours,
+      totalHours: day.totalHours,
+      confidence: day.totalHours
+        ? Math.round((day.boostedHours / day.totalHours) * 100)
+        : 0,
+      dominantWeather,
+      dominantWeatherFr: WEATHER_FR[dominantWeather] || dominantWeather,
+    };
+  });
+}
+
+function voteWeatherFromStrings(weathers) {
+  const counts = {};
+
+  for (const weather of weathers) {
+    counts[weather] = (counts[weather] || 0) + 1;
+  }
+
+  return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] || "Unknown";
+}
+
 async function getPokemonData(rawName) {
   const normalizedName = normalizeText(rawName);
 

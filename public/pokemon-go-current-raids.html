@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Current Pokémon GO Raid Bosses & Weather Boosts | PogoWeather</title>
+  <meta name="description" content="Interactive list of current Pokémon GO raid bosses with types, weather boosts, CP fields and quick links to find boosted cities.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://pogoweather.com/pokemon-go-current-raids">
+  <link rel="alternate" hreflang="en" href="https://pogoweather.com/pokemon-go-current-raids">
+  <link rel="alternate" hreflang="fr" href="https://pogoweather.com/fr/raids-actuels-pokemon-go">
+  <link rel="alternate" hreflang="x-default" href="https://pogoweather.com/pokemon-go-current-raids">
+  <meta property="og:title" content="Current Pokémon GO Raid Bosses & Weather Boosts | PogoWeather">
+  <meta property="og:description" content="Interactive list of current Pokémon GO raid bosses with types, weather boosts, CP fields and quick links to find boosted cities.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="PogoWeather">
+  <meta property="og:url" content="https://pogoweather.com/pokemon-go-current-raids">
+  <meta property="og:image" content="/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2d6cdf">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/logo-192.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/style.css">
+
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Current Pokémon GO Raid Bosses & Weather Boosts | PogoWeather", "description": "Interactive list of current Pokémon GO raid bosses with types, weather boosts, CP fields and quick links to find boosted cities.", "author": {"@type": "Organization", "name": "PogoWeather"}, "publisher": {"@type": "Organization", "name": "PogoWeather"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://pogoweather.com/pokemon-go-current-raids"}, "inLanguage": "en"}</script>
+</head>
+<body>
+<nav class="top-nav"><a href="/" class="brand"><img src="/assets/logo-192.png" alt=""><span>PogoWeather</span></a><div class="nav-links"><a href="/">Outil</a><a href="/guide">Guide</a><a href="/weather-boost">Météo</a><a href="/best-cities">Villes</a><a href="/privacy">Confidentialité</a><a href="/pokemon-go-current-raids">Current Raids</a><a href="/gofest-weather">GO Fest</a><a href="/about">About</a><a href="/contact">Contact</a></div><button id="themeToggle" class="theme-btn">🌙</button></nav>
+<main class="app">
+
+<header class="hero">
+  <p class="eyebrow">Pokémon GO Raids</p>
+  <h1>Current Pokémon GO Raid Bosses</h1>
+  <p class="hero-subtitle">Check the current raid bosses, their types, weather boosts and quickly open PogoWeather to find boosted cities.</p>
+  <p class="warning">Community raid data. Always verify current raids inside Pokémon GO.</p>
+</header>
+
+<section class="card raid-tool" data-lang="en">
+  <div class="raid-toolbar">
+    <div>
+      <h2>Raid bosses of the week</h2>
+      <p id="raidStatus" class="hint">Loading current raid bosses...</p>
+    </div>
+    <button id="raidRefreshBtn" type="button">Refresh raids</button>
+  </div>
+
+  <div class="raid-filters">
+    <label>
+      Search Pokémon
+      <input id="raidSearchInput" type="text" placeholder="Rayquaza, Kyogre, Necrozma...">
+    </label>
+
+    <label>
+      Raid tier
+      <select id="raidTierFilter">
+        <option value="all">All tiers</option>
+      </select>
+    </label>
+
+    <label>
+      Weather
+      <select id="raidWeatherFilter">
+        <option value="all">All weather</option>
+        <option value="Windy">Windy</option>
+        <option value="Rainy">Rainy</option>
+        <option value="Clear">Clear</option>
+        <option value="Cloudy">Cloudy</option>
+        <option value="Partly Cloudy">Partly Cloudy</option>
+        <option value="Fog">Fog</option>
+        <option value="Snow">Snow</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="raid-table-wrap">
+    <table class="raid-table">
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Pokémon</th>
+          <th>Types</th>
+          <th>Weather boost</th>
+          <th>Perfect CP</th>
+          <th>Boosted CP</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="raidTableBody"></tbody>
+    </table>
+  </div>
+
+  <div id="raidCards" class="raid-cards"></div>
+</section>
+
+<article class="article seo-article">
+  <h2>How to use raid weather boosts</h2>
+  <p>Weather boosted raid bosses can be caught at a higher level in Pokémon GO. This does not guarantee better IVs, but it can reduce the amount of Stardust and Candy needed to power up a strong Pokémon later.</p>
+
+  <p>Use the table above to find the current raid boss you care about, then click <strong>Check weather boost</strong>. PogoWeather will search cities where the matching Pokémon GO weather may be active.</p>
+
+  <h2>Important raid weather examples</h2>
+  <p>Rayquaza, Necrozma and Mewtwo are linked to Windy weather. Kyogre is linked to Rainy weather. Groudon is linked to Clear weather. Darkrai is linked to Fog weather.</p>
+
+  <h2>Related guides</h2>
+  <div class="internal-links">
+    <a href="/weather-boost-guide">Weather Boost Chart</a>
+    <a href="/gofest-weather">GO Fest Weather Hub</a>
+    <a href="/gofest-raid-weather-boosts">GO Fest Raid Weather Guide</a>
+    <a href="/fr/raids-actuels-pokemon-go">Version française</a>
+  </div>
+</article>
+
+</main>
+<footer class="footer"><div><strong>PogoWeather</strong><p>Outil fan-made pour estimer les boosts météo Pokémon GO.</p></div><div class="footer-links"><a href="/guide">Guide</a><a href="/weather-boost">Météo</a><a href="/best-cities">Villes</a><a href="/privacy">Confidentialité</a><a href="/disclaimer">Disclaimer</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/fr/a-propos">À propos</a><a href="/fr/contact">Contact FR</a><a href="/cookie-policy">Cookie Policy</a><a href="/fr/confidentialite">Confidentialité</a><a href="/fr/politique-cookies">Cookies</a><a href="/pokemon-go-current-raids">Current Raids</a><a href="/fr/raids-actuels-pokemon-go">Raids FR</a></div></footer>
+<script src="/site.js"></script>
+<script type="module" src="/raids.js?v=current-raids-1"></script>
+</body>
+</html>
