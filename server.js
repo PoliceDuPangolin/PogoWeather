@@ -18,7 +18,10 @@ app.set("trust proxy", 1);
 
 app.use(helmet({
   contentSecurityPolicy: false,
-  crossOriginEmbedderPolicy: false
+  crossOriginEmbedderPolicy: false,
+  referrerPolicy: {
+  policy: "strict-origin-when-cross-origin",
+}
 }));
 app.use(cors());
 app.use(compression());
