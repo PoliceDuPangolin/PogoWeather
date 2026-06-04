@@ -186,7 +186,7 @@ function normalizeRaidBoss(item, tierHint = "") {
       item.sprite ||
       (id ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png` : ""),
     perfectCp: extractCp(item, ["perfectCp", "perfectCP", "maxCP", "max_cp", "cp", "cpRange", "normalCp", "normal_cp"]),
-    boostedCp: extractCp(item, ["boostedCp", "boostedCP", "weatherBoostedCp", "weather_boosted_cp", "boosted_cp", "weatherBoostCp"]),
+    boostedCp: String(Number(extractCp(item, ["perfectCp", "perfectCP", "maxCP", "max_cp", "cp", "cpRange", "normalCp", "normal_cp"])*1.2501)),
     shiny: Boolean(item.shiny || item.canBeShiny || item.shinyAvailable),
     rawTier: String(tierHint || item.raidLevel || item.raid_level || item.tier || "")
   };
