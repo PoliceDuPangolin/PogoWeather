@@ -15,7 +15,7 @@ const POKEMON_LIST_PATH = path.join(
 const VISUAL_CROSSING_API_KEY = process.env.VISUAL_CROSSING_API_KEY || "";
 
 const DEFAULT_CITIES = [
-  { name: "Tokyo - Shibuya", country: "Japon", lat: 35.6595, lon: 139.7006 },
+ { name: "Tokyo - Shibuya", country: "Japon", lat: 35.6595, lon: 139.7006 },
   {
     name: "New York - Central Park",
     country: "États-Unis",
@@ -140,6 +140,67 @@ function cacheSet(cache, key, value, ttl) {
     value,
     expiresAt: Date.now() + ttl,
   });
+}
+
+const WEATHER_FETCH_TIMEOUT_MS = 15000;
+
+async function fetchJsonWithRetry(url, label, retries = 2) {
+  let lastError = null;
+
+  for (let attempt = 1; attempt <= retries; attempt += 1) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), WEATHER_FETCH_TIMEOUT_MS);
+
+    try {
+      const res = await fetch(url, {
+        signal: controller.signal,
+        headers: {
+          Accept: "application/json",
+          "User-Agent": "PogoWeather/1.0 contact@pogoweather.com",
+        },
+      });
+
+      clearTimeout(timeout);
+
+      if (!res.ok) {
+        const body = await res.text().catch(() => "");
+
+        const error = new Error(
+          `${label} indisponible (${res.status}) ${body.slice(0, 200)}`
+        );
+
+        error.status = res.status;
+        throw error;
+      }
+
+      return await res.json();
+    } catch (error) {
+      clearTimeout(timeout);
+      lastError = error;
+
+      console.error(`${label} failed attempt ${attempt}/${retries}`, {
+        message: error.message,
+        code: error.cause?.code,
+        status: error.status,
+      });
+
+      const shouldRetry =
+        error.name === "AbortError" ||
+        error.cause?.code === "UND_ERR_CONNECT_TIMEOUT" ||
+        error.status === 502 ||
+        error.status === 503 ||
+        error.status === 504 ||
+        error.status === 429;
+
+      if (!shouldRetry || attempt === retries) {
+        throw error;
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 800 * attempt));
+    }
+  }
+
+  throw lastError || new Error(`${label} failed`);
 }
 
 export function addCustomCityValidation(city) {
@@ -327,7 +388,7 @@ cityResults.push(...partial);
 
 if (allUnavailable) {
   const firstError =
-    cityResults[0]?.error ||
+    cityResults[0] ||
     cityResults[0]?.points?.[0]?.meteoPublic?.error ||
     "Erreur météo inconnue";
 
@@ -499,9 +560,17 @@ async function fetchForecastTimeline(lat, lon, hours) {
     `https://api.open-meteo.com/v1/forecast?${params.toString()}`,
   );
 
-  if (!res.ok) {
-    throw new Error("Prévision météo indisponible.");
-  }
+if (!res.ok) {
+  const body = await res.text().catch(() => "");
+
+  console.error("Open-Meteo previous-runs error", {
+    status: res.status,
+    statusText: res.statusText,
+    body: body.slice(0, 500),
+  });
+
+  throw new Error(`Previous Runs indisponible (${res.status})`);
+}
 
   const data = await res.json();
   const hourly = data.hourly;
@@ -934,16 +1003,29 @@ function createCityGrid(city) {
 }
 
 async function fetchWeatherPack(lat, lon, previousDayMode) {
-  const current = await fetchCurrentForecast(lat, lon);
-
+  let current = null;
   let previous = null;
+  let currentError = null;
+  let previousError = null;
+
+  try {
+    current = await fetchCurrentForecast(lat, lon);
+  } catch (error) {
+    currentError = error;
+    console.error("Current forecast failed", lat, lon, error.message);
+  }
 
   if (previousDayMode) {
     try {
       previous = await fetchPreviousDayForecast(lat, lon);
-    } catch {
-      previous = null;
+    } catch (error) {
+      previousError = error;
+      console.error("Previous forecast failed", lat, lon, error.message);
     }
+  }
+
+  if (!current && !previous) {
+    throw currentError || previousError || new Error("Aucune donnée météo disponible.");
   }
 
   return {
@@ -981,15 +1063,11 @@ async function fetchPreviousDayForecast(lat, lon) {
     hourly: variables,
   });
 
-  const res = await fetch(
-    `https://previous-runs-api.open-meteo.com/v1/forecast?${params.toString()}`,
-  );
-
-  if (!res.ok) {
-    throw new Error("Previous Runs indisponible.");
-  }
-
-  const data = await res.json();
+ const data = await fetchJsonWithRetry(
+  `https://previous-runs-api.open-meteo.com/v1/forecast?${params.toString()}`,
+  "Open-Meteo previous-runs",
+  2
+);
 
   const meteo = pickPreviousDayHourlyData(data.hourly);
 
@@ -1027,15 +1105,11 @@ async function fetchCurrentForecast(lat, lon) {
     hourly: variables,
   });
 
-  const res = await fetch(
-    `https://api.open-meteo.com/v1/forecast?${params.toString()}`,
-  );
-
-  if (!res.ok) {
-    throw new Error("Erreur météo.");
-  }
-
-  const data = await res.json();
+const data = await fetchJsonWithRetry(
+  `https://api.open-meteo.com/v1/forecast?${params.toString()}`,
+  "Open-Meteo current",
+  2
+);
 
   let meteo = pickCurrentHourlyData(data.hourly);
 
@@ -1358,6 +1432,19 @@ function estimatePokemonWeather(w) {
 function estimateHybridPokemonWeather(pack) {
   const previous = pack.previous;
   const current = pack.current;
+
+  if (!current && !previous) {
+    throw new Error("Aucune météo exploitable.");
+  }
+
+  if (!current && previous) {
+    const previousWeather = estimatePokemonWeather(previous);
+
+    return {
+      weather: previousWeather,
+      reason: "current forecast unavailable, previous forecast fallback",
+    };
+  }
 
   const previousWeather = previous ? estimatePokemonWeather(previous) : null;
   const currentWeather = estimatePokemonWeather(current);
