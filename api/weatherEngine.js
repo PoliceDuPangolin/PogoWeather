@@ -234,6 +234,23 @@ export async function searchWeatherBoost({
     cityResults.push(...partial);
   }
 
+  const allUnavailable =
+  cityResults.length > 0 &&
+  cityResults.every((city) =>
+    (city.points || []).every((point) => point.pogoWeather === "Unknown")
+  );
+
+if (allUnavailable) {
+  const firstError =
+    cityResults[0]?.error ||
+    cityResults[0]?.points?.[0]?.meteoPublic?.error ||
+    "Erreur météo inconnue";
+
+  throw new Error(`Toutes les requêtes météo ont échoué : ${firstError}`);
+}
+
+
+
   cityResults.sort((a, b) => {
     if (b.isBoosted !== a.isBoosted) {
       return Number(b.isBoosted) - Number(a.isBoosted);
@@ -301,6 +318,21 @@ const partial = await Promise.all(
 
 cityResults.push(...partial);
   }
+
+  const allUnavailable =
+  cityResults.length > 0 &&
+  cityResults.every((city) =>
+    (city.points || []).every((point) => point.pogoWeather === "Unknown")
+  );
+
+if (allUnavailable) {
+  const firstError =
+    cityResults[0]?.error ||
+    cityResults[0]?.points?.[0]?.meteoPublic?.error ||
+    "Erreur météo inconnue";
+
+  throw new Error(`Toutes les requêtes météo ont échoué : ${firstError}`);
+}
 
   cityResults.sort((a, b) => {
     if (b.boostedHours !== a.boostedHours)
