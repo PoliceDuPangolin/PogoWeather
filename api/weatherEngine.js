@@ -216,14 +216,19 @@ export async function searchWeatherBoost({
     const batch = cities.slice(i, i + batchSize);
 
     const partial = await Promise.all(
-      batch.map((city) =>
-        analyzeCity({
-          city,
-          targetWeathers,
-          preciseMode,
-          previousDayMode,
-        }),
-      ),
+      batch.map(async (city) => {
+        try {
+          return await analyzeCity({
+            city,
+            targetWeathers,
+            preciseMode,
+            previousDayMode,
+          });
+        } catch (error) {
+          console.error("City weather analysis failed", city?.name, error);
+          return buildFailedCityResult(city, error);
+        }
+      }),
     );
 
     cityResults.push(...partial);
@@ -253,7 +258,6 @@ export async function searchWeatherBoost({
   };
 }
 
-
 export async function searchWeatherForecast({
   pokemonName,
   customCities = [],
@@ -280,24 +284,34 @@ export async function searchWeatherForecast({
   for (let i = 0; i < cities.length; i += batchSize) {
     const batch = cities.slice(i, i + batchSize);
 
-    const partial = await Promise.all(
-      batch.map((city) =>
-        analyzeForecastCity({
-          city,
-          targetWeathers,
-          hours,
-        }),
-      ),
-    );
+const partial = await Promise.all(
+  batch.map(async (city) => {
+    try {
+      return await analyzeForecastCity({
+        city,
+        targetWeathers,
+        hours,
+      });
+    } catch (error) {
+      console.error("City forecast analysis failed", city?.name, error);
+      return buildFailedForecastCityResult(city, hours, error);
+    }
+  }),
+);
 
-    cityResults.push(...partial);
+cityResults.push(...partial);
   }
 
   cityResults.sort((a, b) => {
-    if (b.boostedHours !== a.boostedHours) return b.boostedHours - a.boostedHours;
+    if (b.boostedHours !== a.boostedHours)
+      return b.boostedHours - a.boostedHours;
 
-    const aNext = a.nextBoostTime ? new Date(a.nextBoostTime).getTime() : Infinity;
-    const bNext = b.nextBoostTime ? new Date(b.nextBoostTime).getTime() : Infinity;
+    const aNext = a.nextBoostTime
+      ? new Date(a.nextBoostTime).getTime()
+      : Infinity;
+    const bNext = b.nextBoostTime
+      ? new Date(b.nextBoostTime).getTime()
+      : Infinity;
 
     return aNext - bNext;
   });
@@ -317,7 +331,6 @@ export async function searchWeatherForecast({
       "Forecast mode is indicative only. Pokémon GO may use different forecast runs and hourly weather blocks.",
   };
 }
-
 
 function resolveForecastCity(selectedCity, allForecastCities) {
   if (!selectedCity) {
@@ -396,7 +409,9 @@ async function analyzeForecastCity({ city, targetWeathers, hours }) {
 
   const bestWindows = buildBestBoostWindows(timeline);
   const dailySummary = buildDailyForecastSummary(timeline);
-  const dominantWeather = voteWeatherFromStrings(timeline.map((hour) => hour.pogoWeather));
+  const dominantWeather = voteWeatherFromStrings(
+    timeline.map((hour) => hour.pogoWeather),
+  );
   const nextBoost = timeline.find((hour) => hour.isBoosted);
 
   return {
@@ -511,7 +526,9 @@ function findLocalCurrentHourIndex(times, utcOffsetSeconds) {
     .toISOString()
     .slice(0, 13);
 
-  const exactIndex = times.findIndex((time) => String(time).slice(0, 13) === localNow);
+  const exactIndex = times.findIndex(
+    (time) => String(time).slice(0, 13) === localNow,
+  );
 
   if (exactIndex !== -1) return exactIndex;
 
@@ -519,7 +536,9 @@ function findLocalCurrentHourIndex(times, utcOffsetSeconds) {
   let bestDiff = Infinity;
 
   times.forEach((time, index) => {
-    const diff = Math.abs(new Date(`${time}:00Z`) - new Date(`${localNow}:00Z`));
+    const diff = Math.abs(
+      new Date(`${time}:00Z`) - new Date(`${localNow}:00Z`),
+    );
 
     if (diff < bestDiff) {
       bestDiff = diff;
@@ -618,9 +637,7 @@ function buildBestBoostWindows(timeline) {
 
   if (current) windows.push(current);
 
-  return windows
-    .sort((a, b) => b.hours - a.hours)
-    .slice(0, 5);
+  return windows.sort((a, b) => b.hours - a.hours).slice(0, 5);
 }
 
 function buildDailyForecastSummary(timeline) {
@@ -647,7 +664,9 @@ function buildDailyForecastSummary(timeline) {
   }
 
   return [...days.values()].map((day) => {
-    const dominantWeather = Object.entries(day.weathers).sort((a, b) => b[1] - a[1])[0]?.[0] || "Unknown";
+    const dominantWeather =
+      Object.entries(day.weathers).sort((a, b) => b[1] - a[1])[0]?.[0] ||
+      "Unknown";
 
     return {
       date: day.date,
@@ -669,7 +688,9 @@ function voteWeatherFromStrings(weathers) {
     counts[weather] = (counts[weather] || 0) + 1;
   }
 
-  return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] || "Unknown";
+  return (
+    Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] || "Unknown"
+  );
 }
 
 async function getPokemonData(rawName) {
@@ -703,7 +724,9 @@ async function getPokemonData(rawName) {
     id: match.id,
     name: match.name,
     frName: match.frName,
-    image: match.image || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${match.id}.png`,
+    image:
+      match.image ||
+      `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${match.id}.png`,
     types: data.types.map((t) => t.type.name),
     isMega: Boolean(match.isMega),
     baseName: match.baseName || null,
@@ -787,6 +810,40 @@ async function analyzeCity({
     totalPoints,
     isBoosted: targetVotes > 0,
     points: pointResults,
+  };
+}
+
+function buildFailedCityResult(city, error) {
+  return {
+    name: city?.name || "Unknown city",
+    country: city?.country || "",
+    lat: Number(city?.lat || 0),
+    lon: Number(city?.lon || 0),
+    dominantWeather: "Unknown",
+    dominantWeatherFr: "Indisponible",
+    confidence: 0,
+    targetVotes: 0,
+    totalPoints: 1,
+    isBoosted: false,
+    hasWeatherError: true,
+    error: error.message || "Weather unavailable",
+    points: [
+      {
+        zone: "centre",
+        lat: Number(city?.lat || 0),
+        lon: Number(city?.lon || 0),
+        meteoPublic: {
+          source: "Unavailable",
+          error: error.message || "Weather unavailable",
+          decisionReason: "weather API unavailable",
+          current: null,
+          previous: null,
+        },
+        pogoWeather: "Unknown",
+        pogoWeatherFr: "Indisponible",
+        isTarget: false,
+      },
+    ],
   };
 }
 
@@ -1092,8 +1149,8 @@ function pickCurrentHourlyData(hourly) {
 function findCurrentHourIndex(times) {
   const currentHourKey = new Date().toISOString().slice(0, 13);
 
-  const exactIndex = times.findIndex((time) =>
-    String(time).slice(0, 13) === currentHourKey
+  const exactIndex = times.findIndex(
+    (time) => String(time).slice(0, 13) === currentHourKey,
   );
 
   if (exactIndex !== -1) {
@@ -1105,7 +1162,7 @@ function findCurrentHourIndex(times) {
 
   times.forEach((time, index) => {
     const diff = Math.abs(
-      new Date(`${time}:00Z`) - new Date(`${currentHourKey}:00Z`)
+      new Date(`${time}:00Z`) - new Date(`${currentHourKey}:00Z`),
     );
 
     if (diff < bestDiff) {
