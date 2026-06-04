@@ -6148,5 +6148,389 @@
     "name": "Pecharunt",
     "frName": "Pêchaminus",
     "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1025.png"
+  },
+  {
+    "id": 10033,
+    "name": "Mega Venusaur",
+    "frName": "Méga-Florizarre",
+    "baseName": "Venusaur",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10033.png",
+    "isMega": true
+  },
+  {
+    "id": 10034,
+    "name": "Mega Charizard X",
+    "frName": "Méga-Dracaufeu X",
+    "baseName": "Charizard",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10034.png",
+    "isMega": true
+  },
+  {
+    "id": 10035,
+    "name": "Mega Charizard Y",
+    "frName": "Méga-Dracaufeu Y",
+    "baseName": "Charizard",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10035.png",
+    "isMega": true
+  },
+  {
+    "id": 10036,
+    "name": "Mega Blastoise",
+    "frName": "Méga-Tortank",
+    "baseName": "Blastoise",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10036.png",
+    "isMega": true
+  },
+  {
+    "id": 10037,
+    "name": "Mega Alakazam",
+    "frName": "Méga-Alakazam",
+    "baseName": "Alakazam",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10037.png",
+    "isMega": true
+  },
+  {
+    "id": 10038,
+    "name": "Mega Gengar",
+    "frName": "Méga-Ectoplasma",
+    "baseName": "Gengar",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10038.png",
+    "isMega": true
+  },
+  {
+    "id": 10039,
+    "name": "Mega Kangaskhan",
+    "frName": "Méga-Kangourex",
+    "baseName": "Kangaskhan",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10039.png",
+    "isMega": true
+  },
+  {
+    "id": 10040,
+    "name": "Mega Pinsir",
+    "frName": "Méga-Scarabrute",
+    "baseName": "Pinsir",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10040.png",
+    "isMega": true
+  },
+  {
+    "id": 10041,
+    "name": "Mega Gyarados",
+    "frName": "Méga-Léviator",
+    "baseName": "Gyarados",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10041.png",
+    "isMega": true
+  },
+  {
+    "id": 10042,
+    "name": "Mega Aerodactyl",
+    "frName": "Méga-Ptéra",
+    "baseName": "Aerodactyl",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10042.png",
+    "isMega": true
+  },
+  {
+    "id": 10043,
+    "name": "Mega Mewtwo X",
+    "frName": "Méga-Mewtwo X",
+    "baseName": "Mewtwo",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10043.png",
+    "isMega": true
+  },
+  {
+    "id": 10044,
+    "name": "Mega Mewtwo Y",
+    "frName": "Méga-Mewtwo Y",
+    "baseName": "Mewtwo",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10044.png",
+    "isMega": true
+  },
+  {
+    "id": 10045,
+    "name": "Mega Ampharos",
+    "frName": "Méga-Pharamp",
+    "baseName": "Ampharos",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10045.png",
+    "isMega": true
+  },
+  {
+    "id": 10046,
+    "name": "Mega Scizor",
+    "frName": "Méga-Cizayox",
+    "baseName": "Scizor",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10046.png",
+    "isMega": true
+  },
+  {
+    "id": 10047,
+    "name": "Mega Heracross",
+    "frName": "Méga-Scarhino",
+    "baseName": "Heracross",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10047.png",
+    "isMega": true
+  },
+  {
+    "id": 10048,
+    "name": "Mega Houndoom",
+    "frName": "Méga-Démolosse",
+    "baseName": "Houndoom",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10048.png",
+    "isMega": true
+  },
+  {
+    "id": 10049,
+    "name": "Mega Tyranitar",
+    "frName": "Méga-Tyranocif",
+    "baseName": "Tyranitar",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10049.png",
+    "isMega": true
+  },
+  {
+    "id": 10050,
+    "name": "Mega Blaziken",
+    "frName": "Méga-Braségali",
+    "baseName": "Blaziken",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10050.png",
+    "isMega": true
+  },
+  {
+    "id": 10051,
+    "name": "Mega Gardevoir",
+    "frName": "Méga-Gardevoir",
+    "baseName": "Gardevoir",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10051.png",
+    "isMega": true
+  },
+  {
+    "id": 10052,
+    "name": "Mega Mawile",
+    "frName": "Méga-Mysdibule",
+    "baseName": "Mawile",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10052.png",
+    "isMega": true
+  },
+  {
+    "id": 10053,
+    "name": "Mega Aggron",
+    "frName": "Méga-Galeking",
+    "baseName": "Aggron",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10053.png",
+    "isMega": true
+  },
+  {
+    "id": 10054,
+    "name": "Mega Medicham",
+    "frName": "Méga-Charmina",
+    "baseName": "Medicham",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10054.png",
+    "isMega": true
+  },
+  {
+    "id": 10055,
+    "name": "Mega Manectric",
+    "frName": "Méga-Élecsprint",
+    "baseName": "Manectric",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10055.png",
+    "isMega": true
+  },
+  {
+    "id": 10056,
+    "name": "Mega Banette",
+    "frName": "Méga-Branette",
+    "baseName": "Banette",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10056.png",
+    "isMega": true
+  },
+  {
+    "id": 10057,
+    "name": "Mega Absol",
+    "frName": "Méga-Absol",
+    "baseName": "Absol",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10057.png",
+    "isMega": true
+  },
+  {
+    "id": 10058,
+    "name": "Mega Garchomp",
+    "frName": "Méga-Carchacrok",
+    "baseName": "Garchomp",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10058.png",
+    "isMega": true
+  },
+  {
+    "id": 10059,
+    "name": "Mega Lucario",
+    "frName": "Méga-Lucario",
+    "baseName": "Lucario",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10059.png",
+    "isMega": true
+  },
+  {
+    "id": 10060,
+    "name": "Mega Abomasnow",
+    "frName": "Méga-Blizzaroi",
+    "baseName": "Abomasnow",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10060.png",
+    "isMega": true
+  },
+  {
+    "id": 10062,
+    "name": "Mega Latias",
+    "frName": "Méga-Latias",
+    "baseName": "Latias",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10062.png",
+    "isMega": true
+  },
+  {
+    "id": 10063,
+    "name": "Mega Latios",
+    "frName": "Méga-Latios",
+    "baseName": "Latios",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10063.png",
+    "isMega": true
+  },
+  {
+    "id": 10064,
+    "name": "Mega Swampert",
+    "frName": "Méga-Laggron",
+    "baseName": "Swampert",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10064.png",
+    "isMega": true
+  },
+  {
+    "id": 10065,
+    "name": "Mega Sceptile",
+    "frName": "Méga-Jungko",
+    "baseName": "Sceptile",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10065.png",
+    "isMega": true
+  },
+  {
+    "id": 10066,
+    "name": "Mega Sableye",
+    "frName": "Méga-Ténéfix",
+    "baseName": "Sableye",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10066.png",
+    "isMega": true
+  },
+  {
+    "id": 10067,
+    "name": "Mega Altaria",
+    "frName": "Méga-Altaria",
+    "baseName": "Altaria",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10067.png",
+    "isMega": true
+  },
+  {
+    "id": 10068,
+    "name": "Mega Gallade",
+    "frName": "Méga-Gallame",
+    "baseName": "Gallade",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10068.png",
+    "isMega": true
+  },
+  {
+    "id": 10069,
+    "name": "Mega Audino",
+    "frName": "Méga-Nanméouïe",
+    "baseName": "Audino",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10069.png",
+    "isMega": true
+  },
+  {
+    "id": 10070,
+    "name": "Mega Sharpedo",
+    "frName": "Méga-Sharpedo",
+    "baseName": "Sharpedo",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10070.png",
+    "isMega": true
+  },
+  {
+    "id": 10071,
+    "name": "Mega Slowbro",
+    "frName": "Méga-Flagadoss",
+    "baseName": "Slowbro",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10071.png",
+    "isMega": true
+  },
+  {
+    "id": 10072,
+    "name": "Mega Steelix",
+    "frName": "Méga-Steelix",
+    "baseName": "Steelix",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10072.png",
+    "isMega": true
+  },
+  {
+    "id": 10073,
+    "name": "Mega Pidgeot",
+    "frName": "Méga-Roucarnage",
+    "baseName": "Pidgeot",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10073.png",
+    "isMega": true
+  },
+  {
+    "id": 10074,
+    "name": "Mega Glalie",
+    "frName": "Méga-Oniglali",
+    "baseName": "Glalie",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10074.png",
+    "isMega": true
+  },
+  {
+    "id": 10075,
+    "name": "Mega Diancie",
+    "frName": "Méga-Diancie",
+    "baseName": "Diancie",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10075.png",
+    "isMega": true
+  },
+  {
+    "id": 10076,
+    "name": "Mega Metagross",
+    "frName": "Méga-Métalosse",
+    "baseName": "Metagross",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10076.png",
+    "isMega": true
+  },
+  {
+    "id": 10079,
+    "name": "Mega Rayquaza",
+    "frName": "Méga-Rayquaza",
+    "baseName": "Rayquaza",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10079.png",
+    "isMega": true
+  },
+  {
+    "id": 10087,
+    "name": "Mega Camerupt",
+    "frName": "Méga-Camérupt",
+    "baseName": "Camerupt",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10087.png",
+    "isMega": true
+  },
+  {
+    "id": 10088,
+    "name": "Mega Lopunny",
+    "frName": "Méga-Lockpin",
+    "baseName": "Lopunny",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10088.png",
+    "isMega": true
+  },
+  {
+    "id": 10089,
+    "name": "Mega Salamence",
+    "frName": "Méga-Drattak",
+    "baseName": "Salamence",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10089.png",
+    "isMega": true
+  },
+  {
+    "id": 10090,
+    "name": "Mega Beedrill",
+    "frName": "Méga-Dardargnan",
+    "baseName": "Beedrill",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10090.png",
+    "isMega": true
   }
 ]

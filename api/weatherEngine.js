@@ -703,8 +703,10 @@ async function getPokemonData(rawName) {
     id: match.id,
     name: match.name,
     frName: match.frName,
-    image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${match.id}.png`,
+    image: match.image || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${match.id}.png`,
     types: data.types.map((t) => t.type.name),
+    isMega: Boolean(match.isMega),
+    baseName: match.baseName || null,
   };
 
   cacheSet(pokemonCache, normalizedName, pokemon, POKEMON_CACHE_TTL_MS);

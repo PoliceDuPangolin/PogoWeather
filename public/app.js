@@ -921,6 +921,36 @@ function track(name, params = {}) {
   }
 }
 
+
+function getInitialUrlState() {
+  const params = new URLSearchParams(window.location.search);
+
+  const pokemon = params.get("pokemon") || params.get("q") || "";
+  const mode = params.get("mode") || "now";
+  const autoSearch = params.get("autoSearch") === "1" || Boolean(pokemon);
+
+  return {
+    pokemon: pokemon.trim(),
+    mode: ["now", "24h", "7d"].includes(mode) ? mode : "now",
+    autoSearch,
+  };
+}
+
+function applyInitialUrlState() {
+  const state = getInitialUrlState();
+
+  if (!state.pokemon || !pokemonInput) return;
+
+  pokemonInput.value = state.pokemon;
+  setSearchMode(state.mode);
+
+  if (state.autoSearch) {
+    window.setTimeout(() => {
+      searchPokemon();
+    }, 150);
+  }
+}
+
 function bindEvents() {
   languageButtons.forEach((button) => {
     button.addEventListener("click", () => setLanguage(button.dataset.lang));
@@ -975,6 +1005,8 @@ function boot() {
   if (forecastStatus && !lastSearch) {
     forecastStatus.textContent = copy("forecastHint");
   }
+
+  applyInitialUrlState();
 
   window.addEventListener("load", initMap);
 }

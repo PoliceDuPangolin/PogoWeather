@@ -49,6 +49,26 @@ if (raidTool) {
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
 
+  function normalizeSearchUrl(url) {
+    try {
+      const parsed = new URL(url, window.location.origin);
+
+      if (parsed.pathname !== "/") {
+        parsed.pathname = "/";
+      }
+
+      if (!parsed.searchParams.get("mode")) {
+        parsed.searchParams.set("mode", "now");
+      }
+
+      parsed.searchParams.set("autoSearch", "1");
+
+      return `${parsed.pathname}${parsed.search}`;
+    } catch {
+      return url;
+    }
+  }
+
   const normalize = (value) =>
     String(value || "")
       .toLowerCase()
@@ -113,11 +133,14 @@ if (raidTool) {
     tableBody.innerHTML = raids.map((raid) => {
       const name = getDisplayName(raid);
       const img = raid.image ? `<img class="raid-sprite" src="${escapeHtml(raid.image)}" alt="">` : "";
-      const url = `/?pokemon=${encodeURIComponent(raid.name)}`;
+      const searchPokemonName = raid.searchName || raid.name;
+      const url = normalizeSearchUrl(
+        raid.searchUrl || `/?pokemon=${encodeURIComponent(searchPokemonName)}&mode=now&autoSearch=1`,
+      );
 
       return `<tr>
         <td><strong>${escapeHtml(raid.tier || "Raid")}</strong></td>
-        <td><div class="raid-name">${img}<span>${escapeHtml(name)}</span>${raid.shiny ? '<span class="shiny-badge">★</span>' : ""}</div></td>
+        <td><div class="raid-name">${img}<span>${escapeHtml(name)}</span>${raid.isMega ? '<span class="mega-badge">MEGA</span>' : ""}${raid.shiny ? '<span class="shiny-badge">★</span>' : ""}</div></td>
         <td>${labelTypes(raid) || "N/A"}</td>
         <td>${labelWeatherBoosts(raid) || "N/A"}</td>
         <td>${escapeHtml(raid.perfectCp || "N/A")}</td>
@@ -129,13 +152,16 @@ if (raidTool) {
     cardsEl.innerHTML = raids.map((raid) => {
       const name = getDisplayName(raid);
       const img = raid.image ? `<img class="raid-card-img" src="${escapeHtml(raid.image)}" alt="">` : "";
-      const url = `/?pokemon=${encodeURIComponent(raid.name)}`;
+      const searchPokemonName = raid.searchName || raid.name;
+      const url = normalizeSearchUrl(
+        raid.searchUrl || `/?pokemon=${encodeURIComponent(searchPokemonName)}&mode=now&autoSearch=1`,
+      );
 
       return `<article class="raid-card">
         <div class="raid-card-head">
           ${img}
           <div>
-            <strong>${escapeHtml(name)}</strong>
+            <strong>${escapeHtml(name)} ${raid.isMega ? '<span class="mega-badge">MEGA</span>' : ""}</strong>
             <span>${escapeHtml(raid.tier || "Raid")}</span>
           </div>
         </div>

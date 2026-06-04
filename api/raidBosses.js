@@ -186,7 +186,7 @@ function normalizeRaidBoss(item, tierHint = "") {
       item.sprite ||
       (id ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png` : ""),
     perfectCp: extractCp(item, ["perfectCp", "perfectCP", "maxCP", "max_cp", "cp", "cpRange", "normalCp", "normal_cp"]),
-    boostedCp: String(Math.ceil(Number(extractCp(item, ["perfectCp", "perfectCP", "maxCP", "max_cp", "cp", "cpRange", "normalCp", "normal_cp"]).split("-")[0]*1.2501))) + " - " + String(Math.ceil(Number(extractCp(item, ["perfectCp", "perfectCP", "maxCP", "max_cp", "cp", "cpRange", "normalCp", "normal_cp"]).split("-")[1]*1.2501))),
+    boostedCp: extractCp(item, ["boostedCp", "boostedCP", "weatherBoostedCp", "weather_boosted_cp", "boosted_cp", "weatherBoostCp"]),
     shiny: Boolean(item.shiny || item.canBeShiny || item.shinyAvailable),
     rawTier: String(tierHint || item.raidLevel || item.raid_level || item.tier || "")
   };
@@ -250,27 +250,93 @@ async function enrichRaidBosses(raids) {
   const limitedRaids = raids.slice(0, 80);
 
   for (const raid of limitedRaids) {
-    const details = await getPokemonDetails(raid);
+    const megaEntry = findMegaListEntry(raid);
+    const details = megaEntry
+      ? {
+          id: megaEntry.id,
+          name: megaEntry.name,
+          frName: megaEntry.frName,
+          image: megaEntry.image,
+          types: [],
+          isMega: true,
+          baseName: megaEntry.baseName || null,
+        }
+      : await getPokemonDetails(raid);
+
+    if (megaEntry && !details.types.length) {
+      try {
+        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${megaEntry.id}`);
+        if (res.ok) {
+          const data = await res.json();
+          details.types = data.types.map((t) => t.type.name);
+        }
+      } catch {
+        details.types = raid.types || [];
+      }
+    }
 
     const types = raid.types.length ? raid.types : details.types;
     const weatherBoosts = [...new Set(types.flatMap((type) => TYPE_TO_WEATHER[type] || []))];
 
     result.push({
       ...raid,
-      id: raid.id || details.id,
-      name: raid.name || details.name,
-      frName: details.frName || raid.name,
-      image: raid.image || details.image,
+      id: details.id || raid.id,
+      name: megaEntry ? megaEntry.name : raid.name || details.name,
+      frName: megaEntry ? megaEntry.frName : details.frName || raid.name,
+      image: megaEntry ? megaEntry.image : raid.image || details.image,
+      isMega: Boolean(megaEntry || raid.isMega),
+      baseName: megaEntry?.baseName || raid.baseName || details.baseName || null,
+      searchName: megaEntry ? megaEntry.name : raid.name || details.name,
       types,
       typesFr: types.map((type) => TYPE_FR[type] || type),
       weatherBoosts,
       weatherBoostsFr: weatherBoosts.map((weather) => WEATHER_FR[weather] || weather),
-      searchUrl: `/?pokemon=${encodeURIComponent(raid.name || details.name)}`
+      searchUrl: `/?pokemon=${encodeURIComponent(megaEntry ? megaEntry.name : raid.name || details.name)}&mode=now&autoSearch=1`
     });
   }
 
   return sortRaids(result);
 }
+
+
+function inferMegaDisplayName(raid) {
+  const raw = cleanText(`${raid.name || ""} ${raid.form || ""} ${raid.tier || ""} ${raid.rawTier || ""}`);
+  const lower = raw.toLowerCase();
+
+  if (!lower.includes("mega")) {
+    return "";
+  }
+
+  let base = cleanText(raid.name || "")
+    .replace(/^mega\s+/i, "")
+    .replace(/\s+mega$/i, "");
+
+  if (!base) return "";
+
+  if (lower.includes("charizard") && /\bx\b/i.test(raw)) return "Mega Charizard X";
+  if (lower.includes("charizard") && /\by\b/i.test(raw)) return "Mega Charizard Y";
+  if (lower.includes("mewtwo") && /\bx\b/i.test(raw)) return "Mega Mewtwo X";
+  if (lower.includes("mewtwo") && /\by\b/i.test(raw)) return "Mega Mewtwo Y";
+
+  return base.toLowerCase().startsWith("mega ") ? base : `Mega ${base}`;
+}
+
+function findMegaListEntry(raid) {
+  const list = getPokemonSpeciesList();
+  const megaName = inferMegaDisplayName(raid);
+
+  if (!megaName) return null;
+
+  const normalizedMegaName = normalizeText(megaName);
+
+  return (
+    list.find((p) => p.isMega && normalizeText(p.name) === normalizedMegaName) ||
+    list.find((p) => p.isMega && normalizeText(p.frName) === normalizedMegaName) ||
+    list.find((p) => p.isMega && normalizeText(p.name).includes(normalizedMegaName)) ||
+    null
+  );
+}
+
 
 async function getPokemonDetails(raid) {
   const key = normalizeText(raid.name || String(raid.id || ""));
