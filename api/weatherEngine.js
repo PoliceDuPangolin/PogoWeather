@@ -597,7 +597,7 @@ if (!res.ok) {
     body: body.slice(0, 500),
   });
 
-  throw new Error(`Previous Runs indisponible (${res.status})`);
+  throw new Error(`Open-Meteo forecast indisponible (${res.status})`);
 }
 
   const data = await res.json();
