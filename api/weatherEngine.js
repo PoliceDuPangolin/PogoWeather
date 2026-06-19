@@ -380,16 +380,21 @@ const partial = await Promise.all(
 cityResults.push(...partial);
   }
 
-  const allUnavailable =
+const allUnavailable =
   cityResults.length > 0 &&
-  cityResults.every((city) =>
-    (city.points || []).every((point) => point.pogoWeather === "Unknown")
-  );
+  cityResults.every((city) => {
+    if (city.hasWeatherError) return true;
+
+    const timeline = Array.isArray(city.timeline) ? city.timeline : [];
+    return timeline.length > 0 && timeline.every((point) => point.pogoWeather === "Unknown");
+  });
 
 if (allUnavailable) {
   const firstError =
-    cityResults[0] ||
-    cityResults[0]?.points?.[0]?.meteoPublic?.error ||
+    cityResults.find((city) => city.error)?.error ||
+    cityResults
+      .flatMap((city) => Array.isArray(city.timeline) ? city.timeline : [])
+      .find((point) => point?.meteoPublic?.error)?.meteoPublic?.error ||
     "Erreur météo inconnue";
 
   throw new Error(`Toutes les requêtes météo ont échoué : ${firstError}`);
@@ -526,6 +531,29 @@ async function analyzeForecastCity({ city, targetWeathers, hours }) {
     bestWindows,
     dailySummary,
     timeline: timeline.slice(0, hours === 168 ? 48 : 24),
+  };
+}
+
+function buildFailedForecastCityResult(city, hours, error) {
+  return {
+    name: city?.name || "Unknown city",
+    country: city?.country || "",
+    lat: Number(city?.lat || 0),
+    lon: Number(city?.lon || 0),
+    timezone: null,
+    boostedHours: 0,
+    totalHours: hours,
+    confidence: 0,
+    dominantWeather: "Unknown",
+    dominantWeatherFr: "Indisponible",
+    nextBoostTime: null,
+    nextBoostWeather: null,
+    nextBoostWeatherFr: null,
+    bestWindows: [],
+    dailySummary: [],
+    timeline: [],
+    hasWeatherError: true,
+    error: error?.message || "Weather unavailable",
   };
 }
 
@@ -914,7 +942,7 @@ async function analyzeCity({
   };
 }
 
-function buildFailedCityResult(city, error) {
+function iledCityResult(city, error) {
   return {
     name: city?.name || "Unknown city",
     country: city?.country || "",
