@@ -3,11 +3,7 @@
   <link rel="icon" type="image/png" href="/assets/favicon.png" />
   <link rel="apple-touch-icon" href="/assets/logo-192.png" />
   <link rel="manifest" href="/manifest.webmanifest" />
-<<<<<<< HEAD
 <link rel="stylesheet" href="/style.css?v=adsense-20261106"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-=======
-<link rel="stylesheet" href="/style.css?v=raid-check-weather-autosearch-1"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
->>>>>>> origin/main
 <!-- Google Analytics à activer plus tard :
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
@@ -37,21 +33,13 @@ gtag('config', 'G-XXXXXXXXXX');
   <meta name="twitter:image" content="/assets/og-image.png">
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "PogoWeather", "url": "https://pogoweather.com", "logo": "https://pogoweather.com/assets/logo-192.png", "email": "contact@pogoweather.com", "sameAs": ["https://www.tiktok.com/@pogoweather"], "contactPoint": [{"@type": "ContactPoint", "email": "contact@pogoweather.com", "contactType": "customer support", "availableLanguage": ["en", "fr"]}]}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "PogoWeather", "url": "https://pogoweather.com", "potentialAction": {"@type": "SearchAction", "target": "https://pogoweather.com/?pokemon={search_term_string}", "query-input": "required name=search_term_string"}}</script>
-<<<<<<< HEAD
 </head><body><nav class="top-nav"><a href="/" class="brand"><img src="/assets/logo-192.png" alt=""><span>PogoWeather</span></a><div class="nav-links"><a data-nav-key="tool" href="/">Outil</a><a data-nav-key="guide" href="/fr/guide-boost-meteo-pokemon-go">Guide</a><a data-nav-key="forecast" href="/fr/prevision-meteo-pokemon-go">Prévisions</a><a data-nav-key="raids" href="/fr/raids-actuels-pokemon-go">Raids</a><a data-nav-key="method" href="/fr/methode">Sources</a><a data-nav-key="about" href="/fr/a-propos">À propos</a><a data-nav-key="contact" href="/fr/contact">Contact</a></div><details class="mobile-menu"><summary>Menu</summary><div class="mobile-menu-links"><a data-nav-key="tool" href="/">Outil</a><a data-nav-key="guide" href="/fr/guide-boost-meteo-pokemon-go">Guide</a><a data-nav-key="forecast" href="/fr/prevision-meteo-pokemon-go">Prévisions</a><a data-nav-key="raids" href="/fr/raids-actuels-pokemon-go">Raids</a><a data-nav-key="method" href="/fr/methode">Sources</a><a data-nav-key="about" href="/fr/a-propos">À propos</a><a data-nav-key="contact" href="/fr/contact">Contact</a></div></details><div class="nav-actions">
-=======
-</head><body><nav class="top-nav"><a href="/" class="brand"><img src="/assets/logo-192.png" alt=""><span>PogoWeather</span></a><div class="nav-links"><a href="/">Outil</a><a href="/guide">Guide</a><a href="/weather-boost">Météo</a><a href="/best-cities">Villes</a><a href="/privacy">Confidentialité</a><a href="/pokemon-go-current-raids">Current Raids</a><a href="/pokemon-go-weather-forecast">Forecast</a><a href="/gofest-weather">GO Fest</a><a href="/about">About</a><a href="/contact">Contact</a></div><div class="nav-actions">
->>>>>>> origin/main
 <div id="languageToggle" class="language-toggle" role="group" aria-label="Language">
     <button type="button" data-lang="fr">FR</button>
     <button type="button" data-lang="en">EN</button>
   </div>
   <button id="themeToggle" class="theme-btn" type="button" aria-label="Changer le thème">🌙</button>
-<<<<<<< HEAD
 </div></nav><main class="app"><header class="hero"><p class="eyebrow">Outil non officiel Pokémon GO</p><h1>PogoWeather</h1><p class="hero-subtitle">Trouve rapidement les villes où ton Pokémon a le plus de chances d’être boosté météo dans Pokémon GO.</p><p class="warning" data-home-copy="unofficialWarning">Estimation fan-made : ce site n’est pas affilié à Niantic, Nintendo ou The Pokémon Company.</p></header><noscript><p class="warning">La recherche interactive nécessite JavaScript. Les <a href="/fr/guide-boost-meteo-pokemon-go">guides météo</a> restent accessibles sans JavaScript.</p></noscript><section class="card search-card"><h2>Weather Boost Finder</h2><p class="hint">Tape un Pokémon, puis PogoWeather analyse les hotspots configurés côté serveur.</p><label for="pokemonInput">Pokémon</label><div class="search-mode-grid">
-=======
-</div></nav><main class="app"><header class="hero"><p class="eyebrow">Outil non officiel Pokémon GO</p><h1>PogoWeather</h1><p class="hero-subtitle">Trouve rapidement les villes où ton Pokémon a le plus de chances d’être boosté météo dans Pokémon GO.</p><p class="warning">Estimation fan-made : ce site n’est pas affilié à Niantic, Nintendo ou The Pokémon Company.</p></header><section class="card search-card"><h2>Weather Boost Finder</h2><p class="hint">Tape un Pokémon, puis PogoWeather analyse les hotspots configurés côté serveur.</p><label for="pokemonInput">Pokémon</label><div class="search-mode-grid">
->>>>>>> origin/main
   <div class="search-mode-row">
     <label id="searchModeLabel" for="searchMode">Mode d’analyse</label>
     <input id="searchMode" type="hidden" value="now">
@@ -62,11 +50,7 @@ gtag('config', 'G-XXXXXXXXXX');
       </button>
       <button type="button" data-search-mode="24h">
         <strong>24h</strong>
-<<<<<<< HEAD
         <span>Jusqu’à 25 villes</span>
-=======
-        <span>Toutes les villes</span>
->>>>>>> origin/main
       </button>
       <button type="button" data-search-mode="7d">
         <strong>7 jours</strong>
@@ -81,16 +65,11 @@ gtag('config', 'G-XXXXXXXXXX');
     <small>Le mode 7 jours analyse une seule ville pour rester rapide.</small>
   </div>
 </div>
-<<<<<<< HEAD
 <div class="search-box"><input id="pokemonInput" type="text" placeholder="Ex : Rayquaza, Dracaufeu, Pikachu..." autocomplete="off"><button id="searchBtn" type="button">Rechercher</button></div><div id="pokemonSuggestions" class="suggestions"></div><div class="options"><label><input id="useCityGrid" type="checkbox"> <span data-home-copy="preciseLabel">Mode précis : analyse approfondie</span></label><label><input id="usePreviousDayForecast" type="checkbox" checked> <span data-home-copy="previousLabel">Prévision d’hier pour aujourd’hui</span></label></div></section><section class="card city-manager"><h2 data-home-copy="customTitle">Villes personnalisées</h2><p class="hint" data-home-copy="customHint">Enregistrées dans ton navigateur puis envoyées pendant la recherche. Tu peux ajouter jusqu’à 20 villes ; le mode 24 h compare au maximum 25 lieux, villes prédéfinies comprises.</p><div class="city-form"><input id="cityNameInput" data-home-placeholder="cityNamePlaceholder" type="text" placeholder="Nom de la ville" aria-label="Nom de la ville"><input id="cityCountryInput" data-home-placeholder="cityCountryPlaceholder" type="text" placeholder="Pays" aria-label="Pays"><input id="cityLatInput" data-home-placeholder="cityLatPlaceholder" type="number" step="any" placeholder="Latitude" aria-label="Latitude"><input id="cityLonInput" data-home-placeholder="cityLonPlaceholder" type="number" step="any" placeholder="Longitude" aria-label="Longitude"><button id="addCityBtn" data-home-copy="addCity">Ajouter</button></div><div id="cityList" class="city-list"></div></section><section id="selectedPokemon" class="card selected hidden"></section><section class="card"><div class="status-row"><div><h2 data-home-copy="resultsTitle">Résultats</h2><p id="statusText" aria-live="polite">Prêt.</p></div><button id="refreshBtn" type="button">Actualiser maintenant</button></div><div id="loader" class="loader hidden"></div><p class="hint">Données météo : <a href="https://open-meteo.com/">Open-Meteo.com</a> ; données adaptées en estimations de catégories. <a href="/fr/methode">Sources et limites</a>.</p><div id="results" class="results"></div><div id="pager" class="pager"></div></section>
-=======
-<div class="search-box"><input id="pokemonInput" type="text" placeholder="Ex : Rayquaza, Dracaufeu, Pikachu..." autocomplete="off"><button id="searchBtn" type="button">Rechercher</button></div><div id="pokemonSuggestions" class="suggestions"></div><div class="options"><label><input id="useCityGrid" type="checkbox"> Mode précis : centre + nord/sud/est/ouest</label><label><input id="usePreviousDayForecast" type="checkbox" checked> Prévision d’hier pour aujourd’hui</label></div></section><section class="card city-manager"><h2>Villes personnalisées</h2><p class="hint">Elles restent stockées localement dans ton navigateur, puis sont envoyées à l’API seulement pendant la recherche.</p><div class="city-form"><input id="cityNameInput" type="text" placeholder="Nom de la ville"><input id="cityCountryInput" type="text" placeholder="Pays"><input id="cityLatInput" type="number" step="any" placeholder="Latitude"><input id="cityLonInput" type="number" step="any" placeholder="Longitude"><button id="addCityBtn">Ajouter</button></div><div id="cityList" class="city-list"></div></section><section id="selectedPokemon" class="card selected hidden"></section><section class="card"><div class="status-row"><div><h2>Résultats</h2><p id="statusText">Prêt.</p></div><button id="refreshBtn" type="button">Actualiser maintenant</button></div><div id="loader" class="loader hidden"></div><div id="results" class="results"></div><div id="pager" class="pager"></div></section>
->>>>>>> origin/main
 <section id="forecastSection" class="card forecast-section hidden">
   <div class="status-row">
     <div>
       <h2>Prévision de boost météo</h2>
-<<<<<<< HEAD
       <p id="forecastStatus" class="hint" aria-live="polite">La prévision se lance directement avec le mode choisi en haut : Maintenant, 24h ou 7 jours.</p>
     </div>
     </div>
@@ -117,34 +96,3 @@ gtag('config', 'G-XXXXXXXXXX');
 <details lang="en"><summary>English guides</summary><div class="seo-link-grid"><a href="/weather-boost-guide">Weather boost chart</a><a href="/pokemon-go-weather-forecast">Forecast guide</a><a href="/why-pokemon-go-weather-is-wrong">Why weather differs</a><a href="/pokemon-go-current-raids">Raid bosses</a><a href="/best-weather-rayquaza">Rayquaza</a><a href="/best-weather-necrozma">Necrozma</a><a href="/best-weather-kyogre">Kyogre</a><a href="/best-weather-groudon">Groudon</a><a href="/best-weather-darkrai">Darkrai</a><a href="/gofest-weather">GO Fest hub</a><a href="/gofest-live-weather">Event shortcuts</a><a href="/gofest-raid-weather-boosts">Raid weather guide</a><a href="/gofest-windy-weather-guide">Windy weather guide</a><a href="/gofest-weather-preparation-checklist">Event checklist</a><a href="/methodology">Usage and sources</a><a href="/contact">Contact</a></div></details>
 </section>
 </main><footer class="footer"><div><strong>PogoWeather</strong><p>Outil fan-made pour estimer les boosts météo Pokémon GO.</p></div><div class="footer-links"><a href="/fr/guide-boost-meteo-pokemon-go">Guide</a><a href="/fr/prevision-meteo-pokemon-go">Prévisions</a><a href="/fr/methode">Sources</a><a href="/privacy">Confidentialité</a><a href="/disclaimer">Disclaimer</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/fr/a-propos">À propos</a><a href="/fr/contact">Contact FR</a><a href="/cookie-policy">Cookie Policy</a><a href="/fr/confidentialite">Confidentialité</a><a href="/fr/politique-cookies">Cookies</a><a href="/pokemon-go-current-raids">Current Raids</a><a href="/fr/raids-actuels-pokemon-go">Raids FR</a></div></footer><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script type="module" src="/app.js?v=adsense-improvements-20261106"></script></body></html>
-=======
-      <p id="forecastStatus" class="hint">La prévision se lance directement avec le mode choisi en haut : Maintenant, 24h ou 7 jours.</p>
-    </div>
-    </div>
-  <p class="warning">Prévision indicative : Pokémon GO peut utiliser des données météo différentes ou des blocs horaires spécifiques.</p>
-  <div id="forecastResults" class="forecast-results"></div>
-</section>
-<section class="card"><h2>Carte des résultats</h2><p class="hint">Vert = boost probable. Rouge = pas la bonne météo estimée.</p><div class="map-wrap"><div id="map"></div></div></section><section class="card"><h2>Articles utiles</h2><div class="article-grid"><a class="article-card" href="/guide"><strong>Guide des boosts météo</strong><p>Tableau complet des types boostés.</p></a><a class="article-card" href="/windy-weather-rayquaza"><strong>Windy weather & Rayquaza</strong><p>Comprendre pourquoi le vent est recherché.</p></a><a class="article-card" href="/fog-weather"><strong>Fog weather</strong><p>Pourquoi le brouillard est rare et difficile.</p></a><a class="article-card" href="/raid-weather-boost"><strong>Raids et météo</strong><p>Utiliser le boost météo pour les raids.</p></a></div></section><section class="card seo-guides-home"><h2>Pokémon GO Weather Boost Guides</h2><p class="hint">Learn which weather boosts the most important Pokémon and use the guides to find better raid cities during events.</p><div class="seo-link-grid"><a href="/best-weather-rayquaza">Best Weather for Rayquaza</a><a href="/best-weather-necrozma">Best Weather for Necrozma</a><a href="/best-weather-kyogre">Best Weather for Kyogre</a><a href="/best-weather-groudon">Best Weather for Groudon</a><a href="/best-weather-darkrai">Best Weather for Darkrai</a><a href="/weather-boost-guide">Full Weather Boost Guide</a><a href="/pokemon-go-weather-explained">Pokémon GO Weather Explained</a><a href="/why-pokemon-go-weather-is-wrong">Why GO Weather Can Be Wrong</a><a href="/gofest-weather">GO Fest Weather Hub</a><a href="/gofest-live-weather">GO Fest Live Tracker</a></div><h3>Guides en français</h3><div class="seo-link-grid"><a href="/fr/meilleure-meteo-rayquaza">Meilleure météo Rayquaza</a><a href="/fr/meilleure-meteo-necrozma">Meilleure météo Necrozma</a><a href="/fr/meilleure-meteo-kyogre">Meilleure météo Kyogre</a><a href="/fr/guide-boost-meteo-pokemon-go">Guide boost météo Pokémon GO</a><a href="/fr/gofest-meteo">Hub météo GO Fest</a></div></section><section class="card seo-guides-home"><h2>GO Fest Event Articles</h2><p class="hint">Extra guides for event preparation, Windy weather and raid weather boosts.</p><div class="seo-link-grid"><a href="/gofest-raid-weather-boosts">GO Fest Raid Weather Boost Guide</a><a href="/gofest-windy-weather-guide">GO Fest Windy Weather Guide</a><a href="/gofest-weather-preparation-checklist">GO Fest Weather Checklist</a><a href="/fr/gofest-boost-meteo-raids">Guide raids météo GO Fest</a><a href="/fr/gofest-guide-meteo-venteux">Guide météo Venteux GO Fest</a><a href="/fr/gofest-checklist-meteo">Checklist météo GO Fest</a></div></section>
-<section class="card trust-card">
-  <h2>Trust and transparency</h2>
-  <p class="hint">PogoWeather is a fan-made Pokémon GO weather boost tool with clear contact, privacy and cookie information.</p>
-  <div class="seo-link-grid">
-    <a href="/about">About PogoWeather</a>
-    <a href="/contact">Contact</a>
-    <a href="/privacy">Privacy Policy</a>
-    <a href="/cookie-policy">Cookie Policy</a>
-    <a href="https://www.tiktok.com/@pogoweather" target="_blank" rel="noopener noreferrer">TikTok</a>
-  </div>
-</section>
-
-<section class="card seo-guides-home">
-  <h2>Current Pokémon GO Raids</h2>
-  <p class="hint">Check the current raid bosses, their weather boosts and open PogoWeather directly for the Pokémon you want.</p>
-  <div class="seo-link-grid">
-    <a href="/pokemon-go-current-raids">Current Raid Bosses & Weather Boosts</a><a href="/pokemon-go-weather-forecast">Pokémon GO Weather Forecast</a>
-    <a href="/fr/raids-actuels-pokemon-go">Raids actuels Pokémon GO</a>
-  </div>
-</section>
-
-</main><footer class="footer"><div><strong>PogoWeather</strong><p>Outil fan-made pour estimer les boosts météo Pokémon GO.</p></div><div class="footer-links"><a href="/guide">Guide</a><a href="/weather-boost">Météo</a><a href="/best-cities">Villes</a><a href="/privacy">Confidentialité</a><a href="/disclaimer">Disclaimer</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/fr/a-propos">À propos</a><a href="/fr/contact">Contact FR</a><a href="/cookie-policy">Cookie Policy</a><a href="/fr/confidentialite">Confidentialité</a><a href="/fr/politique-cookies">Cookies</a><a href="/pokemon-go-current-raids">Current Raids</a><a href="/fr/raids-actuels-pokemon-go">Raids FR</a></div></footer><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script type="module" src="/app.js?v=raid-check-weather-autosearch-1"></script></body></html>
->>>>>>> origin/main

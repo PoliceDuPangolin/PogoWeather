@@ -39,18 +39,12 @@ let map = null;
 let markersLayer = null;
 let lastData = null;
 let lastSearch = null;
-<<<<<<< HEAD
 let lastForecastData = null;
-=======
->>>>>>> origin/main
 let currentPage = 1;
 let suggestionTimer = null;
 
 const PAGE_SIZE = 9;
-<<<<<<< HEAD
 const MAX_CUSTOM_CITIES = 20;
-=======
->>>>>>> origin/main
 
 const DEFAULT_FORECAST_CITIES = [
   { name: "Tokyo - Shibuya", country: "Japon", lat: 35.6595, lon: 139.7006 },
@@ -72,15 +66,12 @@ const DEFAULT_FORECAST_CITIES = [
 
 const HOME_COPY = {
   fr: {
-<<<<<<< HEAD
     unofficialWarning: "Estimation fan-made : ce site n’est pas affilié à Niantic, Nintendo ou The Pokémon Company.",
     preciseLabel: "Mode précis : analyse approfondie", previousLabel: "Prévision d’hier pour aujourd’hui",
     customTitle: "Villes personnalisées", customHint: "Enregistrées dans ton navigateur puis envoyées pendant la recherche. Tu peux ajouter jusqu’à 20 villes ; le mode 24 h compare au maximum 25 lieux, villes prédéfinies comprises.",
     cityNamePlaceholder: "Nom de la ville", cityCountryPlaceholder: "Pays", cityLatPlaceholder: "Latitude", cityLonPlaceholder: "Longitude", addCity: "Ajouter",
     resultsTitle: "Résultats", mapTitle: "Carte des résultats", mapHint: "La carte concerne le mode Maintenant. Vert = boost estimé ; rouge = météo non correspondante. Confirme toujours dans le jeu.",
     forecastWarning: "Prévision indicative : Pokémon GO peut utiliser des données météo différentes ou des blocs horaires spécifiques.",
-=======
->>>>>>> origin/main
     heroEyebrow: "Outil non officiel Pokémon GO",
     heroSubtitle: "Trouve rapidement les villes où ton Pokémon a le plus de chances d’être boosté météo dans Pokémon GO.",
     searchTitle: "Weather Boost Finder",
@@ -92,11 +83,7 @@ const HOME_COPY = {
     modeNowTitle: "Maintenant",
     modeNowSub: "Météo actuelle",
     mode24Title: "24h",
-<<<<<<< HEAD
     mode24Sub: "Jusqu’à 25 villes",
-=======
-    mode24Sub: "Toutes les villes",
->>>>>>> origin/main
     mode7Title: "7 jours",
     mode7Sub: "1 ville",
     city7Label: "Ville pour la prévision 7 jours",
@@ -114,12 +101,8 @@ const HOME_COPY = {
     forecastReady: "Tu peux maintenant calculer les meilleures fenêtres de boost météo.",
     searchError: "Erreur pendant la recherche.",
     suggestionError: "Suggestions indisponibles.",
-<<<<<<< HEAD
     addCityInvalid: "Indique un nom et des coordonnées valides.",
     addCityLimit: "Tu peux ajouter jusqu’à 20 villes personnalisées.",
-=======
-    addCityInvalid: "Coordonnées invalides.",
->>>>>>> origin/main
     noForecastSearch: "Lance d'abord une recherche Pokémon.",
     forecastLoading: "Calcul des prévisions météo...",
     forecastError: "Erreur prévision météo.",
@@ -129,27 +112,19 @@ const HOME_COPY = {
     next: "Suivant",
     page: "Page",
     boosted: "Boost probable",
-<<<<<<< HEAD
     notBoosted: "Aucun boost estimé",
     confidence: "indice de concordance",
-=======
-    notBoosted: "Pas boosté",
-    confidence: "confiance",
->>>>>>> origin/main
     details: "Détails météo",
     bestWindows: "Meilleures fenêtres",
     noWindow: "Aucune fenêtre boostée détectée.",
   },
   en: {
-<<<<<<< HEAD
     unofficialWarning: "Fan-made estimate: this site is not affiliated with Niantic, Nintendo or The Pokémon Company.",
     preciseLabel: "Precise mode: deeper analysis", previousLabel: "Yesterday’s forecast for today",
     customTitle: "Custom cities", customHint: "Saved in your browser and sent during a search. Add up to 20 cities; 24h mode compares at most 25 locations, including the defaults.",
     cityNamePlaceholder: "City name", cityCountryPlaceholder: "Country", cityLatPlaceholder: "Latitude", cityLonPlaceholder: "Longitude", addCity: "Add",
     resultsTitle: "Results", mapTitle: "Results map", mapHint: "The map is for Now mode. Green = estimated boost; red = no matching weather. Always confirm in-game.",
     forecastWarning: "Indicative forecast: Pokémon GO may use different weather data or time blocks.",
-=======
->>>>>>> origin/main
     heroEyebrow: "Unofficial Pokémon GO tool",
     heroSubtitle: "Quickly find cities where your Pokémon is more likely to be weather boosted in Pokémon GO.",
     searchTitle: "Weather Boost Finder",
@@ -161,11 +136,7 @@ const HOME_COPY = {
     modeNowTitle: "Now",
     modeNowSub: "Current weather",
     mode24Title: "24h",
-<<<<<<< HEAD
     mode24Sub: "Up to 25 cities",
-=======
-    mode24Sub: "All cities",
->>>>>>> origin/main
     mode7Title: "7 days",
     mode7Sub: "1 city",
     city7Label: "City for 7-day forecast",
@@ -183,12 +154,8 @@ const HOME_COPY = {
     forecastReady: "You can now calculate the best weather boost windows.",
     searchError: "Search error.",
     suggestionError: "Suggestions unavailable.",
-<<<<<<< HEAD
     addCityInvalid: "Enter a name and valid coordinates.",
     addCityLimit: "You can add up to 20 custom cities.",
-=======
-    addCityInvalid: "Invalid coordinates.",
->>>>>>> origin/main
     noForecastSearch: "Search a Pokémon first.",
     forecastLoading: "Calculating weather forecast...",
     forecastError: "Weather forecast error.",
@@ -199,11 +166,7 @@ const HOME_COPY = {
     page: "Page",
     boosted: "Likely boost",
     notBoosted: "Not boosted",
-<<<<<<< HEAD
     confidence: "match indicator",
-=======
-    confidence: "confidence",
->>>>>>> origin/main
     details: "Weather details",
     bestWindows: "Best windows",
     noWindow: "No boosted window detected.",
@@ -243,7 +206,6 @@ function setText(selector, value) {
 
 function applyTranslations() {
   const c = HOME_COPY[currentLang] || HOME_COPY.fr;
-<<<<<<< HEAD
   document.querySelectorAll("[data-home-copy]").forEach((el) => {
     if (c[el.dataset.homeCopy]) el.textContent = c[el.dataset.homeCopy];
   });
@@ -265,10 +227,6 @@ function applyTranslations() {
     const item = navCopy[link.dataset.navKey];
     if (item) { link.textContent = item[0]; link.href = item[1]; }
   });
-=======
-
-  document.documentElement.lang = currentLang;
->>>>>>> origin/main
 
   setText(".hero .eyebrow", c.heroEyebrow);
   setText(".hero .hero-subtitle", c.heroSubtitle);
@@ -313,7 +271,6 @@ function setLanguage(lang) {
   currentLang = lang === "en" ? "en" : "fr";
   localStorage.setItem("lang", currentLang);
   applyTranslations();
-<<<<<<< HEAD
   if (lastData) {
     renderPokemon(lastData.pokemon, (currentLang === "en" ? lastData.targetWeathers : lastData.targetWeathersFr) || []);
     renderResultsPage();
@@ -322,8 +279,6 @@ function setLanguage(lang) {
     renderPokemon(lastForecastData.pokemon, (currentLang === "en" ? lastForecastData.targetWeathers : lastForecastData.targetWeathersFr) || []);
     renderForecastResults(lastForecastData);
   }
-=======
->>>>>>> origin/main
 }
 
 function initTheme() {
@@ -354,11 +309,7 @@ function getForecastCityOptions() {
   [...DEFAULT_FORECAST_CITIES, ...customCities].forEach((city) => {
     const lat = Number(city.lat);
     const lon = Number(city.lon);
-<<<<<<< HEAD
     if (!Number.isFinite(lat) || !Number.isFinite(lon) || city.hasWeatherError) return;
-=======
-    if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
->>>>>>> origin/main
 
     const key = `${lat.toFixed(4)},${lon.toFixed(4)}`;
     map.set(key, {
@@ -493,7 +444,6 @@ function renderCityList() {
 function addCustomCity() {
   const name = cityNameInput?.value.trim();
   const country = cityCountryInput?.value.trim() || (currentLang === "en" ? "Custom" : "Personnalisé");
-<<<<<<< HEAD
   const latText = cityLatInput?.value.trim() || "";
   const lonText = cityLonInput?.value.trim() || "";
   const lat = Number(latText);
@@ -504,12 +454,6 @@ function addCustomCity() {
     return;
   }
   if (!name || !latText || !lonText || !Number.isFinite(lat) || !Number.isFinite(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
-=======
-  const lat = Number(cityLatInput?.value);
-  const lon = Number(cityLonInput?.value);
-
-  if (!name || Number.isNaN(lat) || Number.isNaN(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
->>>>>>> origin/main
     alert(copy("addCityInvalid"));
     return;
   }
@@ -546,7 +490,6 @@ async function loadSuggestions(query) {
     const items = Array.isArray(data.suggestions) ? data.suggestions : [];
 
     suggestions.innerHTML = items
-<<<<<<< HEAD
       .map((p) => {
         const name = currentLang === "en" ? p.name : (p.frName || p.name);
         return `<button type="button" class="suggestion" data-name="${escapeHtml(name)}">
@@ -554,15 +497,6 @@ async function loadSuggestions(query) {
           <span><strong>${escapeHtml(name)}</strong><small>${escapeHtml(p.name || "")} #${escapeHtml(p.id || "")}</small></span>
         </button>`;
       })
-=======
-      .map(
-        (p) =>
-          `<button type="button" class="suggestion" data-name="${escapeHtml(p.frName || p.name)}">
-            <img loading="lazy" src="${escapeHtml(p.image)}" alt="${escapeHtml(p.frName || p.name)}">
-            <span><strong>${escapeHtml(p.frName || p.name)}</strong><small>${escapeHtml(p.name || "")} #${escapeHtml(p.id || "")}</small></span>
-          </button>`,
-      )
->>>>>>> origin/main
       .join("");
 
     suggestions.querySelectorAll(".suggestion").forEach((button) => {
@@ -587,10 +521,7 @@ function clearSuggestionsIfOutside(event) {
 }
 
 async function searchPokemon() {
-<<<<<<< HEAD
   if (searchBtn?.disabled) return;
-=======
->>>>>>> origin/main
   try {
     const pokemonName = pokemonInput?.value.trim();
 
@@ -601,7 +532,6 @@ async function searchPokemon() {
 
     const mode = searchMode?.value || "now";
     lastSearch = pokemonName;
-<<<<<<< HEAD
     lastData = null;
     lastForecastData = null;
     currentPage = 1;
@@ -609,10 +539,6 @@ async function searchPokemon() {
     selectedPokemon?.classList.add("hidden");
     renderMap([]);
     setLoading(true);
-=======
-    currentPage = 1;
-    suggestions.innerHTML = "";
->>>>>>> origin/main
 
     if (mode !== "now") {
       if (results) results.innerHTML = "";
@@ -626,10 +552,6 @@ async function searchPokemon() {
       return;
     }
 
-<<<<<<< HEAD
-=======
-    setLoading(true);
->>>>>>> origin/main
     if (results) results.innerHTML = "";
     if (pager) pager.innerHTML = "";
     if (forecastResults) forecastResults.innerHTML = "";
@@ -652,11 +574,7 @@ async function searchPokemon() {
     if (!res.ok) throw new Error(data.error || copy("searchError"));
 
     lastData = data;
-<<<<<<< HEAD
     renderPokemon(data.pokemon, currentLang === "en" ? data.targetWeathers : data.targetWeathersFr);
-=======
-    renderPokemon(data.pokemon, data.targetWeathersFr);
->>>>>>> origin/main
     renderResultsPage();
     renderMap(data.cities || []);
 
@@ -685,7 +603,6 @@ function renderPokemon(p, targetWeathersFr = []) {
   if (!selectedPokemon || !p) return;
 
   selectedPokemon.classList.remove("hidden");
-<<<<<<< HEAD
   const displayName = currentLang === "en" ? p.name : (p.frName || p.name);
   const types = currentLang === "en" ? p.types : (p.typesFr || p.types);
   selectedPokemon.innerHTML = `
@@ -693,13 +610,6 @@ function renderPokemon(p, targetWeathersFr = []) {
     <div>
       <h2>${escapeHtml(displayName)}${currentLang === "fr" && p.name !== displayName ? ` <small>(${escapeHtml(p.name || "")})</small>` : ""}</h2>
       <div>${(types || []).map((type) => `<span class="type-badge">${escapeHtml(type)}</span>`).join("")}</div>
-=======
-  selectedPokemon.innerHTML = `
-    <img loading="lazy" src="${escapeHtml(p.image)}" alt="${escapeHtml(p.frName || p.name)}">
-    <div>
-      <h2>${escapeHtml(p.frName || p.name)} <small>(${escapeHtml(p.name || "")})</small></h2>
-      <div>${(p.typesFr || p.types || []).map((type) => `<span class="type-badge">${escapeHtml(type)}</span>`).join("")}</div>
->>>>>>> origin/main
       <div>${targetWeathersFr.map((weather) => `<span class="weather-badge">${escapeHtml(weather)}</span>`).join("")}</div>
     </div>
   `;
@@ -716,11 +626,7 @@ function renderResultsPage() {
   const start = (currentPage - 1) * PAGE_SIZE;
   const end = start + PAGE_SIZE;
 
-<<<<<<< HEAD
   renderResults(cities.slice(start, end), (currentLang === "en" ? lastData.targetWeathers : lastData.targetWeathersFr) || []);
-=======
-  renderResults(cities.slice(start, end), lastData.targetWeathersFr || []);
->>>>>>> origin/main
 
   if (!pager) return;
 
@@ -744,7 +650,6 @@ function renderResults(cities, targetWeathersFr = []) {
   results.innerHTML = cities
     .map((city) => {
       const coords = `${Number(city.lat).toFixed(4)}, ${Number(city.lon).toFixed(4)}`;
-<<<<<<< HEAD
       if (city.hasWeatherError) {
         const unavailable = currentLang === "en" ? "Weather data unavailable. Please try again." : "Données météo indisponibles. Réessaie plus tard.";
         return `<article class="result-card"><h3>${escapeHtml(city.name)}, ${escapeHtml(city.country)}</h3><p class="hint">${unavailable}</p></article>`;
@@ -764,55 +669,15 @@ function renderResults(cities, targetWeathersFr = []) {
       };
       const details = renderBlock("CURRENT FORECAST", weather.current)
         + renderBlock("PREVIOUS FORECAST", weather.previous);
-=======
-      const details = (city.points || [])
-        .map((p) => {
-          const m = p.meteoPublic || {};
-          const current = m.current || m;
-          const previous = m.previous;
-
-          const renderBlock = (title, data) => {
-            if (!data) return `<div>${title} : N/A</div>`;
-
-            return `<div class="weather-debug-block">
-              <strong>${title}</strong>
-              <div>code météo : ${escapeHtml(String(data.weatherCode ?? "N/A"))}</div>
-              <div>vent : ${escapeHtml(String(data.windSpeed ?? "N/A"))} km/h</div>
-              <div>max vent fenêtre : ${escapeHtml(String(data.windWindowMax ?? "N/A"))} km/h</div>
-              <div>nuages : ${escapeHtml(String(data.cloudCover ?? "N/A"))}%</div>
-              <div>moyenne nuages fenêtre : ${escapeHtml(String(data.cloudWindowAvg ?? "N/A"))}%</div>
-              <div>pluie : ${escapeHtml(String(data.precipitation ?? "N/A"))} mm</div>
-              <div>max pluie fenêtre : ${escapeHtml(String(data.rainWindowMax ?? "N/A"))} mm</div>
-              <div>Provider : ${escapeHtml(data.source || "Unknown")}</div>
-            </div>`;
-          };
-
-          return `<div class="weather-debug-block">
-            <strong>${escapeHtml(p.zone || "zone")} : ${escapeHtml(p.pogoWeatherFr || p.pogoWeather || "N/A")}</strong>
-            <div>Décision : ${escapeHtml(m.decisionReason || "N/A")}</div>
-            ${renderBlock("CURRENT FORECAST", current)}
-            ${renderBlock("PREVIOUS FORECAST", previous)}
-          </div>`;
-        })
-        .join("");
->>>>>>> origin/main
 
       return `<article class="result-card ${city.isBoosted ? "match" : ""}">
         <h3>${escapeHtml(city.name)}, ${escapeHtml(city.country)}</h3>
         <div class="coords">${coords}</div>
-<<<<<<< HEAD
         <div>${currentLang === "en" ? "Estimated weather" : "Météo dominante estimée"} : <strong>${escapeHtml(estimatedWeather || "N/A")}</strong></div>
         <div>${currentLang === "en" ? "Target weather" : "Boost recherché"} : <strong>${targetWeathersFr.map(escapeHtml).join(" / ")}</strong></div>
         <div class="confidence"><span style="--score:${Number(city.confidence || 0)}%"></span></div>
         <strong>${city.isBoosted ? "✅ " + copy("boosted") : "❌ " + copy("notBoosted")} — ${copy("confidence")} ${Number(city.confidence || 0)}%</strong>
         <p class="detail">${currentLang === "en" ? "This indicator is not a verified probability. Check the weather in the game." : "Cet indicateur n’est pas une probabilité vérifiée. Confirme la météo dans le jeu."}</p>
-=======
-        <div>Météo dominante estimée : <strong>${escapeHtml(city.dominantWeatherFr || city.dominantWeather || "N/A")}</strong></div>
-        <div>Boost recherché : <strong>${targetWeathersFr.map(escapeHtml).join(" / ")}</strong></div>
-        <div class="confidence"><span style="--score:${Number(city.confidence || 0)}%"></span></div>
-        <strong>${city.isBoosted ? "✅ " + copy("boosted") : "❌ " + copy("notBoosted")} — ${copy("confidence")} ${Number(city.confidence || 0)}%</strong>
-        <p class="detail">${city.targetVotes ?? 0}/${city.totalPoints ?? 0} point(s) analysé(s) ont la bonne météo.</p>
->>>>>>> origin/main
         <details class="detail"><summary>${copy("details")}</summary>${details}</details>
         <a class="maps-btn" href="https://www.google.com/maps?q=${city.lat},${city.lon}" target="_blank" rel="noopener noreferrer">${copy("maps")}</a>
         <button class="copy-btn" type="button" onclick="copyCoords('${coords}')">${copy("copyCoords")}</button>
@@ -847,11 +712,7 @@ function renderMap(cities = []) {
     const lat = Number(city.lat);
     const lon = Number(city.lon);
 
-<<<<<<< HEAD
     if (!Number.isFinite(lat) || !Number.isFinite(lon) || city.hasWeatherError) return;
-=======
-    if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
->>>>>>> origin/main
 
     const icon = L.divIcon({
       className: "",
@@ -863,11 +724,7 @@ function renderMap(cities = []) {
     L.marker([lat, lon], { icon })
       .addTo(markersLayer)
       .bindPopup(
-<<<<<<< HEAD
         `<strong>${escapeHtml(city.name)}</strong><br>${escapeHtml((currentLang === "en" ? city.dominantWeather : city.dominantWeatherFr) || city.dominantWeather || "N/A")}<br>${Number(city.confidence || 0)}% ${copy("confidence")}<br>${lat.toFixed(4)}, ${lon.toFixed(4)}`,
-=======
-        `<strong>${escapeHtml(city.name)}</strong><br>${escapeHtml(city.dominantWeatherFr || city.dominantWeather || "N/A")}<br>${Number(city.confidence || 0)}% ${copy("confidence")}<br>${lat.toFixed(4)}, ${lon.toFixed(4)}`,
->>>>>>> origin/main
       );
 
     bounds.push([lat, lon]);
@@ -881,15 +738,9 @@ function renderMap(cities = []) {
 window.copyCoords = async (coords) => {
   try {
     await navigator.clipboard.writeText(coords);
-<<<<<<< HEAD
     alert((currentLang === "en" ? "Coordinates copied: " : "Coordonnées copiées : ") + coords);
   } catch {
     prompt(currentLang === "en" ? "Copy the coordinates:" : "Copie les coordonnées :", coords);
-=======
-    alert("Coordonnées copiées : " + coords);
-  } catch {
-    prompt("Copie les coordonnées :", coords);
->>>>>>> origin/main
   }
 };
 
@@ -925,12 +776,8 @@ async function loadForecast(forcedHorizon = null) {
 
     if (!res.ok) throw new Error(data.error || copy("forecastError"));
 
-<<<<<<< HEAD
     lastForecastData = data;
     renderPokemon(data.pokemon, (currentLang === "en" ? data.targetWeathers : data.targetWeathersFr) || []);
-=======
-    renderPokemon(data.pokemon, data.targetWeathersFr || []);
->>>>>>> origin/main
     renderForecastResults(data);
 
     if (forecastStatus) {
@@ -942,18 +789,12 @@ async function loadForecast(forcedHorizon = null) {
           : currentLang === "en"
             ? `24h forecast across ${data.cities?.length || 0} cities.`
             : `Prévision 24h sur ${data.cities?.length || 0} ville(s).`;
-<<<<<<< HEAD
       if (statusText) statusText.textContent = forecastStatus.textContent;
-=======
->>>>>>> origin/main
     }
   } catch (error) {
     console.error(error);
     if (forecastStatus) forecastStatus.textContent = copy("forecastError");
-<<<<<<< HEAD
     if (statusText) statusText.textContent = copy("forecastError");
-=======
->>>>>>> origin/main
     if (forecastResults) {
       forecastResults.innerHTML = `<div class="error">${escapeHtml(error.message || copy("forecastError"))}</div>`;
     }
@@ -967,11 +808,7 @@ function renderForecastResults(data) {
 
   const isSevenDays = data.horizon === "7d";
   const cities = Array.isArray(data.cities) ? data.cities : [];
-<<<<<<< HEAD
   const targetLabel = ((currentLang === "en" ? data.targetWeathers : data.targetWeathersFr) || []).map(escapeHtml).join(" / ");
-=======
-  const targetLabel = (data.targetWeathersFr || []).map(escapeHtml).join(" / ");
->>>>>>> origin/main
 
   const labels =
     currentLang === "en"
@@ -986,11 +823,7 @@ function renderForecastResults(data) {
           maps: "Google Maps",
           dominant: "Most common weather",
           next: "Next possible boost",
-<<<<<<< HEAD
           confidence: "Share of forecast hours",
-=======
-          confidence: "Estimated chance",
->>>>>>> origin/main
         }
       : {
           boostedHours: "Heures boostées",
@@ -1003,7 +836,6 @@ function renderForecastResults(data) {
           maps: "Google Maps",
           dominant: "Météo la plus fréquente",
           next: "Prochain boost possible",
-<<<<<<< HEAD
           confidence: "Part des heures prévues",
         };
 
@@ -1013,14 +845,6 @@ function renderForecastResults(data) {
         const unavailable = currentLang === "en" ? "Forecast unavailable. Please try again." : "Prévision indisponible. Réessaie plus tard.";
         return `<article class="forecast-simple-card"><h3>${escapeHtml(city.name)}</h3><p class="hint">${unavailable}</p></article>`;
       }
-=======
-          confidence: "Chance estimée",
-        };
-
-  forecastResults.innerHTML = cities
-    .slice(0, 12)
-    .map((city) => {
->>>>>>> origin/main
       const boostedHours = Number(city.boostedHours || 0);
       const totalHours = Number(city.totalHours || 0);
       const hasBoost = boostedHours > 0;
@@ -1031,19 +855,11 @@ function renderForecastResults(data) {
         : labels.noBest;
 
       const bestWeather = bestWindow
-<<<<<<< HEAD
         ? `${escapeHtml((currentLang === "en" ? bestWindow.weather : bestWindow.weatherFr) || bestWindow.weather)} · ${bestWindow.hours}h`
         : "";
 
       const nextBoost = city.nextBoostTime
         ? `${formatForecastTime(city.nextBoostTime)} · ${escapeHtml((currentLang === "en" ? city.nextBoostWeather : city.nextBoostWeatherFr) || city.nextBoostWeather)}`
-=======
-        ? `${escapeHtml(bestWindow.weatherFr || bestWindow.weather)} · ${bestWindow.hours}h`
-        : "";
-
-      const nextBoost = city.nextBoostTime
-        ? `${formatForecastTime(city.nextBoostTime)} · ${escapeHtml(city.nextBoostWeatherFr || city.nextBoostWeather)}`
->>>>>>> origin/main
         : labels.noBest;
 
       const timeline = !isSevenDays
@@ -1051,15 +867,9 @@ function renderForecastResults(data) {
             .slice(0, 24)
             .map(
               (h) =>
-<<<<<<< HEAD
                 `<span class="${h.isBoosted ? "on" : ""}" title="${escapeHtml((currentLang === "en" ? h.pogoWeather : h.pogoWeatherFr) || h.pogoWeather)}">
                   <strong>${escapeHtml(h.hour || String(h.time || "").slice(11, 16))}</strong>
                   <small>${h.isBoosted ? "boost" : escapeHtml((currentLang === "en" ? h.pogoWeather : h.pogoWeatherFr) || h.pogoWeather || "")}</small>
-=======
-                `<span class="${h.isBoosted ? "on" : ""}" title="${escapeHtml(h.pogoWeatherFr || h.pogoWeather)}">
-                  <strong>${escapeHtml(h.hour || String(h.time || "").slice(11, 16))}</strong>
-                  <small>${h.isBoosted ? "boost" : escapeHtml(h.pogoWeatherFr || h.pogoWeather || "")}</small>
->>>>>>> origin/main
                 </span>`,
             )
             .join("")}</div>`
@@ -1074,11 +884,7 @@ function renderForecastResults(data) {
                   `<div class="${day.boostedHours ? "on" : ""}">
                     <strong>${formatForecastDate(day.date)}</strong>
                     <span>${day.boostedHours}h boost</span>
-<<<<<<< HEAD
                     <small>${escapeHtml((currentLang === "en" ? day.dominantWeather : day.dominantWeatherFr) || day.dominantWeather || "N/A")}</small>
-=======
-                    <small>${escapeHtml(day.dominantWeatherFr || day.dominantWeather || "N/A")}</small>
->>>>>>> origin/main
                   </div>`,
               )
               .join("")}</div>
@@ -1091,11 +897,7 @@ function renderForecastResults(data) {
               (w) =>
                 `<li>
                   <span>${formatForecastTime(w.start)} → ${formatForecastTime(w.end)}</span>
-<<<<<<< HEAD
                   <strong>${escapeHtml((currentLang === "en" ? w.weather : w.weatherFr) || w.weather)}</strong>
-=======
-                  <strong>${escapeHtml(w.weatherFr || w.weather)}</strong>
->>>>>>> origin/main
                   <em>${w.hours}h</em>
                 </li>`,
             )
@@ -1132,22 +934,14 @@ function renderForecastResults(data) {
 
         ${timeline}
         ${daily}
-<<<<<<< HEAD
         <p class="detail">${currentLang === "en" ? "Local city time" : "Heure locale de la ville"}${city.timezone ? ` (${escapeHtml(city.timezone)})` : ""}. ${currentLang === "en" ? "Window times mark the first and last forecast hours." : "Les bornes des créneaux indiquent la première et la dernière heure prévue."}</p>
-=======
->>>>>>> origin/main
 
         <details class="forecast-simple-details">
           <summary>${labels.details}</summary>
           <div class="forecast-extra-grid">
             <div><span>${labels.next}</span><strong>${nextBoost}</strong></div>
-<<<<<<< HEAD
             <div><span>${labels.dominant}</span><strong>${escapeHtml((currentLang === "en" ? city.dominantWeather : city.dominantWeatherFr) || city.dominantWeather || "N/A")}</strong></div>
             <div><span>${labels.confidence}</span><strong>${Number(city.confidence || 0)}%</strong><small>${currentLang === "en" ? "of analyzed hours; not a probability" : "des heures analysées ; ce n’est pas une probabilité"}</small></div>
-=======
-            <div><span>${labels.dominant}</span><strong>${escapeHtml(city.dominantWeatherFr || city.dominantWeather || "N/A")}</strong></div>
-            <div><span>${labels.confidence}</span><strong>${Number(city.confidence || 0)}%</strong></div>
->>>>>>> origin/main
           </div>
           <ul class="best-window-list">${windows}</ul>
         </details>

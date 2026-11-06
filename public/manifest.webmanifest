@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {
   "name": "PogoWeather",
   "short_name": "PogoWeather",
@@ -19,26 +18,4 @@
       "type": "image/png"
     }
   ]
-=======
-{
-  "name": "PogoWeather",
-  "short_name": "PogoWeather",
-  "description": "Pok\u00e9mon GO Weather Boost Finder",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#f4f6fb",
-  "theme_color": "#2d6cdf",
-  "icons": [
-    {
-      "src": "/assets/logo-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/assets/logo-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
->>>>>>> origin/main
 }
