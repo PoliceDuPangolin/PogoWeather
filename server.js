@@ -5,7 +5,14 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import path from "path";
 import { fileURLToPath } from "url";
-import { searchWeatherBoost, searchWeatherForecast, addCustomCityValidation, getPokemonSuggestions } from "./api/weatherEngine.js";
+
+import {
+  searchWeatherBoost,
+  searchWeatherForecast,
+  addCustomCityValidation,
+  getPokemonSuggestions
+} from "./api/weatherEngine.js";
+
 import { getCurrentRaidBosses } from "./api/raidBosses.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -17,6 +24,10 @@ const isProd = process.env.NODE_ENV === "production";
 
 app.set("trust proxy", 1);
 
+// ==========================================
+// SECURITY
+// ==========================================
+
 app.use(helmet({
   contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false,
@@ -24,16 +35,23 @@ app.use(helmet({
     policy: "strict-origin-when-cross-origin",
   },
 }));
+
 app.use(cors());
 app.use(compression());
 app.use(express.json({ limit: "700kb" }));
+
+// ==========================================
+// RATE LIMITING
+// ==========================================
 
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000,
   limit: 45,
   standardHeaders: "draft-7",
   legacyHeaders: false,
-  message: { error: "Trop de requêtes. Réessaie dans une minute." }
+  message: {
+    error: "Trop de requêtes. Réessaie dans une minute."
+  }
 });
 
 const searchLimiter = rateLimit({
@@ -41,21 +59,38 @@ const searchLimiter = rateLimit({
   limit: 12,
   standardHeaders: "draft-7",
   legacyHeaders: false,
-  message: { error: "Trop de recherches. Attends un peu avant de relancer." }
+  message: {
+    error: "Trop de recherches. Attends un peu avant de relancer."
+  }
 });
+
+// ==========================================
+// TRANSLATIONS
+// ==========================================
 
 app.get("/translations", (req, res) => {
   res.type("application/javascript");
-  res.sendFile(path.join(__dirname, "public", "translations.js"));
+  res.sendFile(
+    path.join(__dirname, "public", "translations.js")
+  );
 });
 
 app.get("/translations.js", (req, res) => {
   res.type("application/javascript");
-  res.sendFile(path.join(__dirname, "public", "translations.js"));
+  res.sendFile(
+    path.join(__dirname, "public", "translations.js")
+  );
 });
+
+// ==========================================
+// API LIMITER
+// ==========================================
 
 app.use("/api", apiLimiter);
 
+// ==========================================
+// SEO REDIRECTS
+// ==========================================
 
 const redirects = {
   "/guide": "/weather-boost-guide",
@@ -72,35 +107,70 @@ for (const [oldPath, newPath] of Object.entries(redirects)) {
   });
 }
 
-app.use(express.static(path.join(__dirname, "public"), {
-  maxAge: isProd ? "7d" : 0,
-  etag: true,
-  lastModified: true
-}));
+// ==========================================
+// STATIC FILES
+// ==========================================
+
+app.use(express.static(
+  path.join(__dirname, "public"),
+  {
+    maxAge: isProd ? "7d" : 0,
+    etag: true,
+    lastModified: true
+  }
+));
+
+// ==========================================
+// API HEALTH
+// ==========================================
 
 app.get("/api/health", (req, res) => {
-  res.json({ ok: true, name: "PogoWeather API", env: process.env.NODE_ENV || "dev" });
+  res.json({
+    ok: true,
+    name: "PogoWeather API",
+    env: process.env.NODE_ENV || "dev"
+  });
 });
+
+// ==========================================
+// POKEMON SUGGESTIONS
+// ==========================================
 
 app.get("/api/pokemon-suggestions", async (req, res) => {
   try {
     const q = String(req.query.q || "");
+
     const suggestions = await getPokemonSuggestions(q);
+
     res.json({ suggestions });
+
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Erreur suggestions Pokémon." });
+
+    res.status(500).json({
+      error: "Erreur suggestions Pokémon."
+    });
   }
 });
 
+// ==========================================
+// CURRENT RAID BOSSES
+// ==========================================
 
 app.get("/api/raid-bosses", async (req, res) => {
   try {
     const data = await getCurrentRaidBosses();
-    res.set("Cache-Control", "public, max-age=1800");
+
+    res.set(
+      "Cache-Control",
+      "public, max-age=1800"
+    );
+
     res.json(data);
+
   } catch (error) {
     console.error(error);
+
     res.status(500).json({
       error: "Unable to fetch current raid bosses.",
       message: error.message || "Raid API unavailable"
@@ -108,69 +178,135 @@ app.get("/api/raid-bosses", async (req, res) => {
   }
 });
 
+// ==========================================
+// PUBLIC WEATHER DATA FILTERING
+// ==========================================
 
-<<<<<<< HEAD
-// Only expose the fields used by the interface. The private model and its
-// decision reasons remain on the server.
+// Only expose the fields used by the interface.
+// The private model and its decision reasons
+// remain on the server.
+
 function basicWeatherDetails(value) {
-  if (!value || typeof value !== "object") return null;
-  const { source, time, weatherCode, windSpeed, cloudCover, precipitation } = value;
-  return { source, time, weatherCode, windSpeed, cloudCover, precipitation };
+  if (!value || typeof value !== "object") {
+    return null;
+  }
+
+  const {
+    source,
+    time,
+    weatherCode,
+    windSpeed,
+    cloudCover,
+    precipitation
+  } = value;
+
+  return {
+    source,
+    time,
+    weatherCode,
+    windSpeed,
+    cloudCover,
+    precipitation
+  };
 }
+
+// ==========================================
+// PUBLIC SEARCH RESULT
+// ==========================================
 
 function publicWeatherResult(data) {
   return {
     ...data,
-    cities: data.cities.map(({ points, targetVotes, totalPoints, ...city }) => {
-      const details = points?.find((point) => point.zone === "centre")?.meteoPublic;
+
+    cities: data.cities.map(({
+      points,
+      targetVotes,
+      totalPoints,
+      ...city
+    }) => {
+
+      const details = points?.find(
+        (point) => point.zone === "centre"
+      )?.meteoPublic;
+
       return {
         ...city,
-        weatherDetails: details ? {
-          current: basicWeatherDetails(details.current),
-          previous: basicWeatherDetails(details.previous),
-        } : null,
+
+        weatherDetails: details
+          ? {
+              current: basicWeatherDetails(
+                details.current
+              ),
+
+              previous: basicWeatherDetails(
+                details.previous
+              )
+            }
+          : null
       };
-    }),
+    })
   };
 }
+
+// ==========================================
+// PUBLIC FORECAST RESULT
+// ==========================================
 
 function publicForecastResult(data) {
   return {
     ...data,
+
     cities: data.cities.map((city) => ({
       ...city,
-      timeline: (city.timeline || []).map(({ meteoPublic, ...hour }) => hour),
-    })),
+
+      timeline: (city.timeline || []).map(
+        ({ meteoPublic, ...hour }) => hour
+      )
+    }))
   };
 }
 
-=======
->>>>>>> origin/main
+// ==========================================
+// WEATHER FORECAST API
+// ==========================================
+
 app.post("/api/forecast", searchLimiter, async (req, res) => {
   try {
     const {
       pokemonName,
       customCities = [],
       horizon = "24h",
-      selectedCity = null,
+      selectedCity = null
     } = req.body || {};
 
-    if (!pokemonName || typeof pokemonName !== "string") {
-      return res.status(400).json({ error: "pokemonName est obligatoire." });
+    if (
+      !pokemonName ||
+      typeof pokemonName !== "string"
+    ) {
+      return res.status(400).json({
+        error: "pokemonName est obligatoire."
+      });
     }
 
     const cleanCustomCities = [];
+
     for (const city of customCities.slice(0, 20)) {
       const valid = addCustomCityValidation(city);
-      if (valid) cleanCustomCities.push(valid);
+
+      if (valid) {
+        cleanCustomCities.push(valid);
+      }
     }
 
-    const cleanHorizon = horizon === "7d" ? "7d" : "24h";
-
+    const cleanHorizon =
+      horizon === "7d" ? "7d" : "24h";
 
     let cleanSelectedCity = null;
 
-    if (selectedCity && typeof selectedCity === "object") {
+    if (
+      selectedCity &&
+      typeof selectedCity === "object"
+    ) {
       const lat = Number(selectedCity.lat);
       const lon = Number(selectedCity.lon);
 
@@ -183,10 +319,16 @@ app.post("/api/forecast", searchLimiter, async (req, res) => {
         lon <= 180
       ) {
         cleanSelectedCity = {
-          name: String(selectedCity.name || "Selected city").slice(0, 80),
-          country: String(selectedCity.country || "Custom").slice(0, 80),
+          name: String(
+            selectedCity.name || "Selected city"
+          ).slice(0, 80),
+
+          country: String(
+            selectedCity.country || "Custom"
+          ).slice(0, 80),
+
           lat,
-          lon,
+          lon
         };
       }
     }
@@ -195,33 +337,55 @@ app.post("/api/forecast", searchLimiter, async (req, res) => {
       pokemonName,
       customCities: cleanCustomCities,
       horizon: cleanHorizon,
-      selectedCity: cleanSelectedCity,
+      selectedCity: cleanSelectedCity
     });
 
-    res.set("Cache-Control", "private, max-age=600");
-<<<<<<< HEAD
+    res.set(
+      "Cache-Control",
+      "private, max-age=600"
+    );
+
     res.json(publicForecastResult(data));
-=======
-    res.json(data);
->>>>>>> origin/main
+
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error.message || "Erreur prévision météo." });
+
+    res.status(500).json({
+      error: error.message || "Erreur prévision météo."
+    });
   }
 });
 
+// ==========================================
+// WEATHER BOOST SEARCH API
+// ==========================================
+
 app.post("/api/search", searchLimiter, async (req, res) => {
   try {
-    const { pokemonName, customCities = [], preciseMode = false, previousDayMode = true } = req.body || {};
+    const {
+      pokemonName,
+      customCities = [],
+      preciseMode = false,
+      previousDayMode = true
+    } = req.body || {};
 
-    if (!pokemonName || typeof pokemonName !== "string") {
-      return res.status(400).json({ error: "pokemonName est obligatoire." });
+    if (
+      !pokemonName ||
+      typeof pokemonName !== "string"
+    ) {
+      return res.status(400).json({
+        error: "pokemonName est obligatoire."
+      });
     }
 
     const cleanCustomCities = [];
+
     for (const city of customCities.slice(0, 20)) {
       const valid = addCustomCityValidation(city);
-      if (valid) cleanCustomCities.push(valid);
+
+      if (valid) {
+        cleanCustomCities.push(valid);
+      }
     }
 
     const data = await searchWeatherBoost({
@@ -231,35 +395,100 @@ app.post("/api/search", searchLimiter, async (req, res) => {
       previousDayMode: Boolean(previousDayMode)
     });
 
-    res.set("Cache-Control", "private, max-age=120");
-<<<<<<< HEAD
+    res.set(
+      "Cache-Control",
+      "private, max-age=120"
+    );
+
     res.json(publicWeatherResult(data));
-=======
-    res.json(data);
->>>>>>> origin/main
+
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error.message || "Erreur serveur." });
+
+    res.status(500).json({
+      error: "Erreur serveur."
+    });
   }
 });
 
-<<<<<<< HEAD
-const pages = ["methodology", "fr/methode", "guide", "weather-boost", "best-cities", "windy-weather-rayquaza", "fog-weather", "raid-weather-boost", "privacy", "disclaimer", "about", "best-weather-rayquaza", "fr/meilleure-meteo-rayquaza", "best-weather-necrozma", "fr/meilleure-meteo-necrozma", "best-weather-kyogre", "fr/meilleure-meteo-kyogre", "best-weather-groudon", "fr/meilleure-meteo-groudon", "best-weather-darkrai", "fr/meilleure-meteo-darkrai", "weather-boost-guide", "fr/guide-boost-meteo-pokemon-go", "pokemon-go-weather-explained", "fr/meteo-pokemon-go-expliquee", "why-pokemon-go-weather-is-wrong", "fr/pourquoi-meteo-pokemon-go-differente", "gofest-weather", "fr/gofest-meteo", "gofest-live-weather", "fr/gofest-meteo-live", "fr/a-propos", "contact", "fr/contact", "gofest-raid-weather-boosts", "fr/gofest-boost-meteo-raids", "gofest-windy-weather-guide", "fr/gofest-guide-meteo-venteux", "gofest-weather-preparation-checklist", "fr/gofest-checklist-meteo", "fr/confidentialite", "cookie-policy", "fr/politique-cookies", "pokemon-go-current-raids", "fr/raids-actuels-pokemon-go", "pokemon-go-weather-forecast", "fr/prevision-meteo-pokemon-go"];
-=======
-const pages = ["guide", "weather-boost", "best-cities", "windy-weather-rayquaza", "fog-weather", "raid-weather-boost", "privacy", "disclaimer", "about", "best-weather-rayquaza", "fr/meilleure-meteo-rayquaza", "best-weather-necrozma", "fr/meilleure-meteo-necrozma", "best-weather-kyogre", "fr/meilleure-meteo-kyogre", "best-weather-groudon", "fr/meilleure-meteo-groudon", "best-weather-darkrai", "fr/meilleure-meteo-darkrai", "weather-boost-guide", "fr/guide-boost-meteo-pokemon-go", "pokemon-go-weather-explained", "fr/meteo-pokemon-go-expliquee", "why-pokemon-go-weather-is-wrong", "fr/pourquoi-meteo-pokemon-go-differente", "gofest-weather", "fr/gofest-meteo", "gofest-live-weather", "fr/gofest-meteo-live", "fr/a-propos", "contact", "fr/contact", "gofest-raid-weather-boosts", "fr/gofest-boost-meteo-raids", "gofest-windy-weather-guide", "fr/gofest-guide-meteo-venteux", "gofest-weather-preparation-checklist", "fr/gofest-checklist-meteo", "fr/confidentialite", "cookie-policy", "fr/politique-cookies", "pokemon-go-current-raids", "fr/raids-actuels-pokemon-go", "pokemon-go-weather-forecast", "fr/prevision-meteo-pokemon-go"];
->>>>>>> origin/main
+// ==========================================
+// SEO PAGES
+// ==========================================
+
+const pages = [
+  "methodology",
+  "fr/methode",
+  "guide",
+  "weather-boost",
+  "best-cities",
+  "windy-weather-rayquaza",
+  "fog-weather",
+  "raid-weather-boost",
+  "privacy",
+  "disclaimer",
+  "about",
+  "best-weather-rayquaza",
+  "fr/meilleure-meteo-rayquaza",
+  "best-weather-necrozma",
+  "fr/meilleure-meteo-necrozma",
+  "best-weather-kyogre",
+  "fr/meilleure-meteo-kyogre",
+  "best-weather-groudon",
+  "fr/meilleure-meteo-groudon",
+  "best-weather-darkrai",
+  "fr/meilleure-meteo-darkrai",
+  "weather-boost-guide",
+  "fr/guide-boost-meteo-pokemon-go",
+  "pokemon-go-weather-explained",
+  "fr/meteo-pokemon-go-expliquee",
+  "why-pokemon-go-weather-is-wrong",
+  "fr/pourquoi-meteo-pokemon-go-differente",
+  "gofest-weather",
+  "fr/gofest-meteo",
+  "gofest-live-weather",
+  "fr/gofest-meteo-live",
+  "fr/a-propos",
+  "contact",
+  "fr/contact",
+  "gofest-raid-weather-boosts",
+  "fr/gofest-boost-meteo-raids",
+  "gofest-windy-weather-guide",
+  "fr/gofest-guide-meteo-venteux",
+  "gofest-weather-preparation-checklist",
+  "fr/gofest-checklist-meteo",
+  "fr/confidentialite",
+  "cookie-policy",
+  "fr/politique-cookies",
+  "pokemon-go-current-raids",
+  "fr/raids-actuels-pokemon-go",
+  "pokemon-go-weather-forecast",
+  "fr/prevision-meteo-pokemon-go"
+];
+
 for (const page of pages) {
-  app.get(`/${page}`, (req, res) => res.sendFile(path.join(__dirname, "public", `${page}.html`)));
+  app.get(`/${page}`, (req, res) => {
+    res.sendFile(
+      path.join(__dirname, "public", `${page}.html`)
+    );
+  });
 }
 
-app.get("*", (req, res) => {
-<<<<<<< HEAD
-  res.status(404).sendFile(path.join(__dirname, "public", "404.html"));
-=======
-  res.sendFile(path.join(__dirname, "public", "index.html"));
->>>>>>> origin/main
+// ==========================================
+// 404 HANDLER
+// ==========================================
+
+app.use((req, res) => {
+  res.status(404).sendFile(
+    path.join(__dirname, "public", "404.html")
+  );
 });
 
+// ==========================================
+// START SERVER
+// ==========================================
+
 app.listen(PORT, () => {
-  console.log(`PogoWeather running on http://localhost:${PORT}`);
+  console.log(
+    `PogoWeather running on http://localhost:${PORT}`
+  );
 });
