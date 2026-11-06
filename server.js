@@ -109,6 +109,7 @@ app.get("/api/raid-bosses", async (req, res) => {
 });
 
 
+<<<<<<< HEAD
 // Only expose the fields used by the interface. The private model and its
 // decision reasons remain on the server.
 function basicWeatherDetails(value) {
@@ -143,6 +144,8 @@ function publicForecastResult(data) {
   };
 }
 
+=======
+>>>>>>> origin/main
 app.post("/api/forecast", searchLimiter, async (req, res) => {
   try {
     const {
@@ -196,7 +199,11 @@ app.post("/api/forecast", searchLimiter, async (req, res) => {
     });
 
     res.set("Cache-Control", "private, max-age=600");
+<<<<<<< HEAD
     res.json(publicForecastResult(data));
+=======
+    res.json(data);
+>>>>>>> origin/main
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message || "Erreur prévision météo." });
@@ -225,20 +232,32 @@ app.post("/api/search", searchLimiter, async (req, res) => {
     });
 
     res.set("Cache-Control", "private, max-age=120");
+<<<<<<< HEAD
     res.json(publicWeatherResult(data));
+=======
+    res.json(data);
+>>>>>>> origin/main
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message || "Erreur serveur." });
   }
 });
 
+<<<<<<< HEAD
 const pages = ["methodology", "fr/methode", "guide", "weather-boost", "best-cities", "windy-weather-rayquaza", "fog-weather", "raid-weather-boost", "privacy", "disclaimer", "about", "best-weather-rayquaza", "fr/meilleure-meteo-rayquaza", "best-weather-necrozma", "fr/meilleure-meteo-necrozma", "best-weather-kyogre", "fr/meilleure-meteo-kyogre", "best-weather-groudon", "fr/meilleure-meteo-groudon", "best-weather-darkrai", "fr/meilleure-meteo-darkrai", "weather-boost-guide", "fr/guide-boost-meteo-pokemon-go", "pokemon-go-weather-explained", "fr/meteo-pokemon-go-expliquee", "why-pokemon-go-weather-is-wrong", "fr/pourquoi-meteo-pokemon-go-differente", "gofest-weather", "fr/gofest-meteo", "gofest-live-weather", "fr/gofest-meteo-live", "fr/a-propos", "contact", "fr/contact", "gofest-raid-weather-boosts", "fr/gofest-boost-meteo-raids", "gofest-windy-weather-guide", "fr/gofest-guide-meteo-venteux", "gofest-weather-preparation-checklist", "fr/gofest-checklist-meteo", "fr/confidentialite", "cookie-policy", "fr/politique-cookies", "pokemon-go-current-raids", "fr/raids-actuels-pokemon-go", "pokemon-go-weather-forecast", "fr/prevision-meteo-pokemon-go"];
+=======
+const pages = ["guide", "weather-boost", "best-cities", "windy-weather-rayquaza", "fog-weather", "raid-weather-boost", "privacy", "disclaimer", "about", "best-weather-rayquaza", "fr/meilleure-meteo-rayquaza", "best-weather-necrozma", "fr/meilleure-meteo-necrozma", "best-weather-kyogre", "fr/meilleure-meteo-kyogre", "best-weather-groudon", "fr/meilleure-meteo-groudon", "best-weather-darkrai", "fr/meilleure-meteo-darkrai", "weather-boost-guide", "fr/guide-boost-meteo-pokemon-go", "pokemon-go-weather-explained", "fr/meteo-pokemon-go-expliquee", "why-pokemon-go-weather-is-wrong", "fr/pourquoi-meteo-pokemon-go-differente", "gofest-weather", "fr/gofest-meteo", "gofest-live-weather", "fr/gofest-meteo-live", "fr/a-propos", "contact", "fr/contact", "gofest-raid-weather-boosts", "fr/gofest-boost-meteo-raids", "gofest-windy-weather-guide", "fr/gofest-guide-meteo-venteux", "gofest-weather-preparation-checklist", "fr/gofest-checklist-meteo", "fr/confidentialite", "cookie-policy", "fr/politique-cookies", "pokemon-go-current-raids", "fr/raids-actuels-pokemon-go", "pokemon-go-weather-forecast", "fr/prevision-meteo-pokemon-go"];
+>>>>>>> origin/main
 for (const page of pages) {
   app.get(`/${page}`, (req, res) => res.sendFile(path.join(__dirname, "public", `${page}.html`)));
 }
 
 app.get("*", (req, res) => {
+<<<<<<< HEAD
   res.status(404).sendFile(path.join(__dirname, "public", "404.html"));
+=======
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+>>>>>>> origin/main
 });
 
 app.listen(PORT, () => {

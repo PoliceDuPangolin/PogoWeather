@@ -1605,8 +1605,11 @@
 .raid-card-img {
   object-fit: contain;
 }
+<<<<<<< HEAD
 
 /* Accessible navigation on small screens */
 .mobile-menu{display:none;position:relative}.mobile-menu summary{cursor:pointer;list-style:none;padding:10px 13px;border:1px solid var(--border);border-radius:12px;background:var(--card);font-weight:800;color:var(--text)}.mobile-menu summary::-webkit-details-marker{display:none}.mobile-menu-links{position:absolute;top:calc(100% + 12px);right:0;z-index:45;min-width:210px;display:grid;gap:4px;padding:10px;background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow)}.mobile-menu-links a{padding:10px 12px;color:var(--text);text-decoration:none;font-weight:700;border-radius:8px}.mobile-menu-links a:hover,.mobile-menu-links a:focus{background:var(--soft);color:var(--primary)}@media(max-width:800px){.mobile-menu{display:block;margin-left:auto}.theme-btn{width:44px;flex:0 0 44px}.top-nav{gap:8px}.top-nav .brand span{font-size:15px}}
 
 @media(max-width:800px){.top-nav{flex-wrap:wrap}.top-nav .nav-actions{width:100%;margin:0;justify-content:flex-start}.mobile-menu{margin-left:auto}}
+=======
+>>>>>>> origin/main

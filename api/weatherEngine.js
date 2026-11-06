@@ -942,7 +942,11 @@ async function analyzeCity({
   };
 }
 
+<<<<<<< HEAD
 function buildFailedCityResult(city, error) {
+=======
+function iledCityResult(city, error) {
+>>>>>>> origin/main
   return {
     name: city?.name || "Unknown city",
     country: city?.country || "",

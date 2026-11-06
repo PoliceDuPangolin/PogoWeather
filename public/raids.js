@@ -23,7 +23,11 @@ if (raidTool) {
   const texts = {
     en: {
       loading: "Loading current raid bosses...",
+<<<<<<< HEAD
       loaded: (count, date) => `${count} raid bosses loaded. Retrieved by PogoWeather: ${date}.`,
+=======
+      loaded: (count, date) => `${count} raid bosses loaded. Last refresh: ${date}.`,
+>>>>>>> origin/main
       error: "Unable to load current raid bosses. Please try again later.",
       noResult: "No raid boss matches your filters.",
       check: "Check weather boost",
@@ -31,7 +35,11 @@ if (raidTool) {
     },
     fr: {
       loading: "Chargement des raids actuels...",
+<<<<<<< HEAD
       loaded: (count, date) => `${count} boss de raid chargés. Données récupérées par PogoWeather : ${date}.`,
+=======
+      loaded: (count, date) => `${count} boss de raid chargés. Dernière actualisation : ${date}.`,
+>>>>>>> origin/main
       error: "Impossible de charger les raids actuels. Réessaie plus tard.",
       noResult: "Aucun boss de raid ne correspond aux filtres.",
       check: "Vérifier le boost météo",
